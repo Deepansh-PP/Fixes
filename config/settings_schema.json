@@ -1,0 +1,346 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Aona India Luxury Theme",
+    "theme_version": "1.0.0",
+    "theme_author": "Aona India",
+    "theme_documentation_url": "https://aonaindia.com/theme-docs",
+    "theme_support_url": "https://aonaindia.com/support"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Primary Brand Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary Brand Color (Royal Red)",
+        "default": "#880015",
+        "info": "Used for CTAs, discount badges, active states"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_dark",
+        "label": "Primary Dark",
+        "default": "#6B0011"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary Accent (Gold)",
+        "default": "#D4AF37",
+        "info": "Used for luxury accents and borders"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary_light",
+        "label": "Secondary Light (Gold Light)",
+        "default": "#E5C76B"
+      },
+      {
+        "type": "header",
+        "content": "Background Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_white",
+        "label": "Background White",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_light",
+        "label": "Background Light",
+        "default": "#F9F9F9"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_grey",
+        "label": "Background Grey (Myntra Style)",
+        "default": "#F5F5F6"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_dark",
+        "label": "Background Dark",
+        "default": "#1A1A1A"
+      },
+      {
+        "type": "header",
+        "content": "Text Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_text_primary",
+        "label": "Text Primary",
+        "default": "#1A1A1A"
+      },
+      {
+        "type": "color",
+        "id": "color_text_secondary",
+        "label": "Text Secondary",
+        "default": "#666666"
+      },
+      {
+        "type": "color",
+        "id": "color_text_muted",
+        "label": "Text Muted",
+        "default": "#999999"
+      },
+      {
+        "type": "header",
+        "content": "UI Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border Color",
+        "default": "#E5E5E5"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "Success Color",
+        "default": "#03A685"
+      },
+      {
+        "type": "color",
+        "id": "color_error",
+        "label": "Error Color",
+        "default": "#FF3F6C"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Heading Font"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading Font",
+        "default": "playfair_display_n4",
+        "info": "Playfair Display for luxury feel"
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "label": "Heading Size Scale",
+        "min": 80,
+        "max": 150,
+        "step": 5,
+        "default": 100,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Body Font"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body Font",
+        "default": "lato_n4",
+        "info": "Lato for clean readability like Myntra"
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "label": "Body Size Scale",
+        "min": 80,
+        "max": 130,
+        "step": 5,
+        "default": 100,
+        "unit": "%"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Spacing"
+      },
+      {
+        "type": "range",
+        "id": "spacing_sections",
+        "label": "Section Spacing",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "default": 16,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Product Grid"
+      },
+      {
+        "type": "select",
+        "id": "product_grid_columns_mobile",
+        "label": "Products per Row (Mobile)",
+        "options": [
+          { "value": "1", "label": "1 Product" },
+          { "value": "2", "label": "2 Products" }
+        ],
+        "default": "2"
+      },
+      {
+        "type": "range",
+        "id": "product_grid_gap",
+        "label": "Product Grid Gap",
+        "min": 0,
+        "max": 20,
+        "step": 2,
+        "default": 2,
+        "unit": "px"
+      }
+    ]
+  },
+  {
+    "name": "Buttons",
+    "settings": [
+      {
+        "type": "range",
+        "id": "button_border_radius",
+        "label": "Button Border Radius",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 4,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "card_border_radius",
+        "label": "Card Border Radius",
+        "min": 0,
+        "max": 16,
+        "step": 2,
+        "default": 0,
+        "unit": "px"
+      }
+    ]
+  },
+  {
+    "name": "Contact Information",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Phone & WhatsApp"
+      },
+      {
+        "type": "text",
+        "id": "phone_number",
+        "label": "Phone Number",
+        "default": "+91 99999 99999",
+        "info": "Phone number with country code (e.g., +91 98765 43210). Displayed in contact popup."
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "WhatsApp Number",
+        "default": "919999999999",
+        "info": "WhatsApp number with country code but WITHOUT + sign (e.g., 919876543210). Used for WhatsApp chat link."
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_message",
+        "label": "WhatsApp Default Message",
+        "default": "Hi! I have a question about Aona India products.",
+        "info": "Pre-filled message when customer opens WhatsApp chat"
+      },
+      {
+        "type": "header",
+        "content": "Social Media"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      }
+    ]
+  },
+  {
+    "name": "Express Delivery (30 Mins)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Serviceable Pincodes"
+      },
+      {
+        "type": "textarea",
+        "id": "express_pincodes",
+        "label": "Express Delivery Pincodes",
+        "default": "400001,400002,400003,400004,400005,400006,400007,400008,400050,400051,400052,400053,400054,400055,400056,400057,400058,400059,400060,400061,400062,400063,400064,400069,400070,400071,400072,400074,400075,400076,400077,400078,400079,400080,400081,400082,400083,400084,400085,400086,400087,400088,400089,400091,400092,400093,400094,400095,400096,400097,400098,400099,400101,400102,400103,400104",
+        "info": "Comma-separated list of pincodes where 30-minute delivery is available. Add your serviceable pincodes here."
+      },
+      {
+        "type": "textarea",
+        "id": "express_areas",
+        "label": "Available Areas (Display Names)",
+        "default": "Mumbai Central, Andheri, Bandra, Juhu, Powai, Thane, Dadar, Worli, Lower Parel",
+        "info": "Comma-separated area names to display to customers"
+      },
+      {
+        "type": "header",
+        "content": "Express Products"
+      },
+      {
+        "type": "collection",
+        "id": "express_collection",
+        "label": "Express Delivery Collection",
+        "info": "Select the collection of products available for express delivery"
+      }
+    ]
+  },
+  {
+    "name": "New Arrivals",
+    "settings": [
+      {
+        "type": "header",
+        "content": "New Arrivals Section"
+      },
+      {
+        "type": "collection",
+        "id": "new_arrivals_collection",
+        "label": "New Arrivals Collection",
+        "info": "Select your new arrivals collection. Products will be shown in order (newest first). Only the first 50 products will be displayed."
+      },
+      {
+        "type": "textarea",
+        "id": "new_arrivals_filters",
+        "label": "Filter Categories",
+        "default": "Brass, Resin, Copper, Wall Art, Statues, Lamps",
+        "info": "Comma-separated list of product type filters to show"
+      },
+      {
+        "type": "paragraph",
+        "content": "TIP: To automatically add new products to this section, create a 'New Arrivals' collection with the condition 'Product created within last 30 days' or use manual sorting with newest first."
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32x32 pixels recommended"
+      }
+    ]
+  }
+]

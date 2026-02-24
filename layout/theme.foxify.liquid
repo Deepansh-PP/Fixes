@@ -1,0 +1,156 @@
+<!doctype html>
+<!-- 
+  AONA INDIA - Master Layout File (Revised)
+  This is the main skeleton of your website.
+  It loads the CSS, JS, Header, Footer, and the page content.
+-->
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <!-- Theme Color for Browser Toolbar (Mobile) -->
+  <meta name="theme-color" content="{{ settings.color_primary | default: '#880015' }}">
+  
+  <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+  <!-- Favicon -->
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- endif -%}
+
+  <!-- SEO Title -->
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+    {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  </title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Font Loading: Playfair Display (Headings) & Lato (Body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- =========================================
+       CRITICAL: THEME STYLESHEETS
+       These files MUST be in your Assets folder
+       ========================================= -->
+  {{ 'aona-theme.css' | asset_url | stylesheet_tag }}
+  {{ 'crimson-artisan.css' | asset_url | stylesheet_tag }}
+  {{ 'crimson-grid.css' | asset_url | stylesheet_tag }}
+  {{ 'crimson-accounts.css' | asset_url | stylesheet_tag }}
+  {% comment %} Removed grid-system.css to prevent layout conflicts {% endcomment %}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+  <!-- Shopify Core Scripts (Required for Apps & Analytics) -->
+  {{ content_for_header }}
+
+  <!-- CSS Variables (Design Tokens) 
+       Uses settings from config/settings_data.json
+       Falls back to default colors if settings are missing
+  -->
+  <style>
+    :root {
+      --color-royal-red: {{ settings.color_primary | default: '#880015' }};
+      --color-royal-red-dark: {{ settings.color_primary_dark | default: '#60000e' }};
+      --color-gold: {{ settings.color_secondary | default: '#D4AF37' }};
+      --color-gold-light: {{ settings.color_secondary_light | default: '#F4E5B0' }};
+      --color-bg-white: {{ settings.color_bg_white | default: '#ffffff' }};
+      --color-bg-light: {{ settings.color_bg_light | default: '#fafafa' }};
+      --color-bg-grey: {{ settings.color_bg_grey | default: '#f5f5f6' }};
+      --color-bg-dark: {{ settings.color_bg_dark | default: '#1a1a1a' }};
+      --color-text-primary: {{ settings.color_text_primary | default: '#1a1a1a' }};
+      --color-text-secondary: {{ settings.color_text_secondary | default: '#666666' }};
+      --color-text-muted: {{ settings.color_text_muted | default: '#999999' }};
+      --color-border: {{ settings.color_border | default: '#e5e5e5' }};
+      --color-success: {{ settings.color_success | default: '#2e7d32' }};
+      --color-error: {{ settings.color_error | default: '#d32f2f' }};
+    }
+  </style>
+
+  <!-- Structured Data for SEO (Rich Snippets) -->
+  {% if template.name == 'product' %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": {{ product.title | json }},
+        "image": {{ product.featured_image | image_url: width: 800 | json }},
+        "description": {{ product.description | strip_html | truncate: 200 | json }},
+        "brand": {
+          "@type": "Brand",
+          "name": {{ product.vendor | default: shop.name | json }}
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": {{ request.origin | append: product.url | json }},
+          "priceCurrency": {{ cart.currency.iso_code | json }},
+          "price": {{ product.price | money_without_currency | json }},
+          "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+        }
+      }
+    </script>
+  {% endif %}
+{%- render 'foxify-head' -%}</head>
+
+<body class="template-{{ template.name }} {% if template.suffix %}template-{{ template.name }}-{{ template.suffix }}{% endif %}"> {% sections 'foxify-header-group' %} 
+  <!-- Accessibility Skip Link -->
+  <a class="visually-hidden" href="#main-content">
+    {{ 'general.accessibility.skip_to_content' | t }}
+  </a>
+
+  <!-- Mobile Menu Backdrop & Drawer -->
+  <div class="mobile-menu-backdrop" data-menu-backdrop></div>
+  {% render 'mobile-menu' %}
+
+  <!-- Sticky Header -->
+  
+
+  <!-- MAIN CONTENT AREA -->
+  <main id="main-content" role="main">
+    <!-- This tag inserts the content from your Templates/Sections -->
+    <div class="foxify-container">{{ content_for_layout }}</div>
+  </main>
+
+  <!-- Footer -->
+  
+
+  <!-- Mobile App-Like Bottom Nav -->
+  {% render 'mobile-bottom-nav' %}
+
+  <!-- Toast Notifications -->
+  <div class="toast" data-toast>
+    <span data-toast-message></span>
+  </div>
+
+  <!-- Theme JavaScript -->
+  <script src="{{ 'aona-theme.js' | asset_url }}" defer></script>
+
+  <!-- Global Shopify Routes & Javascript Variables -->
+  <script>
+    window.shopUrl = '{{ shop.url }}';  // <--- ADD THIS NEW LINE
+    window.routes = {
+      root_url: '{{ routes.root_url }}',
+      cart_add_url: '{{ routes.cart_add_url }}',
+      cart_change_url: '{{ routes.cart_change_url }}',
+      cart_update_url: '{{ routes.cart_update_url }}',
+      cart_url: '{{ routes.cart_url }}',
+      predictive_search_url: '{{ routes.predictive_search_url }}'
+    };
+    
+    // Cart Error Handling
+    window.cartStrings = {
+      error: `{{ 'cart.general.error' | t }}`,
+      quantityError: `{{ 'cart.general.quantity_error' | t: quantity: '[quantity]' }}`
+    };
+  </script>
+{%- render 'foxify-footer' -%} {% sections 'foxify-footer-group' %} </body>
+</html>

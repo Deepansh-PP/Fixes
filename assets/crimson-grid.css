@@ -1,0 +1,952 @@
+/* ============================================
+   CRIMSON ARTISAN GRID SYSTEM
+   Universal Product Grid for Aona India
+   ============================================ */
+
+/* ============================================
+   CSS CUSTOM PROPERTIES
+   ============================================ */
+:root {
+  /* Crimson Color Palette */
+  --crimson-deep: #A91D1D;
+  --crimson-primary: #880015;
+  --crimson-light: #FFF5F5;
+  --crimson-glow: rgba(169, 29, 29, 0.4);
+  
+  /* Gold Accent */
+  --gold-accent: #D4AF37;
+  --gold-light: #F5E6C8;
+  
+  /* Neutrals */
+  --white: #FFFFFF;
+  --grey-50: #F9F9F9;
+  --grey-100: #F5F5F6;
+  --grey-200: #E8E8E8;
+  --grey-300: #CCCCCC;
+  --grey-400: #999999;
+  --grey-500: #666666;
+  --grey-600: #535766;
+  --grey-700: #333333;
+  --grey-800: #1A1A1A;
+  
+  /* Grid Settings */
+  --grid-gutter-mobile: 8px;
+  --grid-gutter-desktop: 24px;
+  --grid-columns-mobile: 2;
+  --grid-columns-desktop: 4;
+  
+  /* Card Settings */
+  --card-radius: 12px;
+  --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-smooth: 0.3s ease;
+  --transition-bounce: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ============================================
+   PRODUCT GRID CONTAINER
+   ============================================ */
+.product-grid--crimson {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns-mobile), 1fr);
+  gap: var(--grid-gutter-mobile);
+  padding: var(--grid-gutter-mobile);
+  background-color: var(--grey-100);
+}
+
+/* Tablet - 3 columns */
+@media screen and (min-width: 600px) {
+  .product-grid--crimson {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+}
+
+/* Desktop - 4 columns */
+@media screen and (min-width: 990px) {
+  .product-grid--crimson {
+    grid-template-columns: repeat(var(--grid-columns-desktop), 1fr);
+    gap: var(--grid-gutter-desktop);
+    padding: var(--grid-gutter-desktop);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+/* Large Desktop - 5 columns */
+@media screen and (min-width: 1400px) {
+  .product-grid--crimson {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Grid with header/title */
+.product-grid--crimson.has-header {
+  padding-top: 0;
+}
+
+/* ============================================
+   CRIMSON ARTISAN CARD
+   ============================================ */
+.crimson-card {
+  position: relative;
+  background: var(--white);
+  border-radius: var(--card-radius);
+  overflow: hidden; /* CRITICAL: Ensures child image respects border-radius */
+  box-shadow: var(--card-shadow);
+  transition: 
+    transform var(--transition-smooth),
+    box-shadow var(--transition-smooth);
+  animation: cardFadeIn 0.4s ease forwards;
+  animation-delay: calc(var(--card-index, 0) * 0.05s);
+  opacity: 0;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Desktop Hover State */
+@media screen and (min-width: 990px) {
+  .crimson-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow-hover);
+  }
+}
+
+/* Mobile Scroll Shadow Effect */
+@media screen and (max-width: 989px) {
+  .crimson-card.in-view {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* ============================================
+   IMAGE WRAPPER & CONTAINER
+   ============================================ */
+.crimson-card__image-wrapper {
+  position: relative;
+  overflow: hidden; /* Ensures image corners are clipped */
+}
+
+.crimson-card__image-link {
+  display: block;
+  text-decoration: none;
+}
+
+.crimson-card__image-container {
+  position: relative;
+  width: 100%;
+  padding-top: 133.33%; /* 3:4 Aspect Ratio */
+  background: linear-gradient(135deg, var(--grey-100) 0%, var(--grey-200) 100%);
+  overflow: hidden;
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
+}
+
+.crimson-card__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: 
+    transform var(--transition-smooth),
+    opacity var(--transition-smooth);
+}
+
+.crimson-card__image--primary {
+  z-index: 1;
+}
+
+.crimson-card__image--secondary {
+  z-index: 2;
+  opacity: 0;
+}
+
+/* Desktop Image Hover Effects */
+@media screen and (min-width: 990px) {
+  .crimson-card:hover .crimson-card__image--primary {
+    transform: scale(1.04);
+  }
+  
+  .crimson-card:hover .crimson-card__image--secondary {
+    opacity: 1;
+  }
+}
+
+/* Image Placeholder */
+.crimson-card__placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--grey-100);
+}
+
+.crimson-card__placeholder svg {
+  width: 48px;
+  height: 48px;
+  color: var(--grey-300);
+}
+
+/* ============================================
+   WISHLIST BUTTON
+   ============================================ */
+.crimson-card__wishlist {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: 
+    transform var(--transition-bounce),
+    box-shadow var(--transition-smooth);
+}
+
+.crimson-card__wishlist:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.crimson-card__wishlist:active {
+  transform: scale(0.95);
+}
+
+.crimson-card__wishlist-icon {
+  width: 18px;
+  height: 18px;
+  transition: all var(--transition-smooth);
+}
+
+.crimson-card__wishlist-icon--outline {
+  color: var(--grey-500);
+}
+
+.crimson-card__wishlist-icon--filled {
+  position: absolute;
+  color: var(--crimson-deep);
+  opacity: 0;
+  transform: scale(0);
+}
+
+/* Wishlist Active State */
+.crimson-card__wishlist.is-active .crimson-card__wishlist-icon--outline {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.crimson-card__wishlist.is-active .crimson-card__wishlist-icon--filled {
+  opacity: 1;
+  transform: scale(1);
+  filter: drop-shadow(0 0 8px var(--crimson-glow));
+  animation: wishlistPulse 0.4s ease;
+}
+
+/* Wishlist Hover Glow */
+.crimson-card__wishlist:hover .crimson-card__wishlist-icon--outline {
+  color: var(--crimson-deep);
+}
+
+@keyframes wishlistPulse {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* ============================================
+   PRODUCT BADGES
+   ============================================ */
+.crimson-card__badges {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.crimson-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.crimson-card__badge--new {
+  background: var(--crimson-deep);
+  color: var(--white);
+}
+
+.crimson-card__badge--handmade {
+  background: linear-gradient(135deg, var(--gold-accent) 0%, #C5A028 100%);
+  color: var(--grey-800);
+}
+
+.crimson-card__badge--sale {
+  background: var(--crimson-primary);
+  color: var(--white);
+}
+
+.crimson-card__badge--express {
+  background: #10B981;
+  color: var(--white);
+}
+
+.crimson-card__badge--bestseller {
+  background: var(--grey-800);
+  color: var(--white);
+}
+
+/* ============================================
+   RATING PILL
+   ============================================ */
+.crimson-card__rating {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.crimson-card__rating-value {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--grey-800);
+}
+
+.crimson-card__rating-star {
+  width: 12px;
+  height: 12px;
+  color: var(--gold-accent);
+}
+
+.crimson-card__rating-count {
+  font-size: 10px;
+  color: var(--grey-500);
+}
+
+/* ============================================
+   QUICK ADD BUTTON
+   ============================================ */
+.crimson-card__quick-add {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 10px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+  transform: translateY(100%);
+  opacity: 0;
+  transition: 
+    transform var(--transition-smooth),
+    opacity var(--transition-smooth);
+}
+
+/* Show on Desktop Hover */
+@media screen and (min-width: 990px) {
+  .crimson-card:hover .crimson-card__quick-add {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.crimson-card__quick-add-form {
+  width: 100%;
+}
+
+.crimson-card__quick-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--crimson-deep);
+  background: var(--white);
+  border: 2px solid var(--crimson-deep);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.crimson-card__quick-add-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.crimson-card__quick-add-btn:hover {
+  background: var(--crimson-deep);
+  color: var(--white);
+}
+
+.crimson-card__quick-add-btn--options {
+  background: transparent;
+  color: var(--white);
+  border-color: var(--white);
+}
+
+.crimson-card__quick-add-btn--options:hover {
+  background: var(--white);
+  color: var(--crimson-deep);
+}
+
+.crimson-card__quick-add-btn--soldout {
+  background: var(--grey-400);
+  color: var(--white);
+  border-color: var(--grey-400);
+  cursor: not-allowed;
+}
+
+/* ============================================
+   CARD CONTENT
+   ============================================ */
+.crimson-card__content {
+  padding: 12px;
+}
+
+.crimson-card__content-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Vendor / Brand Name */
+.crimson-card__vendor {
+  margin: 0 0 4px 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--crimson-deep);
+  line-height: 1.2;
+}
+
+/* Product Title */
+.crimson-card__title {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--grey-700);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 36px;
+}
+
+/* Price Wrapper */
+.crimson-card__price-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.crimson-card__price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--grey-800);
+}
+
+.crimson-card__price--sale {
+  color: var(--crimson-deep);
+}
+
+.crimson-card__price--compare {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--grey-400);
+  text-decoration: line-through;
+}
+
+/* Discount Badge */
+.crimson-card__discount-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--crimson-deep);
+  background: var(--crimson-light);
+  border-radius: 3px;
+}
+
+/* Tax Info */
+.crimson-card__tax-info {
+  margin: 0;
+  font-size: 10px;
+  color: var(--grey-400);
+  letter-spacing: 0.2px;
+}
+
+/* ============================================
+   FILTER BAR (STICKY - MOBILE)
+   ============================================ */
+.filter-bar--crimson {
+  position: relative; /* Changed from sticky */
+  /* top: 60px;  <-- REMOVED */
+  /* z-index: 100; <-- REMOVED */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--white);
+  border-bottom: 1px solid var(--grey-200);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.filter-bar--crimson::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-bar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--grey-700);
+  background: var(--grey-100);
+  border: 1px solid var(--grey-200);
+  border-radius: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-bar__item:hover,
+.filter-bar__item.is-active {
+  background: var(--crimson-light);
+  border-color: var(--crimson-deep);
+  color: var(--crimson-deep);
+}
+
+.filter-bar__item svg {
+  width: 14px;
+  height: 14px;
+}
+
+.filter-bar__item--sort {
+  background: var(--crimson-deep);
+  color: var(--white);
+  border-color: var(--crimson-deep);
+}
+
+.filter-bar__item--sort:hover {
+  background: var(--crimson-primary);
+}
+
+/* Quick Category Pills */
+.filter-bar__categories {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.filter-bar__category {
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--grey-600);
+  background: transparent;
+  border: 1px solid var(--grey-300);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-bar__category:hover,
+.filter-bar__category.is-active {
+  background: var(--crimson-deep);
+  border-color: var(--crimson-deep);
+  color: var(--white);
+}
+
+/* ============================================
+   LOAD MORE BUTTON
+   ============================================ */
+.load-more--crimson {
+  display: flex;
+  justify-content: center;
+  padding: 24px var(--grid-gutter-mobile);
+  background: var(--grey-100);
+}
+
+.load-more__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 200px;
+  padding: 14px 32px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--crimson-deep);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  box-shadow: 0 4px 12px rgba(169, 29, 29, 0.3);
+}
+
+.load-more__btn:hover {
+  background: var(--crimson-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(169, 29, 29, 0.4);
+}
+
+.load-more__btn:disabled {
+  background: var(--grey-300);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.load-more__btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.load-more__spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   NO RESULTS / EMPTY STATE
+   ============================================ */
+.no-results--crimson {
+  padding: 48px 20px;
+  text-align: center;
+  background: var(--grey-100);
+}
+
+.no-results__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  color: var(--grey-300);
+}
+
+.no-results__title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--grey-700);
+}
+
+.no-results__message {
+  margin: 0 0 24px;
+  font-size: 14px;
+  color: var(--grey-500);
+}
+
+/* Trending Carousel for No Results */
+.no-results__trending {
+  margin-top: 32px;
+}
+
+.no-results__trending-title {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--crimson-deep);
+}
+
+.no-results__carousel {
+  display: flex;
+  gap: 12px;
+  padding: 0 20px 16px;
+  margin: 0 -20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.no-results__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.no-results__carousel .crimson-card {
+  flex: 0 0 160px;
+  scroll-snap-align: start;
+}
+
+/* ============================================
+   GRID HEADER
+   ============================================ */
+.grid-header--crimson {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: var(--white);
+}
+
+.grid-header__title {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--grey-800);
+}
+
+.grid-header__count {
+  font-size: 13px;
+  color: var(--grey-500);
+}
+
+.grid-header__count strong {
+  color: var(--crimson-deep);
+}
+
+/* ============================================
+   HORIZONTAL SCROLL GRID
+   ============================================ */
+.product-scroll--crimson {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  background: var(--grey-100);
+}
+
+.product-scroll--crimson::-webkit-scrollbar {
+  display: none;
+}
+
+.product-scroll--crimson .crimson-card {
+  flex: 0 0 160px;
+  scroll-snap-align: start;
+}
+
+@media screen and (min-width: 600px) {
+  .product-scroll--crimson .crimson-card {
+    flex: 0 0 200px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+@media screen and (max-width: 599px) {
+  .crimson-card__content {
+    padding: 10px;
+  }
+  
+  .crimson-card__title {
+    font-size: 12px;
+    min-height: 34px;
+  }
+  
+  .crimson-card__price {
+    font-size: 13px;
+  }
+  
+  .crimson-card__vendor {
+    font-size: 9px;
+  }
+  
+  .crimson-card__wishlist {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .crimson-card__wishlist-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .crimson-card__badge {
+    font-size: 8px;
+    padding: 3px 6px;
+  }
+}
+
+/* ============================================
+   SKELETON LOADING STATE
+   ============================================ */
+.crimson-card--skeleton {
+  pointer-events: none;
+}
+
+.crimson-card--skeleton .crimson-card__image-container,
+.crimson-card--skeleton .crimson-card__vendor,
+.crimson-card--skeleton .crimson-card__title,
+.crimson-card--skeleton .crimson-card__price {
+  background: linear-gradient(90deg, var(--grey-200) 25%, var(--grey-100) 50%, var(--grey-200) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.crimson-card--skeleton .crimson-card__vendor {
+  height: 10px;
+  width: 60%;
+}
+
+.crimson-card--skeleton .crimson-card__title {
+  height: 32px;
+  width: 100%;
+}
+
+.crimson-card--skeleton .crimson-card__price {
+  height: 14px;
+  width: 40%;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+/* FORCE IMAGES VISIBLE */
+.crimson-card__image, 
+.crimson-card__image--primary {
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 1;
+}
+
+/* Ensure background doesn't hide image */
+.crimson-card__image-container {
+  background: transparent !important;
+}
+
+/* Fix for Search Results specific sizing */
+.search-results .crimson-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* FIX: Force Quick Add Button Visible on Mobile/Tablet */
+@media screen and (max-width: 989px) {
+  .crimson-card__quick-add {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    background: linear-gradient(to top, rgba(0,0,0,0.05) 0%, transparent 100%);
+    padding: 8px;
+  }
+
+  .crimson-card__quick-add-btn {
+    background: #ffffff;
+    color: #880015;
+    border: 1px solid #880015;
+    /* Make button slightly smaller on mobile so it doesn't cover the image */
+    padding: 8px; 
+    font-size: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+}
+/* Quantity Control Styling (BigBasket Style) */
+.crimson-card__qty-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #2e7d32; /* Green */
+  border-radius: 6px;
+  padding: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  height: 36px; /* Match button height */
+}
+
+.qty-action-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  width: 30px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.qty-action-btn:active {
+  opacity: 0.7;
+}
+
+.qty-current {
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+/* Ensure wrapper has height on mobile */
+@media screen and (max-width: 989px) {
+  .crimson-card__quick-add {
+    padding: 8px;
+    height: auto;
+    min-height: 52px;
+  }
+}
