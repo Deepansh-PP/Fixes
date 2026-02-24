@@ -1,0 +1,108 @@
+{% schema %}
+{
+  "name": "Artisan Story",
+  "tag": "section",
+  "class": "section-artisan-story",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Crafted with Passion"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Every piece in our collection tells a story of generations of skilled artisans.</p>"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Since 1985"
+    },
+    {
+       "type": "text",
+       "id": "button_text",
+       "label": "Button Text",
+       "default": "Read Our Story"
+    },
+    {
+       "type": "url",
+       "id": "button_link",
+       "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Artisan Story"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="section-padding bg-warm-white">
+  <div class="container">
+    <div class="flex flex-col md:flex-row items-center gap-12">
+      <div class="w-full md:w-1/2 relative">
+        <div class="rounded-2xl overflow-hidden shadow-xl relative z-10">
+          {% if section.settings.image != blank %}
+            {{ section.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', class: 'w-full h-auto' }}
+          {% else %}
+             {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-auto bg-gray-200' }}
+          {% endif %}
+        </div>
+        <!-- Decorative border/badge -->
+        <div class="absolute -top-4 -left-4 w-full h-full border-2 border-gold rounded-2xl z-0 hidden md:block"></div>
+        
+        {% if section.settings.badge_text != blank %}
+           <div class="absolute top-6 right-6 bg-white shadow-lg py-2 px-4 rounded-full z-20 font-bold text-primary">
+              {{ section.settings.badge_text }}
+           </div>
+        {% endif %}
+      </div>
+      
+      <div class="w-full md:w-1/2 text-center md:text-left">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-primary mb-6 leading-tight">
+          {{ section.settings.heading }}
+        </h2>
+        <div class="prose text-secondary mb-8 text-lg">
+          {{ section.settings.content }}
+        </div>
+        
+        {% if section.settings.button_link != blank %}
+          <a href="{{ section.settings.button_link }}" class="btn btn-outline-red">
+            {{ section.settings.button_text }}
+          </a>
+        {% endif %}
+        
+        <div class="flex justify-center md:justify-start gap-8 mt-8 border-t border-gray-200 pt-8">
+           <div class="flex flex-col items-center md:items-start">
+              <span class="text-gold font-bold text-xl">100%</span>
+              <span class="text-sm text-muted">Authentic</span>
+           </div>
+           <div class="flex flex-col items-center md:items-start">
+              <span class="text-gold font-bold text-xl">500+</span>
+              <span class="text-sm text-muted">Artisans</span>
+           </div>
+           <div class="flex flex-col items-center md:items-start">
+              <span class="text-gold font-bold text-xl">Global</span>
+              <span class="text-sm text-muted">Shipping</span>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.bg-warm-white { background-color: #FDFBF7; }
+.border-gold { border-color: var(--color-gold); }
+.text-gold { color: var(--color-gold); }
+</style>

@@ -1,0 +1,491 @@
+{% comment %}
+  AONA Premium Cart Page (Myntra/Pepperfry Style)
+  - Fixes cut-off header (added top padding)
+  - 2-column layout on Desktop
+  - Sticky footer on Mobile only
+{% endcomment %}
+
+<div class="aona-cart-wrapper">
+  <div class="aona-cart-container">
+    
+    <!-- Cart Header -->
+    <div class="cart-header">
+      <h1 class="cart-title">Shopping Bag <span class="cart-count">({{ cart.item_count }} Items)</span></h1>
+    </div>
+
+    {% if cart.item_count > 0 %}
+      <form action="{{ routes.cart_url }}" method="post" id="cart-form" class="cart-layout">
+        
+        <!-- LEFT COLUMN: Cart Items -->
+        <div class="cart-items-section">
+          <div class="cart-items-list">
+            {% for item in cart.items %}
+              <div class="cart-item-card">
+                <!-- Product Image -->
+                <a href="{{ item.url }}" class="cart-item-image">
+                  <img src="{{ item.image | image_url: width: 300 }}" alt="{{ item.title | escape }}">
+                </a>
+                
+                <!-- Product Details -->
+                <div class="cart-item-details">
+                  <div class="cart-item-header-row">
+                    <p class="cart-item-brand">{{ item.vendor | default: 'AONA INDIA' }}</p>
+                    <a href="{{ item.url_to_remove }}" class="cart-item-remove" aria-label="Remove item">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </a>
+                  </div>
+                  
+                  <a href="{{ item.url }}" class="cart-item-title">{{ item.product.title }}</a>
+                  
+                  {%- unless item.product.has_only_default_variant -%}
+                    <p class="cart-item-variant">Variant: {{ item.variant.title }}</p>
+                  {%- endunless -%}
+
+                  <!-- Price -->
+                  <div class="cart-item-price-wrap">
+                    <span class="cart-item-price">{{ item.final_line_price | money }}</span>
+                    {% if item.original_line_price > item.final_line_price %}
+                      <span class="cart-item-compare">{{ item.original_line_price | money }}</span>
+                      {% assign discount = item.original_line_price | minus: item.final_line_price | times: 100.0 | divided_by: item.original_line_price | round %}
+                      <span class="cart-item-discount">{{ discount }}% OFF</span>
+                    {% endif %}
+                  </div>
+
+                  <!-- Quantity Selector -->
+                  <div class="cart-item-qty">
+                    <span class="qty-label">Qty:</span>
+                    <div class="qty-control">
+                      <button type="button" class="qty-btn minus" onclick="updateCartQty(this, -1)">-</button>
+                      <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="qty-input" readonly>
+                      <button type="button" class="qty-btn plus" onclick="updateCartQty(this, 1)">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Summary & Checkout -->
+        <div class="cart-summary-section">
+          
+          <!-- Apply Coupons Strip -->
+          <div class="cart-coupon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#880015" stroke-width="2">
+              <path d="M19 5L5 19M6.5 6.5A2.5 2.5 0 1 1 6.5 6.5M17.5 17.5A2.5 2.5 0 1 1 17.5 17.5"/>
+            </svg>
+            <span class="coupon-text">Apply Coupons</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" style="margin-left: auto;"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+
+          <!-- Price Details Card -->
+          <div class="cart-price-details">
+            <h3 class="summary-title">PRICE DETAILS ({{ cart.item_count }} Items)</h3>
+            
+            <div class="price-row">
+              <span class="price-label">Total MRP</span>
+              <span class="price-value">{{ cart.original_total_price | money }}</span>
+            </div>
+            
+            {% if cart.total_discount > 0 %}
+            <div class="price-row discount-row">
+              <span class="price-label">Discount on MRP</span>
+              <span class="price-value">-{{ cart.total_discount | money }}</span>
+            </div>
+            {% endif %}
+
+            <div class="price-row">
+              <span class="price-label">Delivery Fee</span>
+              <span class="price-value free-text">FREE</span>
+            </div>
+
+            <div class="price-divider"></div>
+
+            <div class="price-row total-row">
+              <span class="price-label">Total Amount</span>
+              <span class="price-value">{{ cart.total_price | money }}</span>
+            </div>
+          </div>
+
+          <!-- Desktop Place Order Button -->
+          <button type="submit" name="checkout" class="cart-checkout-btn desktop-checkout">
+            PLACE ORDER
+          </button>
+
+          <div class="trust-markers">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Safe and Secure Payments. 100% Authentic Products.</span>
+          </div>
+
+        </div>
+
+        <!-- Mobile Sticky Footer (Hidden on PC) -->
+        <div class="mobile-sticky-checkout">
+          <div class="mobile-checkout-info">
+            <span class="mobile-total">{{ cart.total_price | money }}</span>
+            <a href="#" class="mobile-link" onclick="window.scrollTo(0,0); return false;">View Details</a>
+          </div>
+          <button type="submit" name="checkout" class="cart-checkout-btn">
+            PLACE ORDER
+          </button>
+        </div>
+        
+      </form>
+    {% else %}
+      <!-- Empty Cart State -->
+      <div class="cart-empty-state">
+        <div class="empty-icon-circle">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#880015" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </div>
+        <h2>Your bag is empty</h2>
+        <p>Looks like you haven't added anything to your bag yet.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="empty-btn">Start Shopping</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+/* Layout & Spacing */
+.aona-cart-wrapper {
+  background-color: #f5f5f6;
+  min-height: 100vh;
+  /* FIXED: Pushes the cart down so it's not hidden behind the header */
+  padding-top: 100px; 
+  padding-bottom: 120px;
+}
+
+.aona-cart-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Header */
+.cart-header {
+  margin-bottom: 24px;
+}
+.cart-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+.cart-count {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+}
+
+/* Empty State */
+.cart-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 60px 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.empty-icon-circle {
+  width: 80px; height: 80px;
+  background: #fdf5f6;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+}
+.cart-empty-state h2 { font-family: 'Playfair Display', serif; font-size: 24px; color: #1a1a1a; margin: 0 0 10px; }
+.cart-empty-state p { color: #666; font-size: 15px; margin: 0 0 24px; }
+.empty-btn { background: #880015; color: white; padding: 14px 32px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 15px; transition: background 0.2s; }
+.empty-btn:hover { background: #6b0011; }
+
+/* Grid Layout (2 Column on PC) */
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 992px) {
+  .cart-layout {
+    grid-template-columns: 2fr 1fr; /* 66% Left, 33% Right */
+    gap: 30px;
+    align-items: start;
+  }
+}
+
+/* Left Column: Cart Items */
+.cart-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.cart-item-card {
+  display: flex;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #eaeaec;
+  gap: 16px;
+}
+.cart-item-image {
+  width: 110px;
+  flex-shrink: 0;
+  aspect-ratio: 1;
+  background: #f9f9f9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.cart-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.cart-item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.cart-item-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.cart-item-brand {
+  font-size: 11px;
+  font-weight: 700;
+  color: #880015;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 4px;
+}
+.cart-item-remove {
+  padding: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.cart-item-remove:hover svg { stroke: #d32f2f; }
+.cart-item-title {
+  font-size: 14px;
+  color: #282c3f;
+  text-decoration: none;
+  margin-bottom: 6px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.cart-item-variant {
+  font-size: 12px;
+  color: #7e818c;
+  margin: 0 0 8px;
+}
+
+/* Item Pricing */
+.cart-item-price-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.cart-item-price { font-size: 15px; font-weight: 700; color: #282c3f; }
+.cart-item-compare { font-size: 13px; color: #7e818c; text-decoration: line-through; }
+.cart-item-discount { font-size: 12px; font-weight: 700; color: #03a685; } /* Myntra Green */
+
+/* Quantity Selector */
+.cart-item-qty {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+.qty-label { font-size: 13px; color: #282c3f; font-weight: 600; }
+.qty-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d4d5d9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  border: none;
+  font-size: 16px;
+  color: #282c3f;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qty-btn:hover { background: #f5f5f6; }
+.qty-input {
+  width: 32px;
+  height: 28px;
+  border: none;
+  border-left: 1px solid #d4d5d9;
+  border-right: 1px solid #d4d5d9;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #282c3f;
+  padding: 0;
+}
+/* Hide number arrows */
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Right Column: Summary */
+.cart-summary-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Coupons */
+.cart-coupon-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #eaeaec;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.cart-coupon-box:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.coupon-text { font-size: 14px; font-weight: 700; color: #282c3f; }
+
+/* Price Details */
+.cart-price-details {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #eaeaec;
+}
+.summary-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #535766;
+  margin: 0 0 16px;
+  text-transform: uppercase;
+}
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #282c3f;
+}
+.discount-row { color: #03a685; }
+.free-text { color: #03a685; font-weight: 600; }
+.price-divider {
+  border-top: 1px dashed #eaeaec;
+  margin: 16px 0;
+}
+.total-row {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+/* Trust Markers */
+.trust-markers {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  font-size: 12px;
+  color: #7e818c;
+  line-height: 1.4;
+}
+
+/* Buttons */
+.cart-checkout-btn {
+  width: 100%;
+  background: #880015; /* Aona Red */
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.cart-checkout-btn:hover { background: #6b0011; }
+
+.desktop-checkout { display: none; }
+
+@media (min-width: 992px) {
+  .desktop-checkout { display: block; }
+  .mobile-sticky-checkout { display: none !important; }
+}
+
+/* Mobile Sticky Footer */
+.mobile-sticky-checkout {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 100;
+}
+.mobile-checkout-info {
+  display: flex;
+  flex-direction: column;
+}
+.mobile-total {
+  font-size: 16px;
+  font-weight: 700;
+  color: #282c3f;
+}
+.mobile-link {
+  font-size: 12px;
+  color: #880015;
+  font-weight: 600;
+  text-decoration: none;
+}
+</style>
+
+<script>
+// Auto-Update Cart when clicking Plus/Minus
+function updateCartQty(btn, change) {
+  const input = btn.parentElement.querySelector('input');
+  let currentVal = parseInt(input.value);
+  let newVal = currentVal + change;
+  
+  if (newVal < 0) newVal = 0;
+  
+  input.value = newVal;
+  
+  // Submit the form to recalculate prices
+  document.getElementById('cart-form').submit();
+  
+  // Visual feedback
+  btn.style.opacity = '0.5';
+}
+</script>
+
+{% schema %}
+{
+  "name": "Cart Page",
+  "settings": []
+}
+{% endschema %}

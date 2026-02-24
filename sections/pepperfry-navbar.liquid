@@ -1,0 +1,177 @@
+{% schema %}
+{
+  "name": "Pepperfry Category Bar",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Select Menu",
+      "info": "Select a menu with 3 levels of nesting (e.g. Brass > Idols > Krishna)"
+    }
+  ],
+  "presets": [{ "name": "Pepperfry Category Bar" }]
+}
+{% endschema %}
+
+<div class="pf-navbar-wrapper">
+  <div class="pf-navbar-container">
+    <ul class="pf-nav-list">
+      {% for link in linklists[section.settings.menu].links %}
+        <li class="pf-nav-item">
+          <a href="{{ link.url }}" class="pf-nav-link">
+            {{ link.title }}
+            {% if link.links != blank %}
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            {% endif %}
+          </a>
+
+          <!-- MEGA MENU DROPDOWN -->
+          {% if link.links != blank %}
+            <div class="pf-mega-menu">
+              <div class="pf-mega-grid">
+                {% for child_link in link.links %}
+                  <div class="pf-mega-column">
+                    <!-- Level 2: Idols, Animals -->
+                    <a href="{{ child_link.url }}" class="pf-mega-heading">{{ child_link.title }}</a>
+                    
+                    <!-- Level 3: Krishna, Ganesha, Horse -->
+                    {% if child_link.links != blank %}
+                      <ul class="pf-mega-sublist">
+                        {% for grandchild_link in child_link.links %}
+                          <li>
+                            <a href="{{ grandchild_link.url }}" class="pf-mega-item">{{ grandchild_link.title }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<style>
+/* Wrapper to stick below header */
+.pf-navbar-wrapper {
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  z-index: 90; /* High z-index to float over hero */
+}
+
+.pf-navbar-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Main Horizontal List */
+.pf-nav-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 30px;
+  overflow-x: auto; /* Scrollable on mobile */
+  scrollbar-width: none;
+}
+
+.pf-nav-item {
+  padding: 15px 0;
+}
+
+.pf-nav-link {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.pf-nav-item:hover .pf-nav-link {
+  color: #880015; /* Aona Red */
+  border-bottom-color: #880015;
+}
+
+/* MEGA MENU STYLES */
+.pf-mega-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-top: 1px solid #eee;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  padding: 30px 40px;
+}
+
+/* Show on Hover (Desktop Only) */
+@media (min-width: 992px) {
+  .pf-nav-item:hover .pf-mega-menu {
+    display: block;
+  }
+}
+
+.pf-mega-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.pf-mega-column {
+  min-width: 180px;
+}
+
+.pf-mega-heading {
+  display: block;
+  font-weight: 700;
+  color: #880015; /* Aona Red */
+  margin-bottom: 12px;
+  text-decoration: none;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.pf-mega-sublist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pf-mega-item {
+  display: block;
+  color: #666;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.pf-mega-item:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 991px) {
+  .pf-nav-link { font-size: 13px; }
+  /* On mobile, we hide the mega menu hover and rely on the main mobile drawer, 
+     OR we keep this as a simple scrollable top bar for top-level collections */
+  .pf-mega-menu { display: none !important; } 
+}
+</style>

@@ -1,0 +1,13 @@
+<div id="accountDropdown" class="account-dropdown">
+  <div style="padding-bottom:10px; border-bottom:1px solid #eee; margin-bottom:10px;">
+    <p style="margin:0; font-size:12px; color:#666;">Hello,</p>
+    <p style="margin:0; font-weight:bold; color:#880015;">{{ customer.first_name | default: 'User' }}</p>
+  </div>
+  
+  <ul style="list-style:none; padding:0; margin:0;">
+    <li style="margin-bottom:8px;"><a href="/account" style="text-decoration:none; color:#333;">My Orders</a></li>
+    <li style="margin-bottom:8px;"><a href="/pages/wishlist" style="text-decoration:none; color:#333;">Wishlist</a></li>
+    <li style="margin-bottom:8px;"><a href="/account/addresses" style="text-decoration:none; color:#333;">Saved Addresses</a></li>
+    <li><a href="/account/logout" style="text-decoration:none; color:#A91D1D;">Log Out</a></li>
+  </ul>
+</div>

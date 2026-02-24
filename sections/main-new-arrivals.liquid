@@ -1,0 +1,1028 @@
+{%- comment -%}
+  AONA INDIA - New Arrivals Page
+  Myntra-style mobile-first design with full inline styling
+{%- endcomment -%}
+
+<div class="new-arrivals-page">
+  <!-- Header Banner -->
+  <div class="new-header">
+    <div class="new-badge">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+      <span>NEW ARRIVALS</span>
+    </div>
+    <h1 class="new-title">Fresh Collections Just In</h1>
+    <p class="new-subtitle">Discover our latest handcrafted masterpieces</p>
+    <div class="new-stats">
+      <span>50+ New Items</span>
+      <span>•</span>
+      <span>Updated Daily</span>
+    </div>
+  </div>
+
+  <!-- Featured Banner -->
+  <div class="featured-new">
+    <img src="https://images.unsplash.com/photo-1609766418204-94aae0ecfdfc?w=800" alt="Featured" class="featured-image">
+    <div class="featured-overlay">
+      <span class="featured-tag">FEATURED</span>
+      <h3>Limited Edition Bronze Krishna</h3>
+      <button class="featured-cta">Explore Now</button>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar--crimson">
+    <button class="filter-btn" onclick="openSortPanel()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+      </svg>
+      Sort
+    </button>
+    <button class="filter-btn" onclick="openFilterPanel()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+      </svg>
+      Filter
+    </button>
+    <div class="filter-pills">
+      <button class="filter-pill active">All New</button>
+      <button class="filter-pill">Today</button>
+      <button class="filter-pill">This Week</button>
+      <button class="filter-pill">Brass</button>
+      <button class="filter-pill">Resin</button>
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="new-products">
+    <div class="product-grid--crimson">
+      {%- for product in collections['new-arrivals'].products limit: 20 -%}
+        {% render 'crimson-card', product: product %}
+      {%- else -%}
+        <!-- Sample Products -->
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-new">NEW</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1611967164521-abae8fba4668?w=400" alt="Brass Krishna">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.9 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA EXCLUSIVE</p>
+            <h4 class="card-title">Dancing Krishna Brass Statue</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹12,999</span>
+              <span class="original-price">₹16,500</span>
+              <span class="discount-badge">21% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-new">NEW</span>
+              <span class="badge badge-handcrafted">HANDCRAFTED</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1565138146061-e29b079736c0?w=400" alt="Resin Buddha">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">5.0 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA ARTISAN</p>
+            <h4 class="card-title">Meditating Buddha Resin Art</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹3,999</span>
+              <span class="original-price">₹5,500</span>
+              <span class="discount-badge">27% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-new">NEW</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400" alt="Horse Statue">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.7 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA</p>
+            <h4 class="card-title">Galloping Horse Bronze</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹8,500</span>
+              <span class="original-price">₹11,000</span>
+              <span class="discount-badge">23% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-new">NEW</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1612118010230-307e5a9dc53f?w=400" alt="Wall Art">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.8 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA HOME</p>
+            <h4 class="card-title">Peacock Wall Art Brass</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹5,799</span>
+              <span class="original-price">₹7,500</span>
+              <span class="discount-badge">23% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-new">NEW</span>
+              <span class="badge badge-handcrafted">LIMITED</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1595886890117-b3a7faf7b52a?w=400" alt="Elephant">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.9 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA PREMIUM</p>
+            <h4 class="card-title">Royal Elephant Copper Set</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹15,999</span>
+              <span class="original-price">₹20,000</span>
+              <span class="discount-badge">20% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-new">NEW</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400" alt="Lamp">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.6 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA</p>
+            <h4 class="card-title">Traditional Brass Oil Lamp</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹2,499</span>
+              <span class="original-price">₹3,200</span>
+              <span class="discount-badge">22% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-new">TODAY</span>
+              <span class="badge badge-sale">SALE</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400" alt="Vase">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.5 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA</p>
+            <h4 class="card-title">Decorative Copper Vase Set</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹4,299</span>
+              <span class="original-price">₹6,000</span>
+              <span class="discount-badge">28% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-new">NEW</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=400" alt="Shiva">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.9 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA DIVINE</p>
+            <h4 class="card-title">Lord Shiva Dancing Bronze</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹18,999</span>
+              <span class="original-price">₹24,000</span>
+              <span class="discount-badge">21% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- Load More Button -->
+    <div class="load-more-container">
+      <button class="load-more-btn" onclick="loadMoreNewProducts(this)" data-page="2">
+        <span>Load More New Arrivals</span>
+        <svg class="load-spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2v4m0 12v4m-8-10h4m12 0h4m-4.93-5.07l-2.83 2.83m-8.48 8.48l-2.83 2.83m0-14.14l2.83 2.83m8.48 8.48l2.83 2.83"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Sort & Filter Panels -->
+<div class="sort-panel" id="sortPanel">
+  <div class="panel-header">
+    <h3>Sort By</h3>
+    <button class="panel-close" onclick="closeSortPanel()">✕</button>
+  </div>
+  <div class="sort-options">
+    <label class="sort-option">
+      <input type="radio" name="sort" value="newest" checked>
+      <span>Newest First</span>
+    </label>
+    <label class="sort-option">
+      <input type="radio" name="sort" value="price-low">
+      <span>Price: Low to High</span>
+    </label>
+    <label class="sort-option">
+      <input type="radio" name="sort" value="price-high">
+      <span>Price: High to Low</span>
+    </label>
+    <label class="sort-option">
+      <input type="radio" name="sort" value="rating">
+      <span>Customer Rating</span>
+    </label>
+    <label class="sort-option">
+      <input type="radio" name="sort" value="discount">
+      <span>Better Discount</span>
+    </label>
+  </div>
+</div>
+
+<div class="filter-panel" id="filterPanel">
+  <div class="panel-header">
+    <h3>Filter</h3>
+    <button class="panel-close" onclick="closeFilterPanel()">✕</button>
+  </div>
+  <div class="filter-sections">
+    <div class="filter-section">
+      <h4>Categories</h4>
+      <label class="filter-option">
+        <input type="checkbox" value="brass">
+        <span>Brass (24)</span>
+      </label>
+      <label class="filter-option">
+        <input type="checkbox" value="resin">
+        <span>Resin (18)</span>
+      </label>
+      <label class="filter-option">
+        <input type="checkbox" value="copper">
+        <span>Copper (15)</span>
+      </label>
+      <label class="filter-option">
+        <input type="checkbox" value="bronze">
+        <span>Bronze (12)</span>
+      </label>
+    </div>
+    
+    <div class="filter-section">
+      <h4>Price Range</h4>
+      <label class="filter-option">
+        <input type="checkbox" value="0-5000">
+        <span>Under ₹5,000</span>
+      </label>
+      <label class="filter-option">
+        <input type="checkbox" value="5000-10000">
+        <span>₹5,000 - ₹10,000</span>
+      </label>
+      <label class="filter-option">
+        <input type="checkbox" value="10000-20000">
+        <span>₹10,000 - ₹20,000</span>
+      </label>
+      <label class="filter-option">
+        <input type="checkbox" value="20000+">
+        <span>Above ₹20,000</span>
+      </label>
+    </div>
+    
+    <div class="filter-section">
+      <h4>Time Period</h4>
+      <label class="filter-option">
+        <input type="checkbox" value="today" checked>
+        <span>Added Today</span>
+      </label>
+      <label class="filter-option">
+        <input type="checkbox" value="week">
+        <span>This Week</span>
+      </label>
+      <label class="filter-option">
+        <input type="checkbox" value="month">
+        <span>This Month</span>
+      </label>
+    </div>
+  </div>
+  
+  <div class="filter-actions">
+    <button class="filter-clear" onclick="clearFilters()">Clear All</button>
+    <button class="filter-apply" onclick="applyFilters()">Apply</button>
+  </div>
+</div>
+
+<div class="panel-overlay" id="panelOverlay" onclick="closePanels()"></div>
+
+<style>
+.new-arrivals-page {
+  background: #F5F5F6;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.new-header {
+  background: linear-gradient(135deg, #880015 0%, #a91d1d 100%);
+  color: white;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.new-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.new-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.new-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 16px;
+}
+
+.new-stats {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.featured-new {
+  position: relative;
+  margin: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.featured-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.featured-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  color: white;
+  padding: 20px 16px;
+}
+
+.featured-tag {
+  background: #880015;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.featured-overlay h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.featured-cta {
+  background: white;
+  color: #880015;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filter-bar--crimson {
+  background: white;
+  border-bottom: 1px solid #E0E0E0;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  position: sticky;
+  top: 56px;
+  z-index: 10;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: white;
+  border: 1px solid #E0E0E0;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: #880015;
+  color: #880015;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 8px;
+  margin-left: 8px;
+}
+
+.filter-pill {
+  padding: 8px 14px;
+  background: white;
+  border: 1px solid #E0E0E0;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.filter-pill:hover {
+  border-color: #880015;
+  color: #880015;
+}
+
+.filter-pill.active {
+  background: #880015;
+  color: white;
+  border-color: #880015;
+}
+
+.new-products {
+  padding: 16px;
+}
+
+.product-grid--crimson {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .product-grid--crimson {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+
+.crimson-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.crimson-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.crimson-card-image {
+  position: relative;
+  aspect-ratio: 3/4;
+  background: #F5F5F5;
+  overflow: hidden;
+}
+
+.crimson-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.crimson-card:hover .crimson-card-image img {
+  transform: scale(1.04);
+}
+
+.card-badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 2;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-new {
+  background: #880015;
+  color: white;
+}
+
+.badge-handcrafted {
+  background: #D4AF37;
+  color: white;
+}
+
+.badge-sale {
+  background: #FF5722;
+  color: white;
+}
+
+.wishlist-heart {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 2;
+}
+
+.wishlist-heart svg {
+  width: 18px;
+  height: 18px;
+  stroke: #666;
+  fill: none;
+  transition: all 0.2s ease;
+}
+
+.wishlist-heart:hover svg,
+.wishlist-heart.active svg {
+  stroke: #A91D1D;
+  fill: #A91D1D;
+}
+
+.rating-pill {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(255,255,255,0.95);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1A1A1A;
+  z-index: 2;
+}
+
+.crimson-card-content {
+  padding: 12px;
+}
+
+.card-brand {
+  font-size: 10px;
+  font-weight: 700;
+  color: #A91D1D;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-pricing {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.current-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #A91D1D;
+}
+
+.original-price {
+  font-size: 12px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.discount-badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: #A91D1D;
+  background: #FFEBEE;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.quick-add-btn {
+  width: 100%;
+  background: white;
+  color: #880015;
+  border: 2px solid #880015;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.crimson-card:hover .quick-add-btn {
+  opacity: 1;
+  height: auto;
+}
+
+.quick-add-btn:hover {
+  background: #880015;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .quick-add-btn {
+    display: none;
+  }
+}
+
+.load-more-container {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.load-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #880015;
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.load-more-btn:hover {
+  background: #a91d1d;
+}
+
+.load-more-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.load-more-btn .load-spinner {
+  display: none;
+  animation: spin 1s linear infinite;
+}
+
+.load-more-btn.loading .load-spinner {
+  display: block;
+}
+
+.load-more-btn.loading span {
+  display: none;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Sort & Filter Panels */
+.sort-panel,
+.filter-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.sort-panel.active,
+.filter-panel.active {
+  transform: translateY(0);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 16px;
+  border-bottom: 1px solid #E0E0E0;
+  position: sticky;
+  top: 0;
+  background: white;
+}
+
+.panel-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1A1A1A;
+}
+
+.panel-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sort-options {
+  padding: 16px;
+}
+
+.sort-option {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #F0F0F0;
+  cursor: pointer;
+}
+
+.sort-option input[type="radio"] {
+  margin-right: 12px;
+  accent-color: #880015;
+}
+
+.sort-option span {
+  font-size: 14px;
+  color: #1A1A1A;
+}
+
+.filter-sections {
+  padding: 16px;
+}
+
+.filter-section {
+  margin-bottom: 24px;
+}
+
+.filter-section h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 12px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.filter-option input[type="checkbox"] {
+  margin-right: 12px;
+  accent-color: #880015;
+}
+
+.filter-option span {
+  font-size: 13px;
+  color: #666;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1px solid #E0E0E0;
+  background: white;
+  position: sticky;
+  bottom: 0;
+}
+
+.filter-clear {
+  flex: 1;
+  background: white;
+  color: #880015;
+  border: 2px solid #880015;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filter-apply {
+  flex: 1;
+  background: #880015;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 999;
+}
+
+.panel-overlay.active {
+  display: block;
+}
+</style>
+
+<script>
+function toggleWishlist(btn) {
+  btn.classList.toggle('active');
+}
+
+function loadMoreNewProducts(btn) {
+  btn.classList.add('loading');
+  
+  // Simulate API call
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    // In real implementation, append more products to grid
+    const page = parseInt(btn.getAttribute('data-page'));
+    btn.setAttribute('data-page', page + 1);
+  }, 1500);
+}
+
+function openSortPanel() {
+  document.getElementById('sortPanel').classList.add('active');
+  document.getElementById('panelOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSortPanel() {
+  document.getElementById('sortPanel').classList.remove('active');
+  document.getElementById('panelOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function openFilterPanel() {
+  document.getElementById('filterPanel').classList.add('active');
+  document.getElementById('panelOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFilterPanel() {
+  document.getElementById('filterPanel').classList.remove('active');
+  document.getElementById('panelOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function closePanels() {
+  closeSortPanel();
+  closeFilterPanel();
+}
+
+function clearFilters() {
+  document.querySelectorAll('.filter-option input[type="checkbox"]').forEach(input => {
+    input.checked = false;
+  });
+}
+
+function applyFilters() {
+  // Collect selected filters and apply them
+  const filters = [];
+  document.querySelectorAll('.filter-option input[type="checkbox"]:checked').forEach(input => {
+    filters.push(input.value);
+  });
+  
+  // In real implementation, filter products based on selections
+  console.log('Applied filters:', filters);
+  closeFilterPanel();
+}
+
+// Handle filter pill clicks
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', function() {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    // In real implementation, filter products by selected category
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "New Arrivals",
+  "settings": [],
+  "presets": [
+    {
+      "name": "New Arrivals Page"
+    }
+  ]
+}
+{% endschema %}

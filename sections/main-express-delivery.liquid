@@ -1,0 +1,748 @@
+{%- comment -%}
+  AONA INDIA - Express Delivery (30 Minutes) Page
+  Myntra-style mobile-first design with full styling
+{%- endcomment -%}
+
+<div class="express-delivery-page">
+  <!-- Header Banner -->
+  <div class="express-header">
+    <div class="express-header-content">
+      <div class="express-badge">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span>EXPRESS</span>
+      </div>
+      <h1 class="express-title">30 Minutes Delivery</h1>
+      <p class="express-subtitle">Get your favorite statues & decor delivered in just 30 minutes!</p>
+    </div>
+    <div class="express-timer">
+      <div class="timer-icon">⚡</div>
+      <span>Order within <strong id="express-countdown">15:00</strong> for instant delivery</span>
+    </div>
+  </div>
+
+  <!-- Location Input -->
+  <div class="express-location">
+    <div class="location-card">
+      <div class="location-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#880015" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+      </div>
+      <div class="location-input-wrapper">
+        <input type="text" class="location-input" placeholder="Enter your delivery pincode" id="express-pincode">
+        <button class="location-check-btn" onclick="checkExpressDelivery()">Check</button>
+      </div>
+    </div>
+    <div id="delivery-status" class="delivery-status"></div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="express-steps">
+    <h2 class="section-title">How It Works</h2>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-icon" style="background: #FFF3E0;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#FF9800">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-4H8v-2h4V7h2v4h4v2h-4v4z"/>
+          </svg>
+        </div>
+        <h4>Browse & Select</h4>
+        <p>Choose from express-enabled products</p>
+      </div>
+      <div class="step-item">
+        <div class="step-icon" style="background: #E8F5E9;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#4CAF50">
+            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/>
+          </svg>
+        </div>
+        <h4>Quick Checkout</h4>
+        <p>Pay instantly with any method</p>
+      </div>
+      <div class="step-item">
+        <div class="step-icon" style="background: #E3F2FD;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#2196F3">
+            <path d="M18 18.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM19.5 9.5l1.5 4h-7V6h5l1.5 3.5zM6 18.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM20 8l3 8v5h-3c0 1.1-.9 2-2 2s-2-.9-2-2H8c0 1.1-.9 2-2 2s-2-.9-2-2H1V6c0-1.1.9-2 2-2h14v4h3z"/>
+          </svg>
+        </div>
+        <h4>Rapid Dispatch</h4>
+        <p>Rider picks up in 5 mins</p>
+      </div>
+      <div class="step-item">
+        <div class="step-icon" style="background: #FCE4EC;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#880015">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+        </div>
+        <h4>At Your Door</h4>
+        <p>Delivered in 30 minutes!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Express Products Grid -->
+  <div class="express-products">
+    <div class="section-header">
+      <h2 class="section-title">Express Available Products</h2>
+      <span class="express-tag">⚡ 30 MIN</span>
+    </div>
+    
+    <div class="myntra-grid">
+      {%- for product in collections['express-delivery'].products limit: 12 -%}
+        {% render 'card-product', product: product, show_express_badge: true %}
+      {%- else -%}
+        <!-- Sample Products when no collection exists -->
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-express">⚡ EXPRESS</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1609766418204-94aae0ecfdfc?w=400" alt="Brass Ganesha">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.8 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA</p>
+            <h4 class="card-title">Brass Ganesha Idol - 12 inch</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹8,999</span>
+              <span class="original-price">₹12,500</span>
+              <span class="discount-badge">28% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+        
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-express">⚡ EXPRESS</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1599707367072-cd6ada2e0a65?w=400" alt="Buddha Statue">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.9 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA</p>
+            <h4 class="card-title">Meditating Buddha Bronze</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹6,499</span>
+              <span class="original-price">₹9,000</span>
+              <span class="discount-badge">28% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+        
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-express">⚡ EXPRESS</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400" alt="Wall Decor">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.7 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA</p>
+            <h4 class="card-title">Sun Face Wall Art Brass</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹3,999</span>
+              <span class="original-price">₹5,500</span>
+              <span class="discount-badge">27% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+        
+        <div class="crimson-card">
+          <div class="crimson-card-image">
+            <div class="card-badges">
+              <span class="badge badge-express">⚡ EXPRESS</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1606722590583-6951b5ea92ad?w=400" alt="Copper Lamp">
+            <button class="wishlist-heart" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <div class="rating-pill">4.6 ★</div>
+          </div>
+          <div class="crimson-card-content">
+            <p class="card-brand">AONA</p>
+            <h4 class="card-title">Traditional Copper Diya Lamp</h4>
+            <div class="card-pricing">
+              <span class="current-price">₹1,299</span>
+              <span class="original-price">₹1,800</span>
+              <span class="discount-badge">28% OFF</span>
+            </div>
+          </div>
+          <button class="quick-add-btn">Add to Bag</button>
+        </div>
+      {%- endfor -%}
+    </div>
+    
+    <!-- Load More Button -->
+    <div class="load-more-container">
+      <button class="load-more-btn" onclick="loadMoreProducts(this)">
+        <span>Load More Products</span>
+        <svg class="load-spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4m-8-10h4m12 0h4m-4.93-5.07l-2.83 2.83m-8.48 8.48l-2.83 2.83m0-14.14l2.83 2.83m8.48 8.48l2.83 2.83"/></svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Trust Banner -->
+  <div class="express-trust">
+    <div class="trust-item">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="#880015"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+      <span>100% Secure</span>
+    </div>
+    <div class="trust-item">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="#880015"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+      <span>Free Delivery</span>
+    </div>
+    <div class="trust-item">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="#880015"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      <span>Genuine Products</span>
+    </div>
+  </div>
+</div>
+
+<style>
+.express-delivery-page {
+  background: #F5F5F6;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.express-header {
+  background: linear-gradient(135deg, #880015 0%, #a91d1d 50%, #6d0011 100%);
+  color: white;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.express-header-content {
+  margin-bottom: 16px;
+}
+
+.express-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.express-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.express-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+  max-width: 280px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.express-timer {
+  background: rgba(255,255,255,0.15);
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.timer-icon {
+  font-size: 20px;
+}
+
+.express-location {
+  padding: 16px;
+  margin-top: -12px;
+}
+
+.location-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.location-icon {
+  flex-shrink: 0;
+}
+
+.location-input-wrapper {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+}
+
+.location-input {
+  flex: 1;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.location-input:focus {
+  border-color: #880015;
+}
+
+.location-check-btn {
+  background: #880015;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.delivery-status {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: none;
+}
+
+.delivery-status.available {
+  display: block;
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.delivery-status.unavailable {
+  display: block;
+  background: #FFEBEE;
+  color: #C62828;
+}
+
+.express-steps {
+  padding: 24px 16px;
+  background: white;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 20px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.step-item {
+  text-align: center;
+  padding: 16px 12px;
+  background: #FAFAFA;
+  border-radius: 12px;
+}
+
+.step-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.step-item h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 4px;
+}
+
+.step-item p {
+  font-size: 11px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.express-products {
+  padding: 24px 16px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.express-tag {
+  background: #880015;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.myntra-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.crimson-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+.crimson-card-image {
+  position: relative;
+  aspect-ratio: 3/4;
+  background: #F5F5F5;
+  overflow: hidden;
+}
+
+.crimson-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.crimson-card:hover .crimson-card-image img {
+  transform: scale(1.05);
+}
+
+.card-badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 2;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-express {
+  background: #4CAF50;
+  color: white;
+}
+
+.badge-new {
+  background: #880015;
+  color: white;
+}
+
+.badge-handcrafted {
+  background: #D4AF37;
+  color: white;
+}
+
+.badge-sale {
+  background: #FF5722;
+  color: white;
+}
+
+.wishlist-heart {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 2;
+}
+
+.wishlist-heart svg {
+  width: 18px;
+  height: 18px;
+  stroke: #666;
+  fill: none;
+  transition: all 0.2s ease;
+}
+
+.wishlist-heart.active svg {
+  stroke: #A91D1D;
+  fill: #A91D1D;
+}
+
+.rating-pill {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(255,255,255,0.95);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1A1A1A;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  z-index: 2;
+}
+
+.crimson-card-content {
+  padding: 12px;
+}
+
+.card-brand {
+  font-size: 10px;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-pricing {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.current-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #A91D1D;
+}
+
+.original-price {
+  font-size: 12px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.discount-badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: #A91D1D;
+  background: #FFEBEE;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.quick-add-btn {
+  width: 100%;
+  background: #880015;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.crimson-card:hover .quick-add-btn {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .quick-add-btn {
+    opacity: 1;
+  }
+}
+
+.load-more-container {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.load-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: #880015;
+  border: 2px solid #880015;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.load-more-btn:hover {
+  background: #880015;
+  color: white;
+}
+
+.load-more-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.load-more-btn .load-spinner {
+  display: none;
+  animation: spin 1s linear infinite;
+}
+
+.load-more-btn.loading .load-spinner {
+  display: block;
+}
+
+.load-more-btn.loading span {
+  display: none;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.express-trust {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  padding: 20px 16px;
+  margin-top: 16px;
+}
+
+.trust-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+}
+</style>
+
+<script>
+function checkExpressDelivery() {
+  const pincode = document.getElementById('express-pincode').value;
+  const statusEl = document.getElementById('delivery-status');
+  
+  // Sample available pincodes
+  const availablePincodes = ['110001', '110002', '110003', '400001', '400002', '560001', '560002'];
+  
+  if (pincode.length !== 6) {
+    statusEl.className = 'delivery-status unavailable';
+    statusEl.textContent = 'Please enter a valid 6-digit pincode';
+    return;
+  }
+  
+  if (availablePincodes.includes(pincode)) {
+    statusEl.className = 'delivery-status available';
+    statusEl.innerHTML = '✓ Express delivery available! Get it within <strong>30 minutes</strong>';
+  } else {
+    statusEl.className = 'delivery-status unavailable';
+    statusEl.textContent = '✕ Sorry, express delivery is not available in your area yet.';
+  }
+}
+
+// Countdown timer
+function startExpressCountdown() {
+  let minutes = 15;
+  let seconds = 0;
+  
+  setInterval(() => {
+    if (seconds === 0) {
+      if (minutes === 0) {
+        minutes = 15;
+      } else {
+        minutes--;
+      }
+      seconds = 59;
+    } else {
+      seconds--;
+    }
+    
+    const countdownEl = document.getElementById('express-countdown');
+    if (countdownEl) {
+      countdownEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+  }, 1000);
+}
+
+function toggleWishlist(btn) {
+  btn.classList.toggle('active');
+}
+
+function loadMoreProducts(btn) {
+  btn.classList.add('loading');
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    // Add more products logic here
+  }, 1500);
+}
+
+document.addEventListener('DOMContentLoaded', startExpressCountdown);
+</script>
+
+{% schema %}
+{
+  "name": "Express Delivery",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Express Delivery Page"
+    }
+  ]
+}
+{% endschema %}

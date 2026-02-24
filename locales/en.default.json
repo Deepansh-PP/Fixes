@@ -1,0 +1,257 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close"
+    },
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you requested does not exist."
+    },
+    "password_page": {
+      "login_form_heading": "Enter store using password:",
+      "login_password_button": "Enter using password",
+      "login_form_password_label": "Password",
+      "login_form_password_placeholder": "Your password",
+      "login_form_error": "Wrong password!",
+      "login_form_submit": "Enter",
+      "admin_link_html": "Are you the store owner? <a href=\"/admin\">Log in here</a>",
+      "powered_by_shopify_html": "This shop will be powered by {{ shopify }}"
+    },
+    "social": {
+      "alt_text": {
+        "share_on_facebook": "Share on Facebook",
+        "share_on_twitter": "Tweet on Twitter",
+        "share_on_pinterest": "Pin on Pinterest"
+      },
+      "links": {
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "pinterest": "Pinterest",
+        "instagram": "Instagram",
+        "youtube": "YouTube",
+        "whatsapp": "WhatsApp"
+      }
+    },
+    "search": {
+      "placeholder": "Search for Statues, Wall Art & more",
+      "submit": "Search",
+      "no_results": "No results found for \"{{ terms }}\".",
+      "results_count": "{{ count }} results found"
+    }
+  },
+  "header": {
+    "menu": "Menu",
+    "cart": "Cart",
+    "search": "Search",
+    "account": "Account"
+  },
+  "footer": {
+    "copyright": "© {{ year }} {{ shop_name }}. All rights reserved."
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Bag",
+      "added_to_cart": "Added to Bag",
+      "buy_now": "Buy Now",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "wishlist": "Wishlist",
+      "add_to_wishlist": "Add to Wishlist",
+      "remove_from_wishlist": "Remove from Wishlist",
+      "share": "Share",
+      "sku": "SKU",
+      "vendor": "Brand",
+      "type": "Type",
+      "size": "Size",
+      "color": "Color",
+      "price": {
+        "from": "From",
+        "regular_price": "Regular price",
+        "sale_price": "Sale price",
+        "unit_price": "Unit price",
+        "per": "per",
+        "tax_included": "inclusive of all taxes"
+      },
+      "delivery": {
+        "title": "Delivery Options",
+        "enter_pincode": "Enter Pincode",
+        "check": "Check",
+        "change": "Change"
+      },
+      "coupon": {
+        "apply": "Apply Coupon",
+        "copy": "Copy",
+        "copied": "Copied!"
+      }
+    },
+    "card": {
+      "view_product": "View Product"
+    }
+  },
+  "collections": {
+    "general": {
+      "title": "Collections",
+      "no_matches": "No products found"
+    },
+    "filters": {
+      "title": "Filter",
+      "clear_all": "Clear All",
+      "apply": "Apply",
+      "sort_by": "Sort By",
+      "price": "Price",
+      "availability": "Availability",
+      "in_stock": "In Stock",
+      "out_of_stock": "Out of Stock"
+    },
+    "sorting": {
+      "title": "Sort",
+      "featured": "Featured",
+      "best_selling": "Best Selling",
+      "alphabetically_az": "Alphabetically, A-Z",
+      "alphabetically_za": "Alphabetically, Z-A",
+      "price_low_high": "Price, Low to High",
+      "price_high_low": "Price, High to Low",
+      "date_new_old": "Date, New to Old",
+      "date_old_new": "Date, Old to New"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Shopping Bag",
+      "empty": "Your bag is empty",
+      "continue_shopping": "Continue Shopping",
+      "remove": "Remove",
+      "note": "Add a note to your order",
+      "checkout": "Place Order",
+      "view_cart": "View Bag"
+    },
+    "items": {
+      "item": "Item",
+      "items": "Items"
+    },
+    "summary": {
+      "title": "Price Details",
+      "subtotal": "Total MRP",
+      "discount": "Discount on MRP",
+      "shipping": "Delivery Fee",
+      "free": "FREE",
+      "total": "Total Amount",
+      "taxes": "Taxes",
+      "tax_included": "Tax included"
+    },
+    "coupon": {
+      "title": "Apply Coupons",
+      "placeholder": "Enter coupon code",
+      "apply": "Apply",
+      "remove": "Remove"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "My Account",
+      "welcome": "Hello, {{ name }}",
+      "orders": "Orders",
+      "addresses": "Addresses",
+      "logout": "Logout"
+    },
+    "orders": {
+      "title": "Order History",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment Status",
+      "fulfillment_status": "Fulfillment Status",
+      "total": "Total",
+      "none": "You haven't placed any orders yet."
+    },
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "sign_in": "Sign In",
+      "create_account": "Create Account"
+    },
+    "register": {
+      "title": "Create Account",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create"
+    }
+  },
+  "sections": {
+    "header": {
+      "menu": "Menu",
+      "search": "Search",
+      "cart": "Bag"
+    },
+    "footer": {
+      "shop": "Shop",
+      "support": "Support",
+      "about": "About",
+      "contact": "Contact Us"
+    },
+    "hero": {
+      "shop_now": "Shop Now",
+      "explore": "Explore"
+    },
+    "flash_sale": {
+      "title": "Flash Sale",
+      "ends_in": "Ends in"
+    },
+    "category_stories": {
+      "title": "Shop by Category"
+    },
+    "product_grid": {
+      "title": "Our Products",
+      "view_all": "View All"
+    }
+  },
+  "bottom_nav": {
+    "home": "Home",
+    "delivery": "30 Mins",
+    "express": "30 Mins",
+    "new": "New",
+    "contact": "Contact Us",
+    "cart": "Cart",
+    "categories": "Categories",
+    "luxe_studio": "Luxe Studio",
+    "profile": "Profile",
+    "wishlist": "Wishlist"
+  },
+  "navigation": {
+    "home": "Home",
+    "express_delivery": "30 Mins",
+    "new_arrivals": "New",
+    "contact_us": "Contact Us",
+    "cart": "Cart",
+    "whatsapp": "WhatsApp",
+    "call_us": "Call Us"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search for Statues, Wall Art & more",
+    "popular_searches": "Popular Searches",
+    "trending_searches": "Trending Searches",
+    "recent_searches": "Recent Searches",
+    "clear_recent": "Clear All",
+    "no_results": "No results found",
+    "try_searching": "Try searching for",
+    "view_all_results": "View all results"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're here to help! Reach out to us.",
+    "whatsapp": "WhatsApp",
+    "whatsapp_desc": "Chat with us instantly",
+    "call": "Call Us",
+    "close": "Close"
+  }
+}

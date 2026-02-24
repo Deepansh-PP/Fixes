@@ -1,0 +1,139 @@
+{%- comment -%}
+  AONA - Featured Collection / Product Grid
+  Standard customizable product grid
+{%- endcomment -%}
+
+<style>
+  .featured-collection {
+    padding: 32px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .section-header {
+    padding: 0 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-royal-red, #880015);
+    margin: 0;
+  }
+
+  .view-all-link {
+    font-size: 13px;
+    text-transform: uppercase;
+    color: var(--color-gold, #D4AF37);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0 12px;
+  }
+
+  @media (min-width: 768px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 0 24px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(4, 1fr);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .section-header {
+      max-width: 1400px;
+      margin: 0 auto 20px;
+    }
+  }
+</style>
+
+<div class="featured-collection">
+  <div class="section-header">
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+    {%- if section.settings.collection != blank and section.settings.show_view_all -%}
+      <a href="{{ section.settings.collection.url }}" class="view-all-link">View All</a>
+    {%- endif -%}
+  </div>
+
+  <div class="product-grid">
+    {%- assign collection = section.settings.collection -%}
+    {%- assign limit = section.settings.products_to_show -%}
+
+    {%- if collection != blank -%}
+      {%- for product in collection.products limit: limit -%}
+        {% render 'card-product', product: product, show_rating: section.settings.show_rating %}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        <div class="crimson-card">
+          <div class="crimson-card__image" style="background: #f0f0f0; aspect-ratio: 3/4;">
+            {{ 'product-' | append: i | placeholder_svg_tag }}
+          </div>
+          <div class="crimson-card__content">
+            <h3>Example Product {{ i }}</h3>
+            <div>$99.00</div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 2,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'View All' link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": true,
+      "label": "Show star ratings"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}

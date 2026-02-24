@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-register",
+      "settings": {
+        "heading": "Create Account",
+        "subheading": "Sign up to discover handcrafted treasures"
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,354 @@
+{% schema %}
+{
+  "name": "Pepperfry Dual Hero",
+  "tag": "section",
+  "class": "section-dual-hero",
+  "settings": [
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay Speed (Seconds)",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "left_slide",
+      "name": "Left Slide (Main Banner)",
+      "settings": [
+        { "type": "image_picker", "id": "image_desktop", "label": "Desktop Image (Wide)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Mobile Image (Square 1:1)" },
+        { "type": "collection", "id": "collection", "label": "Link to Collection (Easy Pick)" },
+        { "type": "url", "id": "link", "label": "OR Custom Link", "info": "If you put a link here, it will override the collection picker above." }
+      ]
+    },
+    {
+      "type": "right_slide",
+      "name": "Right Slide (Side Banner)",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (Portrait)" },
+        { "type": "collection", "id": "collection", "label": "Link to Collection (Easy Pick)" },
+        { "type": "url", "id": "link", "label": "OR Custom Link" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Pepperfry Dual Hero" }]
+}
+{% endschema %}
+
+<div class="dual-hero-section" data-speed="{{ section.settings.autoplay_speed | times: 1000 }}">
+  <div class="dual-hero-grid">
+    
+    <!-- ============================================== -->
+    <!-- LEFT SLIDER (Main Banners) -->
+    <!-- ============================================== -->
+    <div class="hero-block left-hero" id="LeftSlider">
+      <div class="hero-track">
+        {% assign left_index = 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'left_slide' %}
+            {% assign left_index = left_index | plus: 1 %}
+            
+            <!-- Smart Link Logic -->
+            {% assign slide_link = '#' %}
+            {% if block.settings.link != blank %}
+              {% assign slide_link = block.settings.link %}
+            {% elsif block.settings.collection != blank %}
+              {% assign slide_link = block.settings.collection.url %}
+            {% endif %}
+
+            <a href="{{ slide_link }}" class="hero-slide" {{ block.shopify_attributes }}>
+              <picture>
+                <!-- Mobile Image (Square) -->
+                {% if block.settings.image_mobile != blank %}
+                  <source media="(max-width: 991px)" srcset="{{ block.settings.image_mobile | image_url: width: 800 }}">
+                {% endif %}
+                
+                <!-- Desktop Image -->
+                {% if block.settings.image_desktop != blank %}
+                  <img src="{{ block.settings.image_desktop | image_url: width: 1400 }}" alt="{{ block.settings.collection.title | default: 'Offer' }}" class="hero-img" {% if left_index == 1 %}fetchpriority="high" loading="eager"{% else %}loading="lazy"{% endif %}>
+                {% else %}
+                  <div class="hero-placeholder">{{ 'lifestyle-2' | placeholder_svg_tag }}</div>
+                {% endif %}
+              </picture>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <!-- Dots injected by JS -->
+      <div class="hero-dots"></div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- RIGHT SLIDER (Secondary Banners) -->
+    <!-- ============================================== -->
+    <div class="hero-block right-hero" id="RightSlider">
+      <div class="hero-track">
+        {% assign right_index = 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'right_slide' %}
+            {% assign right_index = right_index | plus: 1 %}
+            
+            <!-- Smart Link Logic -->
+            {% assign slide_link = '#' %}
+            {% if block.settings.link != blank %}
+              {% assign slide_link = block.settings.link %}
+            {% elsif block.settings.collection != blank %}
+              {% assign slide_link = block.settings.collection.url %}
+            {% endif %}
+
+            <a href="{{ slide_link }}" class="hero-slide" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.collection.title | default: 'Offer' }}" class="hero-img" {% if right_index == 1 %}fetchpriority="high" loading="eager"{% else %}loading="lazy"{% endif %}>
+              {% else %}
+                <div class="hero-placeholder">{{ 'collection-1' | placeholder_svg_tag }}</div>
+              {% endif %}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <!-- Dots injected by JS -->
+      <div class="hero-dots"></div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+/* 1. Global Container */
+.dual-hero-section {
+  width: 100%;
+  background: #f5f5f6; /* Subtle Myntra/Pepperfry grey background */
+  overflow: hidden;
+}
+
+/* 2. Mobile Layout (Square, Smaller, Rounded) */
+.dual-hero-grid {
+  padding: 16px; /* Creates the "smaller" framed look on mobile */
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-block {
+  position: relative;
+  width: 100%;
+  border-radius: 12px; /* Rounded Corners */
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Premium shadow */
+  background: white;
+  transform: translateZ(0); /* Hardware acceleration for smooth slide */
+}
+
+/* Make Mobile Left Slider SQUARE (1:1 Aspect Ratio) */
+.left-hero {
+  aspect-ratio: 1 / 1;
+}
+
+/* Hide Right Slider on Mobile (Standard App UX to save space) */
+.right-hero {
+  display: none;
+}
+
+/* 3. Slider Track & Images */
+.hero-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+.hero-track::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
+
+.hero-slide {
+  min-width: 100%;
+  height: 100%;
+  scroll-snap-align: center;
+  flex-shrink: 0;
+  display: block;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.hero-placeholder svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #e0e0e0;
+}
+
+/* 4. Dots Styling */
+.hero-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  z-index: 2;
+}
+
+.hero-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Active Dot turns into a Premium Royal Red Pill */
+.hero-dot.is-active {
+  background: #880015;
+  width: 16px;
+  border-radius: 4px;
+  border-color: #880015;
+}
+
+/* ==========================================
+   5. DESKTOP LAYOUT (The Pepperfry Look)
+   ========================================== */
+@media (min-width: 992px) {
+  .dual-hero-section {
+    padding: 24px 40px; /* PC Spacing */
+    background: white; 
+  }
+
+  .dual-hero-grid {
+    padding: 0;
+    display: grid;
+    grid-template-columns: 66% 34%; /* Double Slider Layout */
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 480px; /* Fixed height for perfect alignment */
+  }
+
+  .left-hero, .right-hero {
+    height: 100%;
+    aspect-ratio: auto; /* Remove mobile square restriction */
+    border-radius: 16px; /* Slightly rounder on PC */
+  }
+
+  .right-hero {
+    display: block; /* Unhide Right Slider on PC */
+  }
+  
+  /* Hover effect for PC */
+  .hero-slide:hover .hero-img {
+    transform: scale(1.03);
+  }
+}
+</style>
+
+<script>
+// Highly Optimized Unlimited Banner Slider Engine
+document.addEventListener('DOMContentLoaded', () => {
+  const heroSection = document.querySelector('.dual-hero-section');
+  if (!heroSection) return;
+  
+  const autoPlaySpeed = parseInt(heroSection.dataset.speed) || 4000;
+
+  function initAdvancedSlider(sliderId, delayOffset) {
+    const slider = document.getElementById(sliderId);
+    if (!slider) return;
+
+    const track = slider.querySelector('.hero-track');
+    const slides = slider.querySelectorAll('.hero-slide');
+    const dotsContainer = slider.querySelector('.hero-dots');
+    
+    // If only 1 slide, no need for dots or sliding
+    if (slides.length <= 1) return;
+
+    // 1. Generate Dots Dynamically based on number of slides added
+    dotsContainer.innerHTML = '';
+    slides.forEach((_, index) => {
+      const dot = document.createElement('button');
+      dot.classList.add('hero-dot');
+      if (index === 0) dot.classList.add('is-active');
+      
+      // Click dot to navigate
+      dot.addEventListener('click', () => {
+        goToSlide(index);
+      });
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = dotsContainer.querySelectorAll('.hero-dot');
+    let currentIndex = 0;
+    let autoPlayTimer;
+
+    // 2. Navigation Logic
+    function goToSlide(index) {
+      currentIndex = index;
+      const slideWidth = slides[0].offsetWidth;
+      track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+      updateDots();
+      resetTimer(); // Restart timer so it doesn't instantly jump again
+    }
+
+    // 3. Update active dot
+    function updateDots() {
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('is-active', index === currentIndex);
+      });
+    }
+
+    // 4. Listen to native swipe/scroll and update dots
+    track.addEventListener('scroll', () => {
+      const slideWidth = slides[0].offsetWidth;
+      const scrollPos = track.scrollLeft;
+      // Calculate which slide is currently in view
+      currentIndex = Math.round(scrollPos / slideWidth);
+      updateDots();
+    }, { passive: true });
+
+    // 5. AutoPlay Logic
+    function play() {
+      autoPlayTimer = setInterval(() => {
+        currentIndex++;
+        // If we reach the end, go back to slide 0
+        if (currentIndex >= slides.length) {
+          currentIndex = 0;
+        }
+        const slideWidth = slides[0].offsetWidth;
+        track.scrollTo({ left: slideWidth * currentIndex, behavior: 'smooth' });
+      }, autoPlaySpeed + delayOffset); // delayOffset prevents both sliders from moving at the exact same millisecond
+    }
+
+    function resetTimer() {
+      clearInterval(autoPlayTimer);
+      play();
+    }
+
+    // 6. Pause AutoPlay if user hovers or touches the banner
+    track.addEventListener('mouseenter', () => clearInterval(autoPlayTimer));
+    track.addEventListener('mouseleave', play);
+    track.addEventListener('touchstart', () => clearInterval(autoPlayTimer), {passive: true});
+    track.addEventListener('touchend', play, {passive: true});
+
+    // Start!
+    play();
+  }
+
+  // Initialize Left Slider immediately
+  initAdvancedSlider('LeftSlider', 0);
+  
+  // Initialize Right Slider with a 1 second delay so they look staggered and premium
+  initAdvancedSlider('RightSlider', 1000); 
+});
+</script>

@@ -1,0 +1,149 @@
+{% schema %}
+{
+  "name": "Pepperfry Hero Grid",
+  "tag": "section",
+  "class": "section-pepper-hero",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "main_slide",
+      "name": "Main Slider Image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (Desktop)" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Image (Mobile)" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "side_banner",
+      "name": "Side Banner (Right)",
+      "limit": 2,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Pepperfry Hero Grid" }]
+}
+{% endschema %}
+
+<div class="pepper-hero-container">
+  <div class="pepper-grid">
+    
+    <!-- LEFT: Main Slider -->
+    <div class="pepper-main-slider">
+      <div class="pepper-slides-wrapper">
+        {% for block in section.blocks %}
+          {% if block.type == 'main_slide' %}
+            <a href="{{ block.settings.link }}" class="pepper-slide">
+              <picture>
+                <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_image | image_url: width: 800 }}">
+                <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="Hero Banner" class="pepper-img" loading="eager">
+              </picture>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <!-- Dots -->
+      <div class="pepper-dots"></div>
+    </div>
+
+    <!-- RIGHT: Static Banners (Desktop Only) -->
+    <div class="pepper-side-banners">
+      {% for block in section.blocks %}
+        {% if block.type == 'side_banner' %}
+          <a href="{{ block.settings.link }}" class="pepper-side-item">
+            <img src="{{ block.settings.image | image_url: width: 600 }}" alt="Offer" class="pepper-img">
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<style>
+.pepper-hero-container {
+  padding: 10px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.pepper-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pepper-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px; /* Slightly rounded like Pepperfry */
+  display: block;
+}
+
+/* Mobile Layout */
+.pepper-main-slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.pepper-slides-wrapper {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.pepper-slide {
+  min-width: 100%;
+  scroll-snap-align: start;
+}
+.pepper-side-banners {
+  display: none; /* Hidden on mobile usually, or stacked */
+}
+
+/* Desktop Layout (Pepperfry Style) */
+@media (min-width: 992px) {
+  .pepper-hero-container { padding: 20px 40px; }
+  
+  .pepper-grid {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr; /* 70% - 30% split */
+    height: 450px;
+  }
+
+  .pepper-main-slider {
+    height: 100%;
+  }
+
+  .pepper-side-banners {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+  }
+
+  .pepper-side-item {
+    flex: 1; /* Takes up 50% height each */
+    overflow: hidden;
+    border-radius: 8px;
+  }
+}
+</style>
+
+<script>
+// Simple Auto Slider Script
+document.addEventListener('DOMContentLoaded', () => {
+  const wrapper = document.querySelector('.pepper-slides-wrapper');
+  if(!wrapper) return;
+  
+  let scrollAmt = 0;
+  setInterval(() => {
+    scrollAmt += wrapper.offsetWidth;
+    if(scrollAmt >= wrapper.scrollWidth) scrollAmt = 0;
+    wrapper.scrollTo({ left: scrollAmt, behavior: 'smooth' });
+  }, 4000);
+});
+</script>

@@ -1,0 +1,919 @@
+{%- comment -%}
+  AONA INDIA - New Arrivals Page Snippet
+  New products page with full styling
+{%- endcomment -%}
+
+<div class="new-arrivals-page">
+  <!-- Header Banner -->
+  <div class="new-header">
+    <div class="new-header-content">
+      <span class="new-badge">✨ JUST DROPPED</span>
+      <h1 class="new-title">New Arrivals</h1>
+      <p class="new-subtitle">Discover our latest handcrafted masterpieces</p>
+      <div class="new-stats">
+        <div class="stat-item">
+          <span class="stat-value">50+</span>
+          <span class="stat-label">New Items</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-value">This Week</span>
+          <span class="stat-label">Added</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Banner -->
+  <div class="featured-banner">
+    <div class="featured-content">
+      <span class="featured-tag">FEATURED COLLECTION</span>
+      <h2 class="featured-title">Brass Masterpieces</h2>
+      <p class="featured-desc">Handcrafted by master artisans</p>
+      <a href="/collections/brass" class="featured-btn">Explore Now</a>
+    </div>
+  </div>
+
+  <!-- Sort & Filter Bar -->
+  <div class="filter-bar">
+    <button class="filter-btn" onclick="openSortPanel()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="16" y2="12"/><line x1="4" y1="18" x2="12" y2="18"/>
+      </svg>
+      Sort
+    </button>
+    <button class="filter-btn" onclick="openFilterPanel()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+      </svg>
+      Filter
+    </button>
+    <div class="category-pills">
+      <button class="cat-pill active">All</button>
+      <button class="cat-pill">Brass</button>
+      <button class="cat-pill">Resin</button>
+      <button class="cat-pill">Copper</button>
+      <button class="cat-pill">Wall Art</button>
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-section">
+    <p class="products-count">Showing 12 products</p>
+    <div class="products-grid">
+      {%- for product in collections['new-arrivals'].products limit: 12 -%}
+        {% render 'crimson-card', product: product, show_new: true %}
+      {%- else -%}
+        <!-- Sample New Products -->
+        <div class="crimson-card">
+          <div class="crimson-card__image-wrapper">
+            <div class="crimson-card__image" style="background: linear-gradient(135deg, #fef7ed 0%, #fed7aa 100%); display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 48px;">🕉️</span>
+            </div>
+            <span class="crimson-card__badge crimson-card__badge--new">NEW</span>
+            <button class="crimson-card__wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+            <div class="crimson-card__rating"><svg width="10" height="10" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> 4.9</div>
+          </div>
+          <div class="crimson-card__content">
+            <p class="crimson-card__brand">AONA INDIA</p>
+            <h3 class="crimson-card__title">Dancing Ganesha Brass Idol</h3>
+            <div class="crimson-card__price-row">
+              <span class="crimson-card__price">₹4,999</span>
+              <span class="crimson-card__compare-price">₹6,999</span>
+              <span class="crimson-card__discount">29% OFF</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="crimson-card">
+          <div class="crimson-card__image-wrapper">
+            <div class="crimson-card__image" style="background: linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%); display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 48px;">☸️</span>
+            </div>
+            <span class="crimson-card__badge crimson-card__badge--new">NEW</span>
+            <button class="crimson-card__wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+            <div class="crimson-card__rating"><svg width="10" height="10" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> 4.7</div>
+          </div>
+          <div class="crimson-card__content">
+            <p class="crimson-card__brand">AONA INDIA</p>
+            <h3 class="crimson-card__title">Meditating Buddha Resin</h3>
+            <div class="crimson-card__price-row">
+              <span class="crimson-card__price">₹2,499</span>
+              <span class="crimson-card__compare-price">₹3,499</span>
+              <span class="crimson-card__discount">29% OFF</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="crimson-card">
+          <div class="crimson-card__image-wrapper">
+            <div class="crimson-card__image" style="background: linear-gradient(135deg, #fdf4ff 0%, #e9d5ff 100%); display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 48px;">🎭</span>
+            </div>
+            <span class="crimson-card__badge crimson-card__badge--handcrafted">HANDCRAFTED</span>
+            <button class="crimson-card__wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+            <div class="crimson-card__rating"><svg width="10" height="10" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> 4.8</div>
+          </div>
+          <div class="crimson-card__content">
+            <p class="crimson-card__brand">AONA INDIA</p>
+            <h3 class="crimson-card__title">Tribal Wall Mask Set</h3>
+            <div class="crimson-card__price-row">
+              <span class="crimson-card__price">₹3,299</span>
+              <span class="crimson-card__compare-price">₹4,499</span>
+              <span class="crimson-card__discount">27% OFF</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="crimson-card">
+          <div class="crimson-card__image-wrapper">
+            <div class="crimson-card__image" style="background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%); display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 48px;">🪔</span>
+            </div>
+            <span class="crimson-card__badge crimson-card__badge--new">NEW</span>
+            <button class="crimson-card__wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+            <div class="crimson-card__rating"><svg width="10" height="10" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> 4.9</div>
+          </div>
+          <div class="crimson-card__content">
+            <p class="crimson-card__brand">AONA INDIA</p>
+            <h3 class="crimson-card__title">Brass Urli Bowl Large</h3>
+            <div class="crimson-card__price-row">
+              <span class="crimson-card__price">₹5,499</span>
+              <span class="crimson-card__compare-price">₹7,999</span>
+              <span class="crimson-card__discount">31% OFF</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="crimson-card">
+          <div class="crimson-card__image-wrapper">
+            <div class="crimson-card__image" style="background: linear-gradient(135deg, #ecfdf5 0%, #a7f3d0 100%); display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 48px;">🦚</span>
+            </div>
+            <span class="crimson-card__badge crimson-card__badge--limited">LIMITED</span>
+            <button class="crimson-card__wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+            <div class="crimson-card__rating"><svg width="10" height="10" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> 5.0</div>
+          </div>
+          <div class="crimson-card__content">
+            <p class="crimson-card__brand">AONA INDIA</p>
+            <h3 class="crimson-card__title">Peacock Brass Wall Art</h3>
+            <div class="crimson-card__price-row">
+              <span class="crimson-card__price">₹8,999</span>
+              <span class="crimson-card__compare-price">₹12,999</span>
+              <span class="crimson-card__discount">31% OFF</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="crimson-card">
+          <div class="crimson-card__image-wrapper">
+            <div class="crimson-card__image" style="background: linear-gradient(135deg, #fff7ed 0%, #fdba74 100%); display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 48px;">🐘</span>
+            </div>
+            <span class="crimson-card__badge crimson-card__badge--new">NEW</span>
+            <button class="crimson-card__wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+            <div class="crimson-card__rating"><svg width="10" height="10" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> 4.6</div>
+          </div>
+          <div class="crimson-card__content">
+            <p class="crimson-card__brand">AONA INDIA</p>
+            <h3 class="crimson-card__title">Elephant Family Resin Set</h3>
+            <div class="crimson-card__price-row">
+              <span class="crimson-card__price">₹2,999</span>
+              <span class="crimson-card__compare-price">₹3,999</span>
+              <span class="crimson-card__discount">25% OFF</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="crimson-card">
+          <div class="crimson-card__image-wrapper">
+            <div class="crimson-card__image" style="background: linear-gradient(135deg, #fefce8 0%, #fef08a 100%); display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 48px;">🎋</span>
+            </div>
+            <span class="crimson-card__badge crimson-card__badge--sale">SALE</span>
+            <button class="crimson-card__wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+            <div class="crimson-card__rating"><svg width="10" height="10" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> 4.4</div>
+          </div>
+          <div class="crimson-card__content">
+            <p class="crimson-card__brand">AONA INDIA</p>
+            <h3 class="crimson-card__title">Bamboo Flower Vase Brass</h3>
+            <div class="crimson-card__price-row">
+              <span class="crimson-card__price">₹1,799</span>
+              <span class="crimson-card__compare-price">₹2,999</span>
+              <span class="crimson-card__discount">40% OFF</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="crimson-card">
+          <div class="crimson-card__image-wrapper">
+            <div class="crimson-card__image" style="background: linear-gradient(135deg, #f0fdfa 0%, #99f6e4 100%); display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 48px;">🌸</span>
+            </div>
+            <span class="crimson-card__badge crimson-card__badge--new">NEW</span>
+            <button class="crimson-card__wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+            <div class="crimson-card__rating"><svg width="10" height="10" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> 4.8</div>
+          </div>
+          <div class="crimson-card__content">
+            <p class="crimson-card__brand">AONA INDIA</p>
+            <h3 class="crimson-card__title">Lotus Copper Lamp Stand</h3>
+            <div class="crimson-card__price-row">
+              <span class="crimson-card__price">₹3,799</span>
+              <span class="crimson-card__compare-price">₹4,999</span>
+              <span class="crimson-card__discount">24% OFF</span>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    
+    <button class="load-more-btn" onclick="loadMoreProducts()">
+      <span class="btn-text">Load More Products</span>
+      <span class="btn-spinner" style="display: none;">Loading...</span>
+    </button>
+  </div>
+</div>
+
+<!-- Sort Panel -->
+<div id="sort-panel" class="slide-panel" style="display: none;">
+  <div class="panel-overlay" onclick="closeSortPanel()"></div>
+  <div class="panel-content">
+    <div class="panel-handle"></div>
+    <h3 class="panel-title">Sort By</h3>
+    <div class="sort-options">
+      <label class="sort-option">
+        <input type="radio" name="sort" value="recommended" checked>
+        <span>Recommended</span>
+      </label>
+      <label class="sort-option">
+        <input type="radio" name="sort" value="newest">
+        <span>What's New</span>
+      </label>
+      <label class="sort-option">
+        <input type="radio" name="sort" value="price-low">
+        <span>Price: Low to High</span>
+      </label>
+      <label class="sort-option">
+        <input type="radio" name="sort" value="price-high">
+        <span>Price: High to Low</span>
+      </label>
+      <label class="sort-option">
+        <input type="radio" name="sort" value="rating">
+        <span>Customer Rating</span>
+      </label>
+    </div>
+    <button class="panel-apply-btn" onclick="closeSortPanel()">Apply</button>
+  </div>
+</div>
+
+<!-- Filter Panel -->
+<div id="filter-panel" class="slide-panel" style="display: none;">
+  <div class="panel-overlay" onclick="closeFilterPanel()"></div>
+  <div class="panel-content panel-content--filter">
+    <div class="panel-header">
+      <h3 class="panel-title">Filters</h3>
+      <button class="panel-close" onclick="closeFilterPanel()">✕</button>
+    </div>
+    <div class="filter-groups">
+      <div class="filter-group">
+        <h4 class="filter-group-title">Categories</h4>
+        <div class="filter-options">
+          <label class="filter-checkbox"><input type="checkbox"> Brass Idols <span>(45)</span></label>
+          <label class="filter-checkbox"><input type="checkbox"> Resin Statues <span>(32)</span></label>
+          <label class="filter-checkbox"><input type="checkbox"> Wall Art <span>(28)</span></label>
+          <label class="filter-checkbox"><input type="checkbox"> Copper Items <span>(18)</span></label>
+          <label class="filter-checkbox"><input type="checkbox"> Home Decor <span>(56)</span></label>
+        </div>
+      </div>
+      <div class="filter-group">
+        <h4 class="filter-group-title">Price Range</h4>
+        <div class="price-inputs">
+          <input type="number" class="price-input" placeholder="₹ Min">
+          <span class="price-sep">to</span>
+          <input type="number" class="price-input" placeholder="₹ Max">
+        </div>
+      </div>
+      <div class="filter-group">
+        <h4 class="filter-group-title">Discount</h4>
+        <div class="filter-options">
+          <label class="filter-checkbox"><input type="checkbox"> 10% and above</label>
+          <label class="filter-checkbox"><input type="checkbox"> 20% and above</label>
+          <label class="filter-checkbox"><input type="checkbox"> 30% and above</label>
+          <label class="filter-checkbox"><input type="checkbox"> 40% and above</label>
+        </div>
+      </div>
+    </div>
+    <div class="filter-footer">
+      <button class="filter-clear-btn" onclick="clearFilters()">Clear All</button>
+      <button class="filter-apply-btn" onclick="closeFilterPanel()">Apply Filters</button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* New Arrivals Page Styles */
+.new-arrivals-page {
+  padding-bottom: 100px;
+  background: #f9f9f9;
+}
+
+.new-header {
+  background: linear-gradient(135deg, #880015 0%, #a91d1d 50%, #6b0012 100%);
+  padding: 32px 20px;
+  color: white;
+  text-align: center;
+}
+
+.new-header-content {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.new-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.new-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.new-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 20px;
+}
+
+.new-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255,255,255,0.3);
+}
+
+/* Featured Banner */
+.featured-banner {
+  margin: 16px;
+  background: linear-gradient(135deg, #d4af37 0%, #b8942c 100%);
+  border-radius: 16px;
+  padding: 24px;
+  color: white;
+}
+
+.featured-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+.featured-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 8px 0;
+}
+
+.featured-desc {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 16px;
+}
+
+.featured-btn {
+  display: inline-block;
+  background: white;
+  color: #b8942c;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Filter Bar */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: white;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 56px;
+  z-index: 90;
+  overflow-x: auto;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.category-pills {
+  display: flex;
+  gap: 8px;
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px solid #eee;
+}
+
+.cat-pill {
+  padding: 8px 14px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cat-pill.active,
+.cat-pill:hover {
+  background: #880015;
+  border-color: #880015;
+  color: white;
+}
+
+/* Products Section */
+.products-section {
+  padding: 16px;
+}
+
+.products-count {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+/* Crimson Card Styles */
+.crimson-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.crimson-card__image-wrapper {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+
+.crimson-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #f5f5f5;
+}
+
+.crimson-card__badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.crimson-card__badge--new {
+  background: #880015;
+  color: white;
+}
+
+.crimson-card__badge--handcrafted {
+  background: #d4af37;
+  color: white;
+}
+
+.crimson-card__badge--limited {
+  background: #7c3aed;
+  color: white;
+}
+
+.crimson-card__badge--sale {
+  background: #dc2626;
+  color: white;
+}
+
+.crimson-card__wishlist {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  color: #999;
+  transition: all 0.2s;
+}
+
+.crimson-card__wishlist:hover,
+.crimson-card__wishlist.active {
+  color: #a91d1d;
+}
+
+.crimson-card__wishlist.active svg {
+  fill: #a91d1d;
+}
+
+.crimson-card__rating {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(255,255,255,0.95);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.crimson-card__content {
+  padding: 12px;
+}
+
+.crimson-card__brand {
+  font-size: 10px;
+  font-weight: 700;
+  color: #a91d1d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.crimson-card__title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1a1a;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.crimson-card__price-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.crimson-card__price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.crimson-card__compare-price {
+  font-size: 12px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.crimson-card__discount {
+  font-size: 11px;
+  font-weight: 600;
+  color: #a91d1d;
+  background: #fff5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Load More Button */
+.load-more-btn {
+  width: 100%;
+  padding: 14px;
+  background: #880015;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Slide Panel */
+.slide-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+}
+
+.panel-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+
+.panel-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 16px 16px 0 0;
+  padding: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+.panel-content--filter {
+  max-height: 85vh;
+}
+
+.panel-handle {
+  width: 40px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.panel-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.panel-close {
+  width: 32px;
+  height: 32px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.sort-options {
+  margin-bottom: 20px;
+}
+
+.sort-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.sort-option input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #880015;
+}
+
+.panel-apply-btn {
+  width: 100%;
+  padding: 14px;
+  background: #880015;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Filter Panel Specific */
+.filter-groups {
+  margin-bottom: 80px;
+}
+
+.filter-group {
+  margin-bottom: 24px;
+}
+
+.filter-group-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filter-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #880015;
+}
+
+.filter-checkbox span {
+  color: #999;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+.price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.price-input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.price-sep {
+  color: #999;
+  font-size: 13px;
+}
+
+.filter-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: white;
+  border-top: 1px solid #eee;
+}
+
+.filter-clear-btn {
+  flex: 1;
+  padding: 14px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filter-apply-btn {
+  flex: 2;
+  padding: 14px;
+  background: #880015;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+</style>
+
+<script>
+// Panel Functions
+function openSortPanel() {
+  document.getElementById('sort-panel').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSortPanel() {
+  document.getElementById('sort-panel').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function openFilterPanel() {
+  document.getElementById('filter-panel').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFilterPanel() {
+  document.getElementById('filter-panel').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function clearFilters() {
+  document.querySelectorAll('.filter-checkbox input').forEach(cb => cb.checked = false);
+  document.querySelectorAll('.price-input').forEach(input => input.value = '');
+}
+
+function loadMoreProducts() {
+  const btn = document.querySelector('.load-more-btn');
+  const text = btn.querySelector('.btn-text');
+  const spinner = btn.querySelector('.btn-spinner');
+  
+  text.style.display = 'none';
+  spinner.style.display = 'inline';
+  
+  setTimeout(() => {
+    text.style.display = 'inline';
+    spinner.style.display = 'none';
+  }, 1500);
+}
+
+// Category Pills
+document.querySelectorAll('.cat-pill').forEach(pill => {
+  pill.addEventListener('click', function() {
+    document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Wishlist Toggle
+document.querySelectorAll('.crimson-card__wishlist').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    this.classList.toggle('active');
+    const svg = this.querySelector('svg');
+    if (this.classList.contains('active')) {
+      svg.setAttribute('fill', '#a91d1d');
+    } else {
+      svg.setAttribute('fill', 'none');
+    }
+  });
+});
+</script>

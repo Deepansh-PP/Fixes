@@ -1,0 +1,203 @@
+{% schema %}
+{
+  "name": "Auto-Scroll Collection",
+  "tag": "section",
+  "class": "section-auto-scroll",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "default": 10,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'View All' link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Auto-Scroll Collection"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="auto-scroll-wrapper">
+  <div class="auto-scroll-container">
+    
+    <!-- Section Header -->
+    <div class="scroll-header">
+      <h2 class="scroll-title">{{ section.settings.title }}</h2>
+      {% if section.settings.show_view_all and section.settings.collection != blank %}
+        <a href="{{ collections[section.settings.collection].url }}" class="scroll-view-all">VIEW ALL</a>
+      {% endif %}
+    </div>
+
+    <!-- Scroll Track -->
+    <div class="scroll-track-container">
+      <div class="scroll-track" id="ScrollTrack-{{ section.id }}">
+        {% assign collection = collections[section.settings.collection] %}
+        
+        {% if collection != blank %}
+          {% for product in collection.products limit: section.settings.product_limit %}
+            <div class="scroll-item">
+              {% render 'card-product', product: product %}
+            </div>
+          {% endfor %}
+        {% else %}
+          <!-- Empty State Placeholders -->
+          {% for i in (1..6) %}
+            <div class="scroll-item">
+              <div style="background: white; border: 1px solid #eee; border-radius: 8px; height: 350px; display: flex; align-items: center; justify-content: center; color: #999;">
+                Select a Collection
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+/* Wrapper & Container */
+.auto-scroll-wrapper {
+  background-color: #ffffff; /* Or #f5f5f6 if you want a slight grey */
+  padding: 30px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.auto-scroll-container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Header */
+.scroll-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  margin-bottom: 20px;
+}
+
+.scroll-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #880015; /* Royal Red */
+  margin: 0;
+}
+
+.scroll-view-all {
+  font-size: 12px;
+  font-weight: 700;
+  color: #D4AF37; /* Gold */
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.scroll-view-all:hover {
+  text-decoration: underline;
+}
+
+/* The Track */
+.scroll-track-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.scroll-track {
+  display: flex;
+  gap: 16px;
+  padding: 10px 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+.scroll-track::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Chrome/Safari */
+}
+
+/* The Individual Cards inside the track */
+.scroll-item {
+  flex-shrink: 0;
+  width: 240px; /* Mobile width */
+}
+
+/* Desktop Sizing */
+@media (min-width: 992px) {
+  .scroll-header {
+    padding: 0 40px;
+  }
+  .scroll-track {
+    padding: 10px 40px;
+    gap: 20px;
+  }
+  .scroll-item {
+    width: 280px; /* PC width - nice and large */
+  }
+  .scroll-title {
+    font-size: 28px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const track = document.getElementById('ScrollTrack-{{ section.id }}');
+  if (!track) return;
+  
+  let isPaused = false;
+  let direction = 1; // 1 = right, -1 = left
+  let speed = 0.6; // Scroll speed (Lower = smoother)
+
+  const autoScrollProducts = () => {
+    // Check if the track has enough items to actually need scrolling
+    if (!isPaused && track.scrollWidth > track.clientWidth) {
+      track.scrollLeft += (speed * direction);
+      
+      // If hit the right edge, go left
+      if (track.scrollLeft >= (track.scrollWidth - track.clientWidth - 1)) {
+        direction = -1; 
+      } 
+      // If hit the left edge, go right
+      else if (track.scrollLeft <= 0) {
+        direction = 1; 
+      }
+    }
+    requestAnimationFrame(autoScrollProducts);
+  };
+
+  // Pause scrolling on interactions
+  track.addEventListener('mouseenter', () => isPaused = true);
+  track.addEventListener('mouseleave', () => isPaused = false);
+  track.addEventListener('touchstart', () => isPaused = true, { passive: true });
+  track.addEventListener('touchend', () => {
+    // Wait 1.5 seconds before resuming scroll after a swipe
+    setTimeout(() => isPaused = false, 1500); 
+  }, { passive: true });
+
+  // Start the engine
+  requestAnimationFrame(autoScrollProducts);
+});
+</script>

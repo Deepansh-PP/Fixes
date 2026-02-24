@@ -1,0 +1,207 @@
+{% schema %}
+{
+  "name": "Main Login Fullscreen",
+  "settings": [],
+  "presets": [{ "name": "Main Login Fullscreen" }]
+}
+{% endschema %}
+
+<div class="full-screen-account-page">
+  <div class="fs-card">
+    
+    <!-- Red Header Section -->
+    <div class="fs-header">
+      <div class="fs-logo-circle">A</div>
+      <h2 class="fs-brand-name">CRIMSON ARTISAN</h2>
+      <p class="fs-tagline">Welcome Back to Our Community</p>
+    </div>
+
+    <!-- White Body Section -->
+    <div class="fs-body">
+      <h1 class="fs-title">Sign In</h1>
+      <p class="fs-subtitle">Enter your details to access your account</p>
+
+      <!-- Standard Shopify Form (Your App will auto-inject its buttons here) -->
+      {%- form 'customer_login' -%}
+        
+        <!-- THIS LINE FORCES THE REDIRECT TO THE PROFILE PAGE AFTER LOGIN -->
+        <input type="hidden" name="return_to" value="/account">
+
+        <div class="fs-input-group">
+          <label>Email Address</label>
+          <input type="email" name="customer[email]" placeholder="Enter your email" required>
+        </div>
+        <div class="fs-input-group">
+          <label>Password</label>
+          <input type="password" name="customer[password]" placeholder="Enter your password" required>
+        </div>
+        
+        <div class="fs-forgot-pass">
+          <a href="{{ routes.account_recover_url }}">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="fs-submit-btn">Sign In</button>
+      {%- endform -%}
+
+      <div class="fs-footer-link">
+        <a href="{{ routes.account_register_url }}">New to Crimson Artisan? Create an account</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* Full Page Background */
+.full-screen-account-page {
+  background-color: #f4f6f8;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* Main Card */
+.fs-card {
+  background: white;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+/* Red Header Area */
+.fs-header {
+  background-color: #831823;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.fs-logo-circle {
+  width: 60px;
+  height: 60px;
+  background: white;
+  color: #831823;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.fs-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.fs-tagline {
+  font-size: 13px;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* White Form Area */
+.fs-body {
+  padding: 30px;
+  text-align: left; /* Aligned left for inputs */
+}
+
+.fs-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.fs-subtitle {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Form Inputs */
+.fs-input-group {
+  margin-bottom: 16px;
+}
+
+.fs-input-group label {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.fs-input-group input {
+  width: 100%;
+  background: #f8f9fa;
+  border: 1px solid #eee;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.fs-input-group input:focus {
+  box-shadow: 0 0 0 2px rgba(131, 24, 35, 0.2);
+  border-color: #831823;
+}
+
+.fs-forgot-pass {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.fs-forgot-pass a {
+  font-size: 13px;
+  color: #831823;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Submit Button */
+.fs-submit-btn {
+  width: 100%;
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background 0.2s;
+}
+
+.fs-submit-btn:hover {
+  background: #333;
+}
+
+/* Footer Link */
+.fs-footer-link {
+  text-align: center;
+}
+
+.fs-footer-link a {
+  font-size: 14px;
+  color: #666;
+  text-decoration: underline;
+}
+
+/* App Button Overrides (To make the app buttons look slightly better) */
+.oxi-social-login, .social-login-app-container {
+  margin-bottom: 20px !important;
+}
+</style>

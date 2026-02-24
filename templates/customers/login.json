@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-login",
+      "settings": {
+        "heading": "Welcome Back",
+        "subheading": "Sign in to access your orders, wishlist & more",
+        "show_google_signin": true
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,153 @@
+{%- comment -%}
+  AONA - Newsletter Section
+  Email signup form
+{%- endcomment -%}
+
+<style>
+  .newsletter-section {
+    background: #F9F9F9;
+    padding: 60px 24px;
+    text-align: center;
+  }
+
+  .newsletter-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .newsletter-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px;
+    color: var(--color-royal-red, #880015);
+  }
+
+  .newsletter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--color-royal-red, #880015);
+    margin-bottom: 12px;
+  }
+
+  .newsletter-text {
+    color: #666;
+    margin-bottom: 32px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .newsletter-input {
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.3s;
+  }
+
+  .newsletter-input:focus {
+    border-color: var(--color-royal-red, #880015);
+  }
+
+  .newsletter-btn {
+    padding: 14px;
+    background: var(--color-royal-red, #880015);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    transition: background 0.3s;
+  }
+
+  .newsletter-btn:hover {
+    background: #60000e;
+  }
+
+  @media (min-width: 640px) {
+    .newsletter-form {
+      flex-direction: row;
+    }
+    .newsletter-input {
+      flex: 1;
+    }
+    .newsletter-btn {
+      width: auto;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
+</style>
+
+<div class="newsletter-section">
+  <div class="newsletter-container">
+    <div class="newsletter-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    </div>
+    
+    <h2 class="newsletter-title">{{ section.settings.heading }}</h2>
+    <div class="newsletter-text">{{ section.settings.text }}</div>
+
+    {%- form 'customer', class: 'newsletter-form' -%}
+      {%- if form.posted_successfully? -%}
+        <div style="color: green; margin-bottom: 20px;">Thanks for subscribing!</div>
+      {%- else -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input 
+          type="email" 
+          name="contact[email]" 
+          class="newsletter-input" 
+          value="{{ form.email }}" 
+          placeholder="Enter your email address" 
+          required
+        >
+        <button type="submit" class="newsletter-btn">
+          {{ section.settings.button_label }}
+        </button>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join Our Community"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Subscribe to receive updates, access to exclusive deals, and more."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Subscribe"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

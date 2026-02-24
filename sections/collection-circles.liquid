@@ -1,0 +1,240 @@
+{%- comment -%}
+  Collection Circles - Premium UI with Smart Auto-Scroll
+{%- endcomment -%}
+
+<section class="collection-circles">
+  <div class="collection-circles__wrapper">
+    <div class="collection-circles__track" id="CollectionCirclesTrack">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.link }}" class="story-item" {{ block.shopify_attributes }}>
+          <div class="story-ring">
+            <div class="story-image-wrap">
+              {% if block.settings.image %}
+                <img src="{{ block.settings.image | image_url: width: 200 }}" alt="{{ block.settings.title | escape }}" class="story-image" loading="lazy">
+              {% else %}
+                <div class="story-placeholder">{{ block.settings.title | slice: 0 }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <span class="story-title">{{ block.settings.title }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .collection-circles {
+    padding: 20px 0;
+    background: #ffffff;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .collection-circles__wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden; /* Contains the scroll area */
+  }
+
+  /* TRACK LAYOUT */
+  .collection-circles__track {
+    display: flex;
+    gap: 16px;
+    padding: 10px 16px;
+    overflow-x: auto;
+    /* Removed scroll-behavior: smooth so JS auto-scroll doesn't stutter */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+  }
+  
+  .collection-circles__track::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+  }
+  
+  .story-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Ring Styling (Gold & Royal Red Gradient) */
+  .story-ring {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(45deg, #D4AF37, #880015);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .story-image-wrap {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid white; /* Inner white border */
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .story-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .story-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    color: #880015;
+    font-weight: 700;
+    font-size: 24px;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .story-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    max-width: 80px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s ease;
+  }
+
+  /* Hover Effects */
+  .story-item:hover .story-ring {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(136, 0, 21, 0.2);
+  }
+  .story-item:hover .story-title {
+    color: #880015;
+  }
+
+  /* ==========================================
+     DESKTOP LAYOUT (PC FIX)
+     ========================================== */
+  @media (min-width: 992px) {
+    .collection-circles {
+      padding: 30px 0;
+    }
+    
+    .collection-circles__track {
+      justify-content: center; /* Centers items naturally */
+      gap: 50px; /* Breathing room between circles */
+      padding: 10px 0;
+    }
+
+    /* Make circles slightly larger on PC */
+    .story-ring {
+      width: 100px;
+      height: 100px;
+    }
+
+    .story-title {
+      font-size: 14px; /* Larger text for PC */
+      max-width: 120px;
+      margin-top: 4px;
+    }
+
+    .story-placeholder {
+      font-size: 32px;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const track = document.getElementById('CollectionCirclesTrack');
+  if (!track) return;
+  
+  let isPaused = false;
+  let direction = 1; // 1 means moving right, -1 means moving left
+  let speed = 0.5; // Speed of the auto-scroll (lower is smoother)
+
+  // Auto Scroll Engine
+  const autoScroll = () => {
+    // Only scroll if the content is wider than the screen (Mobile/Tablet usually)
+    if (!isPaused && track.scrollWidth > track.clientWidth) {
+      track.scrollLeft += (speed * direction);
+      
+      // If it reaches the far right, reverse direction to left
+      if (track.scrollLeft >= (track.scrollWidth - track.clientWidth - 1)) {
+        direction = -1; 
+      } 
+      // If it reaches the far left, reverse direction to right
+      else if (track.scrollLeft <= 0) {
+        direction = 1; 
+      }
+    }
+    // Loop the animation forever
+    requestAnimationFrame(autoScroll);
+  };
+
+  // Pause the scrolling if the user hovers (PC) or touches the screen (Mobile)
+  track.addEventListener('mouseenter', () => isPaused = true);
+  track.addEventListener('mouseleave', () => isPaused = false);
+  track.addEventListener('touchstart', () => isPaused = true, { passive: true });
+  track.addEventListener('touchend', () => {
+    // Wait 1.5 seconds after they stop touching before scrolling again
+    setTimeout(() => isPaused = false, 1500);
+  }, { passive: true });
+
+  // Start the engine
+  requestAnimationFrame(autoScroll);
+});
+</script>
+
+{% schema %}
+{
+  "name": "Collection Circles",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Brass"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Circles",
+      "blocks": [
+        { "type": "collection", "settings": { "title": "Brass" } },
+        { "type": "collection", "settings": { "title": "Idols" } },
+        { "type": "collection", "settings": { "title": "Copper" } },
+        { "type": "collection", "settings": { "title": "Bronze" } },
+        { "type": "collection", "settings": { "title": "Silver" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

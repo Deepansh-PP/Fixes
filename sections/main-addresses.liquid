@@ -1,0 +1,218 @@
+{% comment %}
+  Clean Address Manager Page
+{% endcomment %}
+
+<div class="account-dashboard">
+  
+  <!-- Header -->
+  <div class="account-header" style="padding-bottom: 20px;">
+    <a href="{{ routes.account_url }}" class="back-link">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Back to Profile
+    </a>
+    <h1 class="namaste-text" style="margin-top: 16px;">Saved Addresses</h1>
+    <p class="user-contact">Manage your delivery locations</p>
+  </div>
+
+  <!-- Addresses Section -->
+  <div class="account-list-group" style="padding: 20px;">
+    
+    <!-- Add New Address Button -->
+    <button type="button" class="add-address-btn" onclick="toggleForm('AddAddress')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Add New Address
+    </button>
+
+    <!-- Add New Address Form (Hidden) -->
+    <div id="AddAddress" class="address-form-container" style="display: none;">
+      <h3 class="form-title">Add a New Address</h3>
+      {%- form 'customer_address', customer.new_address, class: 'address-form' -%}
+        <div class="form-grid">
+          <div class="input-group">
+            <label>First Name</label>
+            <input type="text" name="address[first_name]" value="{{ form.first_name }}">
+          </div>
+          <div class="input-group">
+            <label>Last Name</label>
+            <input type="text" name="address[last_name]" value="{{ form.last_name }}">
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Company (Optional)</label>
+          <input type="text" name="address[company]" value="{{ form.company }}">
+        </div>
+        <div class="input-group">
+          <label>Address</label>
+          <input type="text" name="address[address1]" value="{{ form.address1 }}" required>
+        </div>
+        <div class="input-group">
+          <label>Apartment, suite, etc. (Optional)</label>
+          <input type="text" name="address[address2]" value="{{ form.address2 }}">
+        </div>
+        <div class="form-grid">
+          <div class="input-group">
+            <label>City</label>
+            <input type="text" name="address[city]" value="{{ form.city }}" required>
+          </div>
+          <div class="input-group">
+            <label>Country/Region</label>
+            <select name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Postal/ZIP Code</label>
+            <input type="text" name="address[zip]" value="{{ form.zip }}" required>
+          </div>
+          <div class="input-group">
+            <label>Phone Number</label>
+            <input type="tel" name="address[phone]" value="{{ form.phone }}" required>
+          </div>
+        </div>
+        <div class="checkbox-group">
+          {{ form.set_as_default_checkbox }}
+          <label for="address_default_address_new">Set as default address</label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Save</button>
+          <button type="button" class="btn-secondary" onclick="toggleForm('AddAddress')">Cancel</button>
+        </div>
+      {%- endform -%}
+    </div>
+
+    <!-- Existing Addresses List -->
+    <div class="addresses-grid">
+      {%- for address in customer.addresses -%}
+        <div class="address-card {% if address == customer.default_address %}default-address{% endif %}">
+          {% if address == customer.default_address %}
+            <span class="default-badge">DEFAULT</span>
+          {% endif %}
+          <h4 class="address-name">{{ address.first_name }} {{ address.last_name }}</h4>
+          <p class="address-text">
+            {{ address.company }}<br>
+            {{ address.street }}<br>
+            {{ address.city }}, {{ address.province_code }} {{ address.zip }}<br>
+            {{ address.country }}
+          </p>
+          <p class="address-phone">{{ address.phone }}</p>
+          
+          <div class="address-actions">
+            <button class="action-link" onclick="toggleForm('EditAddress_{{ address.id }}')">Edit</button>
+            <span class="sep">|</span>
+            <form class="delete-form" method="post" action="/account/addresses/{{ address.id }}">
+              <input type="hidden" name="_method" value="delete">
+              <button type="submit" class="action-link delete" onclick="return confirm('Are you sure you wish to delete this address?');">Delete</button>
+            </form>
+          </div>
+
+          <!-- Edit Address Form -->
+          <div id="EditAddress_{{ address.id }}" class="address-form-container" style="display: none; margin-top: 20px;">
+            <h3 class="form-title">Edit Address</h3>
+            {%- form 'customer_address', address, class: 'address-form' -%}
+              <div class="form-grid">
+                <div class="input-group">
+                  <label>First Name</label>
+                  <input type="text" name="address[first_name]" value="{{ form.first_name }}">
+                </div>
+                <div class="input-group">
+                  <label>Last Name</label>
+                  <input type="text" name="address[last_name]" value="{{ form.last_name }}">
+                </div>
+              </div>
+              <div class="input-group">
+                <label>Address</label>
+                <input type="text" name="address[address1]" value="{{ form.address1 }}" required>
+              </div>
+              <div class="form-grid">
+                <div class="input-group">
+                  <label>City</label>
+                  <input type="text" name="address[city]" value="{{ form.city }}" required>
+                </div>
+                <div class="input-group">
+                  <label>Postal Code</label>
+                  <input type="text" name="address[zip]" value="{{ form.zip }}" required>
+                </div>
+              </div>
+              <div class="checkbox-group">
+                {{ form.set_as_default_checkbox }}
+                <label for="address_default_address_{{ form.id }}">Set as default</label>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn-primary">Update</button>
+                <button type="button" class="btn-secondary" onclick="toggleForm('EditAddress_{{ address.id }}')">Cancel</button>
+              </div>
+            {%- endform -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+/* Dashboard Styles */
+.account-dashboard { background-color: #FAFAFA; min-height: 100vh; padding-bottom: 60px; max-width: 800px; margin: 0 auto; }
+.account-header { background: white; padding: 40px 20px 20px; border-bottom: 1px solid #EEEEEE; }
+.namaste-text { font-family: 'Playfair Display', serif; font-size: 24px; color: #1a1a1a; margin: 0; }
+.user-contact { font-size: 14px; color: #666; margin-top: 4px; }
+.back-link { display: flex; align-items: center; gap: 6px; color: #880015; font-size: 13px; font-weight: 600; text-decoration: none; }
+.account-list-group { margin-top: 16px; background: white; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+
+/* Add Address Button */
+.add-address-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 16px; border: 2px dashed #ccc; background: #fafafa; color: #333; font-weight: 600; border-radius: 8px; cursor: pointer; margin-bottom: 20px; transition: all 0.2s; }
+.add-address-btn:hover { border-color: #880015; color: #880015; background: #fff5f5; }
+
+/* Address Cards */
+.addresses-grid { display: grid; gap: 16px; }
+.address-card { border: 1px solid #eee; padding: 20px; border-radius: 8px; position: relative; background: white; }
+.default-address { border-color: #D4AF37; background: #fffdf5; }
+.default-badge { position: absolute; top: 16px; right: 16px; background: #D4AF37; color: white; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; }
+.address-name { font-size: 16px; font-weight: 700; color: #1a1a1a; margin: 0 0 8px; }
+.address-text, .address-phone { font-size: 14px; color: #666; line-height: 1.5; margin: 0 0 8px; }
+.address-actions { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.action-link { background: none; border: none; font-size: 13px; font-weight: 600; color: #333; cursor: pointer; padding: 0; text-decoration: underline; }
+.action-link.delete { color: #d32f2f; }
+.sep { color: #ccc; }
+.delete-form { margin: 0; padding: 0; }
+
+/* Forms */
+.address-form-container { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
+.form-title { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 16px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.input-group { margin-bottom: 12px; display: flex; flex-direction: column; }
+.input-group label { font-size: 12px; color: #666; margin-bottom: 4px; }
+.input-group input, .input-group select { padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none; }
+.input-group input:focus { border-color: #880015; }
+.checkbox-group { display: flex; align-items: center; gap: 8px; margin: 16px 0; }
+.checkbox-group label { font-size: 13px; color: #333; }
+.form-actions { display: flex; gap: 12px; }
+.btn-primary { flex: 1; background: #880015; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+.btn-secondary { flex: 1; background: white; color: #333; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-weight: 600; cursor: pointer; }
+
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+function toggleForm(id) {
+  var form = document.getElementById(id);
+  if (form.style.display === 'none') {
+    form.style.display = 'block';
+  } else {
+    form.style.display = 'none';
+  }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Addresses",
+  "settings": []
+}
+{% endschema %}

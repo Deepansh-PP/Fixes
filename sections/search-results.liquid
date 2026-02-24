@@ -1,0 +1,164 @@
+{% comment %}
+  Search Results Section
+  Features: Crimson cards, No results with trending suggestions
+{% endcomment %}
+
+<div class="search-results-section" data-section-id="{{ section.id }}">
+  {%- if search.performed -%}
+    {%- comment -%} Search Results Header {%- endcomment -%}
+    <div class="collection-header" style="background: linear-gradient(135deg, var(--crimson-royal, #880015), #6B0011); color: white; padding: 24px 16px; text-align: center;">
+      <h1 class="collection-header__title" style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px;">
+        Search Results
+      </h1>
+      <p class="collection-header__desc" style="font-size: 14px; opacity: 0.9;">
+        {%- if search.results_count > 0 -%}
+          {{ search.results_count }} results for "{{ search.terms }}"
+        {%- else -%}
+          No results for "{{ search.terms }}"
+        {%- endif -%}
+      </p>
+    </div>
+
+    {%- if search.results_count > 0 -%}
+      {%- comment -%} Sort & Filter Bar {%- endcomment -%}
+      <div class="sort-filter-bar" style="display: flex; background: white; border-bottom: 1px solid #eee; position: sticky; top: 56px; z-index: 99;">
+        <button class="sort-filter-bar__btn" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px; background: none; border: none; font-size: 13px; font-weight: 600; cursor: pointer; border-right: 1px solid #eee;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="11" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="16" y2="18"></line></svg>
+          Sort
+        </button>
+        <button class="sort-filter-bar__btn" id="filterBtn" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px; background: none; border: none; font-size: 13px; font-weight: 600; cursor: pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+          Filter
+        </button>
+      </div>
+
+      {%- comment -%} Results Count {%- endcomment -%}
+      <p style="padding: 8px 16px; font-size: 12px; color: #666; background: white;">
+        <strong style="color: #1A1A1A;">{{ search.results_count }}</strong> Products Found
+      </p>
+
+      {%- comment -%} Product Grid {%- endcomment -%}
+      <div class="product-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 8px; background: #F5F5F6;">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {%- render 'card-product', product: item, show_quick_add: true, show_rating: true -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Pagination {%- endcomment -%}
+      {%- if paginate.pages > 1 -%}
+        <div class="load-more-container" style="padding: 24px 16px; text-align: center; background: #F5F5F6;">
+          <button class="load-more-btn" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 40px; background: white; border: 2px solid #880015; color: #880015; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 8px; cursor: pointer;">
+            Load More
+          </button>
+        </div>
+      {%- endif -%}
+
+    {%- else -%}
+      {%- comment -%} No Results Found {%- endcomment -%}
+      <div class="no-results" style="padding: 40px 16px; text-align: center; background: white;">
+        <div class="no-results__icon" style="width: 80px; height: 80px; margin: 0 auto 16px; background: #F5F5F6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <h3 class="no-results__title" style="font-size: 18px; font-weight: 700; color: #1A1A1A; margin-bottom: 8px;">
+          No Results Found
+        </h3>
+        <p class="no-results__text" style="font-size: 14px; color: #666; margin-bottom: 24px;">
+          We couldn't find any products matching "{{ search.terms }}". Try a different search term.
+        </p>
+
+        {%- comment -%} Search Suggestions {%- endcomment -%}
+        <div style="margin-bottom: 32px;">
+          <p style="font-size: 14px; color: #666; margin-bottom: 12px;">Popular searches:</p>
+          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;">
+            <a href="/search?q=brass+ganesha" style="padding: 8px 16px; background: #FFE8E8; border-radius: 20px; font-size: 13px; color: #880015;">Brass Ganesha</a>
+            <a href="/search?q=buddha+statue" style="padding: 8px 16px; background: #FFE8E8; border-radius: 20px; font-size: 13px; color: #880015;">Buddha Statue</a>
+            <a href="/search?q=wall+art" style="padding: 8px 16px; background: #FFE8E8; border-radius: 20px; font-size: 13px; color: #880015;">Wall Art</a>
+            <a href="/search?q=lamps" style="padding: 8px 16px; background: #FFE8E8; border-radius: 20px; font-size: 13px; color: #880015;">Lamps</a>
+          </div>
+        </div>
+
+        {%- comment -%} Trending New Arrivals - Horizontal Scroll {%- endcomment -%}
+        <div class="no-results__trending" style="text-align: left; margin-top: 32px;">
+          <h4 class="no-results__trending-title" style="font-size: 16px; font-weight: 700; color: #1A1A1A; margin-bottom: 16px; padding-left: 8px;">
+            Trending New Arrivals
+          </h4>
+          <div class="trending-scroll" style="display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 8px;">
+            {%- for product in collections['new-arrivals'].products limit: 8 -%}
+              <div style="min-width: 160px; max-width: 160px; scroll-snap-align: start;">
+                {%- render 'card-product', product: product, show_quick_add: false, show_rating: true -%}
+              </div>
+            {%- else -%}
+              {%- for product in collections.all.products limit: 8 -%}
+                <div style="min-width: 160px; max-width: 160px; scroll-snap-align: start;">
+                  {%- render 'card-product', product: product, show_quick_add: false, show_rating: true -%}
+                </div>
+              {%- endfor -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+
+  {%- else -%}
+    {%- comment -%} Search Form (No search performed yet) {%- endcomment -%}
+    <div style="padding: 40px 16px; text-align: center;">
+      <h1 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 16px;">Search Our Collection</h1>
+      <form action="/search" method="get" style="max-width: 400px; margin: 0 auto;">
+        <div style="display: flex; background: #F5F5F6; border-radius: 8px; overflow: hidden;">
+          <input type="text" name="q" placeholder="Search for statues, wall art..." style="flex: 1; padding: 14px 16px; border: none; background: transparent; font-size: 16px; outline: none;">
+          <button type="submit" style="padding: 14px 20px; background: #880015; color: white; border: none; cursor: pointer;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+        <input type="hidden" name="type" value="product">
+      </form>
+
+      {%- comment -%} Browse Categories {%- endcomment -%}
+      <div style="margin-top: 32px;">
+        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Browse Categories</h3>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
+          {%- for collection in collections limit: 6 -%}
+            {%- unless collection.handle == 'all' -%}
+              <a href="{{ collection.url }}" style="padding: 12px 20px; background: white; border: 1px solid #E5E5E5; border-radius: 8px; font-size: 14px; font-weight: 500;">
+                {{ collection.title }}
+              </a>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Search Results",
+  "tag": "section",
+  "class": "search-results-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 12,
+      "label": "Products per page"
+    },
+    {
+      "type": "collection",
+      "id": "trending_collection",
+      "label": "Trending Collection (for no results)",
+      "info": "Products to show when search has no results"
+    }
+  ]
+}
+{% endschema %}

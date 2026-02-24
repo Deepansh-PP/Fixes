@@ -1,0 +1,102 @@
+{% schema %}
+{
+  "name": "Shop By Room",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Curated For Your Spaces" }
+  ],
+  "blocks": [
+    {
+      "type": "room",
+      "name": "Room",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Room Image (Portrait)" },
+        { "type": "text", "id": "title", "label": "Room Name", "default": "The Pooja Room" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Shop By Room" }]
+}
+{% endschema %}
+
+<section class="room-section">
+  <div class="room-container">
+    <h2 class="room-heading">{{ section.settings.title }}</h2>
+    
+    <div class="room-track">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.link }}" class="room-card" {{ block.shopify_attributes }}>
+          <div class="room-img-wrap">
+            {% if block.settings.image %}
+              <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.title }}" loading="lazy">
+            {% else %}
+              <div style="width:100%; height:100%; background:#e0e0e0;"></div>
+            {% endif %}
+            <div class="room-overlay"></div>
+            <div class="room-content">
+              <h3>{{ block.settings.title }}</h3>
+              <span class="room-btn">Explore</span>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+.room-section { padding: 40px 16px; background: #fff; }
+.room-container { max-width: 1400px; margin: 0 auto; }
+.room-heading { font-family: 'Playfair Display', serif; font-size: 24px; color: #1a1a1a; margin-bottom: 24px; text-align: center; }
+
+/* Mobile: Horizontal Swipe */
+.room-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 10px;
+}
+.room-track::-webkit-scrollbar { display: none; }
+
+.room-card {
+  flex: 0 0 75%; /* Shows 1 full card and a peek of the next on mobile */
+  scroll-snap-align: center;
+  text-decoration: none;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.room-img-wrap {
+  position: relative;
+  aspect-ratio: 3 / 4; /* Tall portrait look */
+  overflow: hidden;
+}
+
+.room-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
+}
+.room-card:hover img { transform: scale(1.05); }
+
+.room-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+}
+
+.room-content {
+  position: absolute; bottom: 20px; left: 20px; right: 20px; text-align: center; color: white;
+}
+.room-content h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin: 0 0 10px; font-weight: 600; letter-spacing: 1px;}
+.room-btn { display: inline-block; padding: 8px 24px; border: 1px solid white; font-size: 12px; text-transform: uppercase; font-weight: 600; transition: 0.3s; }
+.room-card:hover .room-btn { background: white; color: #880015; }
+
+/* Desktop: Grid */
+@media (min-width: 992px) {
+  .room-section { padding: 60px 40px; }
+  .room-heading { font-size: 36px; margin-bottom: 40px; }
+  .room-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; overflow: visible; }
+  .room-card { flex: none; }
+  .room-img-wrap { aspect-ratio: 4 / 5; }
+}
+</style>

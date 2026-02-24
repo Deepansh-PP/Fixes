@@ -1,0 +1,140 @@
+<!-- Header Spacer -->
+<div class="header-spacer"></div>
+
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    
+    <!-- LEFT: Hamburger (Mobile) & Logo -->
+    <div class="header-left">
+      <!-- Hidden on PC -->
+      <button type="button" class="header-icon mobile-nav-toggle" id="menuToggle" aria-label="Menu" onclick="window.openLoginDrawer()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <a href="{{ routes.root_url }}" class="header-logo">
+        <span class="logo-text">AONA</span>
+      </a>
+    </div>
+
+    <!-- CENTER: Search Bar -->
+    <div class="header-center header-search">
+      <form action="{{ routes.search_url }}" method="get" class="search-form">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <input type="search" name="q" placeholder="Search for Brass Ganesha, Wall Art..." class="search-input" autocomplete="off">
+          <input type="hidden" name="type" value="product">
+        </div>
+      </form>
+    </div>
+
+    <!-- RIGHT: Icons -->
+    <div class="header-right header-actions">
+      <!-- PC ONLY: Express Delivery Button -->
+      <button type="button" class="header-express-btn hide-on-mobile" onclick="openExpressPage()">
+        <span class="express-icon">⚡</span>
+        <div class="express-text">
+          <span class="et-title">30 Mins</span>
+          <span class="et-sub">Delivery</span>
+        </div>
+      </button>
+      <!-- Wishlist -->
+      <a href="/pages/wishlist" class="header-icon" title="Wishlist">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </a>
+
+      <!-- Profile -->
+      <a href="{{ routes.account_login_url }}" class="header-icon profile-icon hide-on-mobile" title="Account">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </a>
+      
+      <!-- Cart -->
+      <a href="{{ routes.cart_url }}" class="header-icon" title="Cart">
+        <div style="position: relative;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          {% if cart.item_count > 0 %}
+            <span class="cart-badge">{{ cart.item_count }}</span>
+          {% endif %}
+        </div>
+      </a>
+    </div>
+
+  </div>
+</header>
+
+<style>
+/* 1. Reset & Setup */
+.header-spacer { height: 60px; }
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 60px;
+  background: #ffffff;
+  z-index: 1000;
+  border-bottom: 1px solid #f0f0f0;
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 100%; max-width: 1440px; margin: 0 auto; padding: 0 16px; gap: 16px;
+}
+
+/* 2. Left Side (Logo & Menu) */
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-logo { text-decoration: none; display: flex; align-items: center; }
+.logo-text { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #880015; letter-spacing: 1px; }
+.mobile-nav-toggle { background: none; border: none; padding: 4px; display: flex; align-items: center; color: #333; cursor: pointer; }
+
+/* 3. Center (Search) */
+.header-center { flex: 1; display: flex; justify-content: center; }
+.search-form { width: 100%; max-width: 600px; }
+.search-input-wrapper {
+  display: flex; align-items: center; gap: 10px;
+  background: #f5f5f6; border-radius: 6px; padding: 0 16px; height: 42px;
+  border: 1px solid transparent; transition: all 0.2s;
+}
+.search-input-wrapper:focus-within { background: #fff; border-color: #880015; box-shadow: 0 0 0 3px rgba(136,0,21,0.05); }
+.search-icon { color: #888; flex-shrink: 0; }
+.search-input { flex: 1; border: none; background: transparent; font-size: 14px; outline: none; padding: 0; color: #333; }
+
+/* 4. Right Side (Icons) */
+.header-right { display: flex; align-items: center; gap: 16px; }
+.header-icon { color: #333; text-decoration: none; display: flex; align-items: center; transition: color 0.2s; }
+.header-icon:hover { color: #880015; }
+.cart-badge {
+  position: absolute; top: -6px; right: -8px;
+  background: #880015; color: white; font-size: 10px; font-weight: 700;
+  width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* =========================================
+   DESKTOP OPTIMIZATIONS (The Pepperfry Look)
+   ========================================= */
+@media (min-width: 992px) {
+  .header-spacer { height: 80px; }
+  .site-header { height: 80px; }
+  .header-inner { padding: 0 40px; gap: 40px; }
+  .mobile-nav-toggle { display: none !important; } /* Kill Hamburger on PC */
+  .logo-text { font-size: 28px; }
+  .search-input-wrapper { height: 48px; border-radius: 8px; }
+}
+
+/* Hide specific items on mobile */
+@media (max-width: 991px) {
+  .hide-on-mobile { display: none !important; }
+}
+</style>

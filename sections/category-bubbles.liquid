@@ -1,0 +1,121 @@
+{% schema %}
+{
+  "name": "Category Bubbles",
+  "tag": "section",
+  "class": "section-category-bubbles",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_animation",
+      "label": "Enable Entry Animation",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bubble",
+      "name": "Category Bubble",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label",
+          "default": "Category"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Bubbles",
+      "blocks": [
+        { "type": "bubble", "settings": { "title": "Statues" } },
+        { "type": "bubble", "settings": { "title": "Wall Art" } },
+        { "type": "bubble", "settings": { "title": "Vases" } },
+        { "type": "bubble", "settings": { "title": "Lamps" } },
+        { "type": "bubble", "settings": { "title": "Brass" } },
+        { "type": "bubble", "settings": { "title": "Resin" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div class="category-bubbles {% if section.settings.enable_animation %}scroll-animate-section{% endif %}" id="categoryBubbles-{{ section.id }}">
+  <div class="category-bubbles-scroll horizontal-scroll">
+    {% for block in section.blocks %}
+      <a href="{{ block.settings.link }}" class="category-bubble" {{ block.shopify_attributes }}>
+        <div class="bubble-image">
+          {% if block.settings.image != blank %}
+            {{ block.settings.image | image_url: width: 200, height: 200, crop: 'center' | image_tag: loading: 'lazy', alt: block.settings.title }}
+          {% else %}
+             {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <span class="bubble-label">{{ block.settings.title }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.category-bubbles {
+  padding: 16px 0;
+  background: var(--color-bg-white);
+  overflow: hidden;
+}
+.category-bubbles-scroll {
+  padding: 0 16px;
+  gap: 16px;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.category-bubbles-scroll::-webkit-scrollbar { display: none; }
+.category-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 80px;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  transition: transform 0.2s;
+}
+.bubble-image {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--color-border-light);
+  padding: 2px; /* Ring effect */
+  background: white;
+}
+.bubble-image img, .bubble-image svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.bubble-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+.category-bubble:hover .bubble-image {
+  border-color: var(--color-royal-red);
+}
+</style>

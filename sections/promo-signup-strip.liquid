@@ -1,0 +1,74 @@
+{% schema %}
+{
+  "name": "Pepperfry Signup Strip",
+  "settings": [
+    { "type": "text", "id": "main_text", "label": "Main Text", "default": "Sign Up & Get Upto Rs. 1,500 Off" },
+    { "type": "text", "id": "sub_text", "label": "Sub Text", "default": "On Your First Purchase" },
+    { "type": "text", "id": "coupon", "label": "Coupon Code", "default": "HELLO1500" }
+  ],
+  "presets": [{ "name": "Signup Strip" }]
+}
+{% endschema %}
+
+<div class="pf-signup-strip">
+  <div class="pf-signup-content">
+    <span class="pf-signup-main">{{ section.settings.main_text }}</span>
+    <span class="pf-signup-sub">{{ section.settings.sub_text }}</span>
+    <div class="pf-signup-coupon">
+      Use Coupon : <strong>{{ section.settings.coupon }}</strong>
+    </div>
+    <div class="pf-arrow-circle">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+  </div>
+</div>
+
+<style>
+.pf-signup-strip {
+  background: #FFF8F0; /* Very light orange/cream */
+  padding: 20px;
+  margin: 20px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+.pf-signup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.pf-signup-main {
+  color: #D85A35; /* Pepperfry Orange-Red */
+  font-size: 18px;
+  font-weight: 700;
+}
+.pf-signup-sub {
+  color: #D85A35;
+  font-size: 16px;
+}
+.pf-signup-coupon {
+  border: 1px dashed #D85A35;
+  color: #D85A35;
+  padding: 8px 16px;
+  font-size: 14px;
+  background: white;
+}
+.pf-arrow-circle {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2px solid #D85A35;
+  color: #D85A35;
+  display: flex; align-items: center; justify-content: center;
+}
+
+@media(min-width: 992px) {
+  .pf-signup-content {
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+  }
+  .pf-signup-main { font-size: 24px; }
+  .pf-signup-sub { font-size: 20px; }
+}
+</style>

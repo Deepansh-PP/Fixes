@@ -1,0 +1,220 @@
+{% comment %}
+  Crimson Artisan Card - Universal Product Card Component
+  
+  Usage:
+  {% render 'crimson-card', product: product %}
+  {% render 'crimson-card', product: product, show_vendor: true, show_badge: true %}
+  
+  Parameters:
+  - product: The product object (required)
+  - show_vendor: Boolean to show vendor/brand name (default: true)
+  - show_badge: Boolean to show badges (default: true)
+  - show_rating: Boolean to show rating pill (default: true)
+  - show_quick_add: Boolean to show quick add button (default: true)
+  - lazy_load: Boolean for lazy loading images (default: true)
+  - card_index: Number for animation delay (optional)
+{% endcomment %}
+
+{%- liquid
+  assign show_vendor = show_vendor | default: true
+  assign show_badge = show_badge | default: true
+  assign show_rating = show_rating | default: true
+  assign show_quick_add = show_quick_add | default: true
+  assign lazy_load = lazy_load | default: true
+  assign card_index = card_index | default: 0
+  
+  assign current_variant = product.selected_or_first_available_variant
+  assign compare_at_price = current_variant.compare_at_price
+  assign price = current_variant.price
+  assign available = current_variant.available
+  
+  if compare_at_price > price
+    assign on_sale = true
+    assign discount_percent = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round
+  else
+    assign on_sale = false
+  endif
+  
+  assign is_new = false
+  assign product_date = product.created_at | date: '%s'
+  assign now = 'now' | date: '%s'
+  assign days_old = now | minus: product_date | divided_by: 86400
+  if days_old < 30
+    assign is_new = true
+  endif
+  
+  assign is_handmade = false
+  for tag in product.tags
+    assign tag_lower = tag | downcase
+    if tag_lower contains 'handmade' or tag_lower contains 'handcrafted' or tag_lower contains 'artisan'
+      assign is_handmade = true
+      break
+    endif
+  endfor
+  
+  assign is_express = false
+  for tag in product.tags
+    assign tag_lower = tag | downcase
+    if tag_lower contains 'express' or tag_lower contains '30min' or tag_lower contains 'fast'
+      assign is_express = true
+      break
+    endif
+  endfor
+-%}
+
+<div class="crimson-card" 
+     data-product-id="{{ product.id }}"
+     data-product-handle="{{ product.handle }}"
+     style="--card-index: {{ card_index }}">
+  
+  <!-- Image Container -->
+  <div class="crimson-card__image-wrapper">
+    <a href="{{ product.url }}" class="crimson-card__image-link" aria-label="{{ product.title }}">
+<div class="crimson-card__image-container" style="position: relative; padding-top: 133.33%; overflow: hidden; background: #f5f5f5;">
+        {%- assign media_src = product.featured_image | default: product.featured_media.preview_image | default: product.media.first -%}
+        
+        {%- if media_src != blank -%}
+          <img 
+            src="{{ media_src | image_url: width: 600 }}"
+            alt="{{ media_src.alt | escape | default: product.title }}"
+            class="crimson-card__image"
+            loading="eager"
+            style="position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; opacity: 1 !important; visibility: visible !important; display: block !important; margin: 0 !important; transform: none !important;"
+          >
+        {%- else -%}
+          <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #eee;">
+             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2">
+               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+               <circle cx="8.5" cy="8.5" r="1.5"/>
+               <polyline points="21,15 16,10 5,21"/>
+             </svg>
+          </div>
+        {%- endif -%}
+      </div>
+    </a>
+    
+    <!-- Wishlist Button -->
+    <button 
+      type="button" 
+      class="crimson-card__wishlist" 
+      aria-label="{{ 'products.product.add_to_wishlist' | t | default: 'Add to wishlist' }}"
+      data-product-id="{{ product.id }}"
+      data-product-handle="{{ product.handle }}"
+    >
+      <svg class="crimson-card__wishlist-icon crimson-card__wishlist-icon--outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <svg class="crimson-card__wishlist-icon crimson-card__wishlist-icon--filled" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </button>
+    
+    <!-- Badges -->
+    {%- if show_badge -%}
+      <div class="crimson-card__badges">
+        {%- if is_new -%}
+          <span class="crimson-card__badge crimson-card__badge--new">NEW</span>
+        {%- endif -%}
+        {%- if is_handmade -%}
+          <span class="crimson-card__badge crimson-card__badge--handmade">HANDCRAFTED</span>
+        {%- endif -%}
+        {%- if is_express -%}
+          <span class="crimson-card__badge crimson-card__badge--express">30 MIN</span>
+        {%- endif -%}
+        {%- if on_sale and is_new == false and is_handmade == false -%}
+          <span class="crimson-card__badge crimson-card__badge--sale">{{ discount_percent }}% OFF</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    
+    <!-- Rating Pill -->
+    {%- if show_rating -%}
+      {%- assign rating = product.metafields.reviews.rating.value | default: 4.5 -%}
+      {%- assign rating_count = product.metafields.reviews.rating_count.value | default: 0 -%}
+      <div class="crimson-card__rating">
+        <span class="crimson-card__rating-value">{{ rating }}</span>
+        <svg class="crimson-card__rating-star" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+        </svg>
+        {%- if rating_count > 0 -%}
+          <span class="crimson-card__rating-count">({{ rating_count }})</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    
+<!-- Quick Add / Quantity Control -->
+    {%- if show_quick_add and available -%}
+      <div class="crimson-card__quick-add">
+        
+        <!-- State 1: The Initial Add Button -->
+        <button 
+          type="button" 
+          class="crimson-card__quick-add-btn" 
+          data-variant-id="{{ current_variant.id }}"
+          onclick="addToCartFromCard(this, '{{ current_variant.id }}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span>QUICK ADD</span>
+        </button>
+
+        <!-- State 2: The Plus/Minus Counter (Hidden by default) -->
+        <div class="crimson-card__qty-control" style="display: none;" data-variant-id="{{ current_variant.id }}">
+          <button type="button" class="qty-action-btn minus" onclick="updateCardQty(this, -1)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          
+          <span class="qty-current">1</span>
+          
+          <button type="button" class="qty-action-btn plus" onclick="updateCardQty(this, 1)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+
+      </div>
+    {%- elsif show_quick_add and available == false -%}
+      <div class="crimson-card__quick-add">
+        <span class="crimson-card__quick-add-btn crimson-card__quick-add-btn--soldout">
+          SOLD OUT
+        </span>
+      </div>
+    {%- endif -%}
+  </div>
+  
+  <!-- Card Content -->
+  <div class="crimson-card__content">
+    <a href="{{ product.url }}" class="crimson-card__content-link">
+      <!-- Vendor / Brand -->
+      {%- if show_vendor and product.vendor -%}
+        <p class="crimson-card__vendor">{{ product.vendor | upcase }}</p>
+      {%- endif -%}
+      
+      <!-- Product Title -->
+      <h3 class="crimson-card__title">{{ product.title }}</h3>
+      
+      <!-- Price Section -->
+      <div class="crimson-card__price-wrapper">
+        {%- if on_sale -%}
+          <span class="crimson-card__price crimson-card__price--sale">
+            {{ price | money }}
+          </span>
+          <span class="crimson-card__price crimson-card__price--compare">
+            {{ compare_at_price | money }}
+          </span>
+          <span class="crimson-card__discount-badge">
+            {{ discount_percent }}% OFF
+          </span>
+        {%- else -%}
+          <span class="crimson-card__price">
+            {{ price | money }}
+          </span>
+        {%- endif -%}
+      </div>
+      
+      <!-- Tax Info -->
+      <p class="crimson-card__tax-info">inclusive of all taxes</p>
+    </a>
+  </div>
+</div>

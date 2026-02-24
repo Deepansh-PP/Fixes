@@ -1,0 +1,99 @@
+{% schema %}
+{
+  "name": "Material Spotlight",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Know Your Materials" }
+  ],
+  "blocks": [
+    {
+      "type": "material",
+      "name": "Material",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Close-up Image" },
+        { "type": "text", "id": "title", "label": "Material Name", "default": "Brass" },
+        { "type": "text", "id": "desc", "label": "Short Description", "default": "Timeless & Divine" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Material Spotlight" }]
+}
+{% endschema %}
+
+<section class="material-section">
+  <h2 class="material-main-title">{{ section.settings.title }}</h2>
+  <div class="material-container">
+    {% for block in section.blocks %}
+      <a href="{{ block.settings.link }}" class="material-card" {{ block.shopify_attributes }}>
+        <div class="material-img-box">
+          {% if block.settings.image %}
+            <img src="{{ block.settings.image | image_url: width: 300 }}" alt="{{ block.settings.title }}" loading="lazy">
+          {% else %}
+            <div class="placeholder"></div>
+          {% endif %}
+        </div>
+        <h3 class="material-title">{{ block.settings.title }}</h3>
+        <p class="material-desc">{{ block.settings.desc }}</p>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+.material-section { padding: 40px 16px; background: white; text-align: center; }
+.material-main-title { font-family: 'Playfair Display', serif; font-size: 24px; color: #1a1a1a; margin-bottom: 30px; }
+
+.material-container { 
+  display: flex; 
+  gap: 16px; 
+  overflow-x: auto; 
+  scroll-snap-type: x mandatory; 
+  scrollbar-width: none; 
+  padding-bottom: 10px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.material-container::-webkit-scrollbar { display: none; }
+
+.material-card { 
+  flex: 0 0 140px; 
+  scroll-snap-align: center; 
+  text-decoration: none; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+}
+
+.material-img-box {
+  width: 120px; 
+  height: 120px; 
+  border-radius: 50%; 
+  overflow: hidden; 
+  margin-bottom: 12px;
+  border: 2px solid transparent;
+  padding: 4px;
+  transition: all 0.3s ease;
+}
+.material-img-box img, .material-img-box .placeholder {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 50%; background: #eee;
+}
+
+.material-card:hover .material-img-box {
+  border-color: #D4AF37; /* Gold ring on hover */
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(212,175,55,0.2);
+}
+
+.material-title { font-size: 16px; font-weight: 700; color: #880015; margin: 0 0 4px; text-transform: uppercase; }
+.material-desc { font-size: 12px; color: #666; margin: 0; font-style: italic; }
+
+@media (min-width: 768px) {
+  .material-section { padding: 60px 40px; }
+  .material-main-title { font-size: 32px; margin-bottom: 40px; }
+  .material-container { justify-content: center; gap: 40px; overflow: visible; }
+  .material-card { flex: 0 0 180px; }
+  .material-img-box { width: 160px; height: 160px; }
+  .material-title { font-size: 18px; }
+  .material-desc { font-size: 14px; }
+}
+</style>

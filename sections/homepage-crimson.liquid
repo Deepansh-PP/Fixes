@@ -1,0 +1,992 @@
+{% comment %}
+  CRIMSON ARTISAN HOMEPAGE
+  A comprehensive, elongated homepage with 8 sections
+{% endcomment %}
+
+<!-- Section 1: Multi-Tab Header -->
+<div class="multi-tab-header">
+  <nav class="tab-nav">
+    <button class="tab-item active" data-tab="all">All</button>
+    <button class="tab-item" data-tab="brass">Brass</button>
+    <button class="tab-item" data-tab="resin">Resin</button>
+    <button class="tab-item" data-tab="new-arrivals">New Arrivals</button>
+    <button class="tab-item" data-tab="best-sellers">Best Sellers</button>
+    <button class="tab-item" data-tab="wall-art">Wall Art</button>
+    <button class="tab-item" data-tab="statues">Statues</button>
+  </nav>
+</div>
+
+<!-- Section 2: Interactive Category Bubbles with Scroll Animation -->
+<section class="category-bubbles scroll-animate-section" id="categoryBubblesSection">
+  <div class="category-bubbles-scroll">
+    {% for block in section.blocks %}
+      {% if block.type == 'category_bubble' %}
+        <a href="{{ block.settings.link }}" class="category-bubble {% if forloop.first %}active{% endif %}">
+          <div class="bubble-image">
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 200 }}" alt="{{ block.settings.title }}" loading="lazy">
+            {% else %}
+              <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=200&h=200&fit=crop" alt="{{ block.settings.title }}">
+            {% endif %}
+          </div>
+          <span class="bubble-label">{{ block.settings.title | default: 'Category' }}</span>
+        </a>
+      {% endif %}
+    {% else %}
+      <!-- Default bubbles if no blocks configured -->
+      <a href="/collections/statues" class="category-bubble active">
+        <div class="bubble-image">
+          <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=200&h=200&fit=crop" alt="Statues">
+        </div>
+        <span class="bubble-label">Statues</span>
+      </a>
+      <a href="/collections/wall-art" class="category-bubble">
+        <div class="bubble-image">
+          <img src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=200&h=200&fit=crop" alt="Wall Art">
+        </div>
+        <span class="bubble-label">Wall Art</span>
+      </a>
+      <a href="/collections/vases" class="category-bubble">
+        <div class="bubble-image">
+          <img src="https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=200&h=200&fit=crop" alt="Vases">
+        </div>
+        <span class="bubble-label">Vases</span>
+      </a>
+      <a href="/collections/lamps" class="category-bubble">
+        <div class="bubble-image">
+          <img src="https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=200&h=200&fit=crop" alt="Lamps">
+        </div>
+        <span class="bubble-label">Lamps</span>
+      </a>
+      <a href="/collections/brass" class="category-bubble">
+        <div class="bubble-image">
+          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&h=200&fit=crop" alt="Brass">
+        </div>
+        <span class="bubble-label">Brass</span>
+      </a>
+      <a href="/collections/resin" class="category-bubble">
+        <div class="bubble-image">
+          <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=200&h=200&fit=crop" alt="Resin">
+        </div>
+        <span class="bubble-label">Resin</span>
+      </a>
+      <a href="/collections/ganesha" class="category-bubble">
+        <div class="bubble-image">
+          <img src="https://images.unsplash.com/photo-1597466599360-3b9775841aec?w=200&h=200&fit=crop" alt="Ganesha">
+        </div>
+        <span class="bubble-label">Ganesha</span>
+      </a>
+      <a href="/collections/buddha" class="category-bubble">
+        <div class="bubble-image">
+          <img src="https://images.unsplash.com/photo-1609167830220-7164aa360951?w=200&h=200&fit=crop" alt="Buddha">
+        </div>
+        <span class="bubble-label">Buddha</span>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Section 3: Grand Hero Slider -->
+<section class="grand-hero">
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-slide">
+      <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&h=1000&fit=crop" alt="Handcrafted Luxury">
+      <div class="hero-glass">
+        <h2 class="hero-glass-title">Handcrafted Luxury</h2>
+        <p class="hero-glass-subtitle">Artisan-made brass statues for your sacred space</p>
+        <button class="hero-cta" onclick="window.location.href='/collections/all'">
+          Shop Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="hero-slide">
+      <img src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800&h=1000&fit=crop" alt="Premium Wall Art">
+      <div class="hero-glass">
+        <h2 class="hero-glass-title">Premium Wall Art</h2>
+        <p class="hero-glass-subtitle">Transform your walls with elegant metal art</p>
+        <button class="hero-cta" onclick="window.location.href='/collections/wall-art'">
+          Explore
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="hero-slide">
+      <img src="https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=800&h=1000&fit=crop" alt="New Arrivals">
+      <div class="hero-glass">
+        <h2 class="hero-glass-title">New Arrivals</h2>
+        <p class="hero-glass-subtitle">Discover our latest collection of decor pieces</p>
+        <button class="hero-cta" onclick="window.location.href='/collections/new-arrivals'">
+          View All
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="hero-dots">
+    <button class="hero-dot active" data-slide="0"></button>
+    <button class="hero-dot" data-slide="1"></button>
+    <button class="hero-dot" data-slide="2"></button>
+  </div>
+</section>
+
+<!-- Section 4: Flash Sale Crimson Zone with Scroll Animation -->
+<section class="crimson-zone scroll-animate-section" id="flashSaleSection">
+  <div class="crimson-zone-header">
+    <div class="crimson-zone-title">
+      <div class="flash-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      </div>
+      <h2>Flash Sale</h2>
+    </div>
+    <div class="flash-timer" id="flashTimer" data-end-time="{{ section.settings.flash_sale_end_date }}">
+      <div class="timer-block">
+        <span class="timer-value" id="timerHours">02</span>
+        <span class="timer-label">HRS</span>
+      </div>
+      <span class="timer-separator">:</span>
+      <div class="timer-block">
+        <span class="timer-value" id="timerMinutes">45</span>
+        <span class="timer-label">MIN</span>
+      </div>
+      <span class="timer-separator">:</span>
+      <div class="timer-block">
+        <span class="timer-value" id="timerSeconds">30</span>
+        <span class="timer-label">SEC</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="crimson-products-scroll">
+    {% assign flash_collection = collections['flash-sale'] | default: collections['all'] %}
+    {% for product in flash_collection.products limit: 6 %}
+      <div class="crimson-product-card">
+        <div class="crimson-product-image">
+          <span class="limited-badge">Limited</span>
+          {% if product.featured_image %}
+            <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}" loading="lazy">
+          {% else %}
+            <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&h=533&fit=crop" alt="{{ product.title }}">
+          {% endif %}
+        </div>
+        <div class="crimson-product-info">
+          <p class="crimson-product-name">{{ product.title | truncate: 28 }}</p>
+          <div class="crimson-product-price">
+            <span class="price-current">{{ product.price | money }}</span>
+            {% if product.compare_at_price > product.price %}
+              <span class="price-original">{{ product.compare_at_price | money }}</span>
+              <span class="price-off">{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}% OFF</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <!-- Default flash sale products -->
+      <div class="crimson-product-card">
+        <div class="crimson-product-image">
+          <span class="limited-badge">Limited</span>
+          <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&h=533&fit=crop" alt="Brass Ganesha">
+        </div>
+        <div class="crimson-product-info">
+          <p class="crimson-product-name">Brass Ganesha Idol</p>
+          <div class="crimson-product-price">
+            <span class="price-current">₹4,999</span>
+            <span class="price-original">₹7,999</span>
+            <span class="price-off">38% OFF</span>
+          </div>
+        </div>
+      </div>
+      <div class="crimson-product-card">
+        <div class="crimson-product-image">
+          <span class="limited-badge">Limited</span>
+          <img src="https://images.unsplash.com/photo-1609167830220-7164aa360951?w=400&h=533&fit=crop" alt="Buddha Statue">
+        </div>
+        <div class="crimson-product-info">
+          <p class="crimson-product-name">Meditating Buddha</p>
+          <div class="crimson-product-price">
+            <span class="price-current">₹3,499</span>
+            <span class="price-original">₹5,999</span>
+            <span class="price-off">42% OFF</span>
+          </div>
+        </div>
+      </div>
+      <div class="crimson-product-card">
+        <div class="crimson-product-image">
+          <span class="limited-badge">Limited</span>
+          <img src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=400&h=533&fit=crop" alt="Wall Decor">
+        </div>
+        <div class="crimson-product-info">
+          <p class="crimson-product-name">Metal Wall Art</p>
+          <div class="crimson-product-price">
+            <span class="price-current">₹2,999</span>
+            <span class="price-original">₹4,499</span>
+            <span class="price-off">33% OFF</span>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Section 5: Department Grid (Masonry) with Scroll Animation -->
+<section class="department-grid">
+  <div class="department-grid-header scroll-reveal scroll-reveal-up">
+    <h2>Shop by Category</h2>
+    <p>Explore our curated collections</p>
+  </div>
+  
+  <div class="masonry-grid scroll-reveal-stagger">
+    <a href="/collections/brass" class="masonry-item tall">
+      <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&h=800&fit=crop" alt="Brass Collection">
+      <div class="masonry-overlay">
+        <h3 class="masonry-title">Brass Collection</h3>
+        <span class="masonry-count">120+ Products</span>
+      </div>
+    </a>
+    <a href="/collections/resin" class="masonry-item">
+      <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&h=400&fit=crop" alt="Resin Art">
+      <div class="masonry-overlay">
+        <h3 class="masonry-title">Resin Art</h3>
+        <span class="masonry-count">85+ Products</span>
+      </div>
+    </a>
+    <a href="/collections/rugs" class="masonry-item">
+      <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=400&fit=crop" alt="Handwoven Rugs">
+      <div class="masonry-overlay">
+        <h3 class="masonry-title">Handwoven Rugs</h3>
+        <span class="masonry-count">45+ Products</span>
+      </div>
+    </a>
+    <a href="/collections/kitchenware" class="masonry-item tall">
+      <img src="https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=400&h=800&fit=crop" alt="Kitchenware">
+      <div class="masonry-overlay">
+        <h3 class="masonry-title">Kitchenware</h3>
+        <span class="masonry-count">65+ Products</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Section 6: Artisan Story Block with Scroll Animation -->
+<section class="artisan-story" id="artisan-story">
+  <div class="artisan-content">
+    <div class="artisan-image handcraft-border scroll-reveal scroll-reveal-left">
+      <img src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=600&h=400&fit=crop" alt="Our Artisans at Work">
+      <span class="artisan-badge">Since 1985</span>
+    </div>
+    <div class="artisan-text scroll-reveal scroll-reveal-right">
+      <h2>Crafted with <span>Passion</span>, Made with Soul</h2>
+      <p>Every piece in our collection tells a story of generations of skilled artisans who pour their heart into creating timeless masterpieces. From the bustling workshops of Moradabad to your living room, each item carries the warmth of human touch.</p>
+      <div class="artisan-features scroll-reveal-stagger">
+        <div class="artisan-feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <span class="feature-text">100% Authentic</span>
+        </div>
+        <div class="artisan-feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+          </div>
+          <span class="feature-text">Certificate</span>
+        </div>
+      </div>
+      <button class="artisan-cta" onclick="window.location.href='/pages/our-story'">
+        Read Our Story
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Section 7: Myntra-Style Infinite Grid -->
+<section class="infinite-grid-section">
+  <div class="infinite-grid-header">
+    <h2>Handpicked For You</h2>
+    <a href="/collections/all" class="view-all-link">
+      View All
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </a>
+  </div>
+  
+  <div class="infinite-grid" id="infiniteProductGrid">
+    {% assign featured_collection = collections[section.settings.featured_collection] | default: collections['all'] %}
+    {% for product in featured_collection.products limit: 8 %}
+      <div class="grid-product-card" data-product-id="{{ product.id }}">
+        <div class="grid-product-image">
+          <button class="grid-wishlist-btn" aria-label="Add to wishlist" data-product-id="{{ product.id }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+          
+          {% if product.tags contains 'new' %}
+            <span class="grid-product-badge new">New</span>
+          {% elsif product.tags contains 'handcrafted' %}
+            <span class="grid-product-badge handcrafted">Handcrafted</span>
+          {% elsif product.compare_at_price > product.price %}
+            <span class="grid-product-badge sale">Sale</span>
+          {% endif %}
+          
+          <a href="{{ product.url }}">
+            {% if product.featured_image %}
+              <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title }}" loading="lazy">
+            {% else %}
+              <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&h=800&fit=crop" alt="{{ product.title }}">
+            {% endif %}
+          </a>
+          
+          <div class="grid-rating">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span>4.{{ forloop.index | modulo: 5 | plus: 3 }}</span>
+          </div>
+          
+          <div class="grid-quick-add">
+            <button class="quick-add-btn" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+              Quick Add
+            </button>
+          </div>
+        </div>
+        
+        <div class="grid-product-info">
+          <p class="grid-product-brand">{{ product.vendor | default: 'Aona India' }}</p>
+          <h3 class="grid-product-name">{{ product.title }}</h3>
+          <div class="grid-product-price">
+            <span class="grid-price-current">{{ product.price | money }}</span>
+            {% if product.compare_at_price > product.price %}
+              <span class="grid-price-original">{{ product.compare_at_price | money }}</span>
+              <span class="grid-price-discount">({{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}% OFF)</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <!-- Default products if collection is empty -->
+      {% for i in (1..8) %}
+        <div class="grid-product-card">
+          <div class="grid-product-image">
+            <button class="grid-wishlist-btn" aria-label="Add to wishlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+            
+            {% assign badge_type = i | modulo: 3 %}
+            {% if badge_type == 0 %}
+              <span class="grid-product-badge new">New</span>
+            {% elsif badge_type == 1 %}
+              <span class="grid-product-badge handcrafted">Handcrafted</span>
+            {% else %}
+              <span class="grid-product-badge sale">Sale</span>
+            {% endif %}
+            
+            <a href="#">
+              {% assign img_index = i | modulo: 4 | plus: 1 %}
+              {% case img_index %}
+                {% when 1 %}
+                  <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&h=800&fit=crop" alt="Product {{ i }}">
+                {% when 2 %}
+                  <img src="https://images.unsplash.com/photo-1609167830220-7164aa360951?w=600&h=800&fit=crop" alt="Product {{ i }}">
+                {% when 3 %}
+                  <img src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=600&h=800&fit=crop" alt="Product {{ i }}">
+                {% when 4 %}
+                  <img src="https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=600&h=800&fit=crop" alt="Product {{ i }}">
+              {% endcase %}
+            </a>
+            
+            <div class="grid-rating">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              <span>4.{{ i | modulo: 5 | plus: 3 }}</span>
+            </div>
+            
+            <div class="grid-quick-add">
+              <button class="quick-add-btn">Quick Add</button>
+            </div>
+          </div>
+          
+          <div class="grid-product-info">
+            <p class="grid-product-brand">Aona India</p>
+            {% case i %}
+              {% when 1 %}
+                <h3 class="grid-product-name">Brass Ganesha Idol Premium</h3>
+                <div class="grid-product-price">
+                  <span class="grid-price-current">₹4,999</span>
+                  <span class="grid-price-original">₹7,999</span>
+                  <span class="grid-price-discount">(38% OFF)</span>
+                </div>
+              {% when 2 %}
+                <h3 class="grid-product-name">Meditating Buddha Statue</h3>
+                <div class="grid-product-price">
+                  <span class="grid-price-current">₹3,499</span>
+                  <span class="grid-price-original">₹5,999</span>
+                  <span class="grid-price-discount">(42% OFF)</span>
+                </div>
+              {% when 3 %}
+                <h3 class="grid-product-name">Metal Sun Wall Art</h3>
+                <div class="grid-product-price">
+                  <span class="grid-price-current">₹2,499</span>
+                </div>
+              {% when 4 %}
+                <h3 class="grid-product-name">Copper Flower Vase</h3>
+                <div class="grid-product-price">
+                  <span class="grid-price-current">₹1,999</span>
+                  <span class="grid-price-original">₹2,999</span>
+                  <span class="grid-price-discount">(33% OFF)</span>
+                </div>
+              {% when 5 %}
+                <h3 class="grid-product-name">Krishna Dancing Brass</h3>
+                <div class="grid-product-price">
+                  <span class="grid-price-current">₹5,999</span>
+                </div>
+              {% when 6 %}
+                <h3 class="grid-product-name">Resin Buddha Face</h3>
+                <div class="grid-product-price">
+                  <span class="grid-price-current">₹1,499</span>
+                  <span class="grid-price-original">₹2,499</span>
+                  <span class="grid-price-discount">(40% OFF)</span>
+                </div>
+              {% when 7 %}
+                <h3 class="grid-product-name">Antique Brass Lamp</h3>
+                <div class="grid-product-price">
+                  <span class="grid-price-current">₹3,299</span>
+                </div>
+              {% when 8 %}
+                <h3 class="grid-product-name">Decorative Wall Panel</h3>
+                <div class="grid-product-price">
+                  <span class="grid-price-current">₹4,499</span>
+                  <span class="grid-price-original">₹6,999</span>
+                  <span class="grid-price-discount">(36% OFF)</span>
+                </div>
+            {% endcase %}
+          </div>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+  
+  <div class="load-more-container">
+    <button class="load-more-btn" id="loadMoreBtn">
+      Load More Products
+    </button>
+  </div>
+</section>
+
+<style>
+/* Scroll Animate Sections - Category Bubbles & Flash Sale */
+.scroll-animate-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-animate-section.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Category Bubbles Scroll Animation */
+.category-bubbles.scroll-animate-section .category-bubble {
+  opacity: 0;
+  transform: scale(0.9) translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: transform, opacity;
+}
+
+.category-bubbles.animate-in .category-bubble {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.category-bubbles.animate-in .category-bubble:nth-child(1) { transition-delay: 0.05s; }
+.category-bubbles.animate-in .category-bubble:nth-child(2) { transition-delay: 0.1s; }
+.category-bubbles.animate-in .category-bubble:nth-child(3) { transition-delay: 0.15s; }
+.category-bubbles.animate-in .category-bubble:nth-child(4) { transition-delay: 0.2s; }
+.category-bubbles.animate-in .category-bubble:nth-child(5) { transition-delay: 0.25s; }
+.category-bubbles.animate-in .category-bubble:nth-child(6) { transition-delay: 0.3s; }
+.category-bubbles.animate-in .category-bubble:nth-child(7) { transition-delay: 0.35s; }
+.category-bubbles.animate-in .category-bubble:nth-child(8) { transition-delay: 0.4s; }
+
+/* Category Bubble Hover Animation */
+.category-bubble:hover .bubble-image {
+  transform: scale(1.1);
+  box-shadow: 0 4px 20px rgba(136, 0, 21, 0.3);
+}
+
+.category-bubble:hover .bubble-label {
+  color: #880015;
+}
+
+.category-bubbles-scroll {
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+.category-bubble {
+  scroll-snap-align: center;
+}
+
+/* Flash Sale Scroll Animation */
+.crimson-zone.scroll-animate-section .crimson-zone-header {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  will-change: transform, opacity;
+}
+
+.crimson-zone.animate-in .crimson-zone-header {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.crimson-zone.scroll-animate-section .crimson-products-scroll {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+  will-change: transform, opacity;
+}
+
+.crimson-zone.animate-in .crimson-products-scroll {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.crimson-zone.scroll-animate-section .crimson-product-card {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.crimson-zone.animate-in .crimson-product-card {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.crimson-zone.animate-in .crimson-product-card:nth-child(1) { transition-delay: 0.3s; }
+.crimson-zone.animate-in .crimson-product-card:nth-child(2) { transition-delay: 0.4s; }
+.crimson-zone.animate-in .crimson-product-card:nth-child(3) { transition-delay: 0.5s; }
+.crimson-zone.animate-in .crimson-product-card:nth-child(4) { transition-delay: 0.6s; }
+.crimson-zone.animate-in .crimson-product-card:nth-child(5) { transition-delay: 0.7s; }
+.crimson-zone.animate-in .crimson-product-card:nth-child(6) { transition-delay: 0.8s; }
+
+/* Flash Icon Pulse Animation */
+.flash-icon {
+  animation: flashPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes flashPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* Timer Number Animation */
+.timer-value {
+  animation: timerPop 1s ease-in-out infinite;
+}
+
+@keyframes timerPop {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.timer-flip {
+  animation: timerFlip 0.35s ease;
+}
+
+@keyframes timerFlip {
+  0% { transform: translateY(4px); opacity: 0.6; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Scroll Reveal Animations */
+.scroll-reveal {
+  opacity: 0;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.scroll-reveal-left {
+  transform: translateX(-60px);
+}
+
+.scroll-reveal-right {
+  transform: translateX(60px);
+}
+
+.scroll-reveal-up {
+  transform: translateY(40px);
+}
+
+.scroll-reveal-scale {
+  transform: scale(0.9);
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateX(0) translateY(0) scale(1);
+}
+
+/* Staggered children animation */
+.scroll-reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.scroll-reveal-stagger.revealed > *:nth-child(1) { transition-delay: 0.1s; }
+.scroll-reveal-stagger.revealed > *:nth-child(2) { transition-delay: 0.2s; }
+.scroll-reveal-stagger.revealed > *:nth-child(3) { transition-delay: 0.3s; }
+.scroll-reveal-stagger.revealed > *:nth-child(4) { transition-delay: 0.4s; }
+
+.scroll-reveal-stagger.revealed > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Handcraft border animation */
+.handcraft-border {
+  position: relative;
+}
+
+.handcraft-border::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 2px dashed #D4AF37;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.6s ease 0.3s;
+}
+
+.scroll-reveal.revealed.handcraft-border::before {
+  opacity: 1;
+  animation: dashMove 20s linear infinite;
+}
+
+@keyframes dashMove {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 1000; }
+}
+
+/* Floating animation for artisan badge */
+.artisan-badge {
+  animation: floatBadge 3s ease-in-out infinite;
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Scroll Animate Sections Observer (Category Bubbles & Flash Sale)
+  const scrollAnimateSections = document.querySelectorAll('.scroll-animate-section');
+  
+  const animateObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -30px 0px'
+  });
+  
+  scrollAnimateSections.forEach(section => {
+    animateObserver.observe(section);
+  });
+
+  // Scroll Reveal Observer
+  const scrollRevealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-stagger');
+  
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px'
+  });
+  
+  scrollRevealElements.forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  // Hero Slider
+  const heroSlider = document.getElementById('heroSlider');
+  const heroDots = document.querySelectorAll('.hero-dot');
+  let currentSlide = 0;
+  const totalSlides = 3;
+  
+  function goToSlide(index) {
+    currentSlide = index;
+    heroSlider.style.transform = `translateX(-${index * 100}%)`;
+    heroDots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+  }
+  
+  heroDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => goToSlide(index));
+  });
+  
+  // Auto-play
+  setInterval(() => {
+    goToSlide((currentSlide + 1) % totalSlides);
+  }, 5000);
+  
+// Real Flash Sale Timer
+  const timerEl = document.getElementById('flashTimer');
+  
+  if (timerEl && timerEl.dataset.endTime) {
+    const endTime = new Date(timerEl.dataset.endTime).getTime();
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const distance = endTime - now;
+
+      // If sale is over
+      if (distance < 0) {
+        timerEl.innerHTML = '<div class="timer-ended">Sale Ended</div>';
+        return;
+      }
+
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      const hrsEl = document.getElementById('timerHours');
+      const minsEl = document.getElementById('timerMinutes');
+      const secsEl = document.getElementById('timerSeconds');
+      
+      if (hrsEl) {
+        const hStr = hours.toString().padStart(2, '0');
+        if (hrsEl.textContent !== hStr) {
+           hrsEl.classList.add('timer-flip');
+           hrsEl.textContent = hStr;
+           setTimeout(() => hrsEl.classList.remove('timer-flip'), 350);
+        }
+      }
+      if (minsEl) {
+        const mStr = minutes.toString().padStart(2, '0');
+        if (minsEl.textContent !== mStr) {
+           minsEl.classList.add('timer-flip');
+           minsEl.textContent = mStr;
+           setTimeout(() => minsEl.classList.remove('timer-flip'), 350);
+        }
+      }
+      if (secsEl) {
+        const sStr = seconds.toString().padStart(2, '0');
+        if (secsEl.textContent !== sStr) {
+           secsEl.classList.add('timer-flip');
+           secsEl.textContent = sStr;
+           setTimeout(() => secsEl.classList.remove('timer-flip'), 350);
+        }
+      }
+    }
+    
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  }
+  
+  // Tab Navigation
+  const tabItems = document.querySelectorAll('.tab-item');
+  tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+      tabItems.forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      // Filter products based on tab
+      const tabValue = this.dataset.tab;
+      console.log('Filter by:', tabValue);
+    });
+  });
+  
+  // Wishlist Toggle
+  const wishlistBtns = document.querySelectorAll('.grid-wishlist-btn');
+  wishlistBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.classList.toggle('active');
+      const svg = this.querySelector('svg');
+      if (this.classList.contains('active')) {
+        svg.setAttribute('fill', 'currentColor');
+      } else {
+        svg.setAttribute('fill', 'none');
+      }
+    });
+  });
+  
+  // Load More
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  let page = 1;
+  
+  loadMoreBtn.addEventListener('click', function() {
+    this.innerHTML = '<span class="spinner"></span> Loading...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+      page++;
+      this.innerHTML = 'Load More Products';
+      this.disabled = false;
+      // In real implementation, fetch more products via AJAX
+    }, 1500);
+  });
+  
+  // Quick Add
+  const quickAddBtns = document.querySelectorAll('.quick-add-btn');
+  quickAddBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const originalText = this.textContent;
+      this.textContent = 'Adding...';
+      
+      setTimeout(() => {
+        this.textContent = 'Added!';
+        setTimeout(() => {
+          this.textContent = originalText;
+        }, 1500);
+      }, 800);
+    });
+  });
+  
+  // Category Bubbles
+  const bubbles = document.querySelectorAll('.category-bubble');
+  bubbles.forEach(bubble => {
+    bubble.addEventListener('click', function(e) {
+      bubbles.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Auto-scroll category bubbles (toggle scroll)
+  const bubblesScroll = document.querySelector('.category-bubbles-scroll');
+  if (bubblesScroll) {
+    let bubbleDir = 1;
+    const bubbleStep = () => {
+      const maxScroll = bubblesScroll.scrollWidth - bubblesScroll.clientWidth;
+      if (maxScroll <= 0) return;
+      bubblesScroll.scrollTo({
+        left: Math.min(maxScroll, Math.max(0, bubblesScroll.scrollLeft + 120 * bubbleDir)),
+        behavior: 'smooth'
+      });
+      if (bubblesScroll.scrollLeft >= maxScroll - 10) bubbleDir = -1;
+      if (bubblesScroll.scrollLeft <= 10) bubbleDir = 1;
+    };
+    setInterval(bubbleStep, 3000);
+  }
+
+  // Auto-scroll flash sale products (smooth toggle scroll)
+  const flashScroll = document.querySelector('.crimson-products-scroll');
+  if (flashScroll) {
+    let flashDir = 1;
+    const flashStep = () => {
+      const maxScroll = flashScroll.scrollWidth - flashScroll.clientWidth;
+      if (maxScroll <= 0) return;
+      flashScroll.scrollTo({
+        left: Math.min(maxScroll, Math.max(0, flashScroll.scrollLeft + 200 * flashDir)),
+        behavior: 'smooth'
+      });
+      if (flashScroll.scrollLeft >= maxScroll - 10) flashDir = -1;
+      if (flashScroll.scrollLeft <= 10) flashDir = 1;
+    };
+    setInterval(flashStep, 3200);
+  }
+});
+</script>
+
+{% schema %}
+
+{
+  "name": "Crimson Artisan Homepage",
+  "tag": "section",
+  "class": "crimson-homepage",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "featured_collection",
+      "label": "Featured Collection"
+    },
+
+     {
+      "type": "text",
+      "id": "flash_sale_end_date",
+      "label": "Flash Sale End Date",
+      "info": "Format: YYYY-MM-DDTHH:mm:ss (e.g. 2026-12-31T23:59:00)",
+      "default": "2026-12-31T23:59:00"
+    },
+
+    {
+      "type": "collection",
+      "id": "flash_sale_collection",
+      "label": "Flash Sale Collection"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_bubble",
+      "name": "Category Bubble",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Category"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Crimson Homepage",
+      "blocks": [
+        { "type": "category_bubble", "settings": { "title": "Statues" } },
+        { "type": "category_bubble", "settings": { "title": "Wall Art" } },
+        { "type": "category_bubble", "settings": { "title": "Vases" } },
+        { "type": "category_bubble", "settings": { "title": "Lamps" } },
+        { "type": "category_bubble", "settings": { "title": "Brass" } },
+        { "type": "category_bubble", "settings": { "title": "Resin" } },
+        { "type": "category_bubble", "settings": { "title": "Ganesha" } },
+        { "type": "category_bubble", "settings": { "title": "Buddha" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

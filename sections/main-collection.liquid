@@ -1,0 +1,922 @@
+{% comment %}
+  Main Collection Section
+  Uses Crimson Grid System with Universal Product Cards
+  Features: Filter Bar, Infinite Scroll, Load More
+{% endcomment %}
+
+{{ 'crimson-grid.css' | asset_url | stylesheet_tag }}
+
+<div class="collection-page" data-collection-url="{{ collection.url }}">
+  
+  <!-- Collection Header -->
+  <div class="collection-header">
+    <div class="collection-header__content">
+      <h1 class="collection-header__title">{{ collection.title }}</h1>
+      <p class="collection-header__count">
+        <strong>{{ collection.products_count }}</strong> {{ 'collections.general.products' | t | default: 'Products' }}
+      </p>
+      {%- if collection.description != blank -%}
+        <div class="collection-header__description">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- Sticky Filter Bar -->
+  <div class="filter-bar--crimson" id="filterBar">
+    <!-- Sort Button -->
+    <button type="button" class="filter-bar__item filter-bar__item--sort" onclick="openSortPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="6" x2="16" y2="6"/>
+        <line x1="4" y1="12" x2="12" y2="12"/>
+        <line x1="4" y1="18" x2="8" y2="18"/>
+        <path d="M16 12l4 4-4 4"/>
+      </svg>
+      <span>{{ 'collections.sorting.sort_by' | t | default: 'Sort' }}</span>
+    </button>
+    
+    <!-- Filter Button -->
+    <button type="button" class="filter-bar__item" onclick="openFilterPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"/>
+      </svg>
+      <span>{{ 'collections.filtering.filter' | t | default: 'Filter' }}</span>
+      {%- assign active_filters_count = 0 -%}
+      {%- for filter in collection.filters -%}
+        {%- assign active_filters_count = active_filters_count | plus: filter.active_values.size -%}
+      {%- endfor -%}
+      {%- if active_filters_count > 0 -%}
+        <span class="filter-bar__count">{{ active_filters_count }}</span>
+      {%- endif -%}
+    </button>
+    
+    <!-- Quick Category Pills -->
+    <div class="filter-bar__categories">
+      <button type="button" class="filter-bar__category" data-category="brass">Brass</button>
+      <button type="button" class="filter-bar__category" data-category="resin">Resin</button>
+      <button type="button" class="filter-bar__category" data-category="copper">Copper</button>
+      <button type="button" class="filter-bar__category" data-category="wall-art">Wall Art</button>
+      <button type="button" class="filter-bar__category" data-category="statues">Statues</button>
+    </div>
+  </div>
+
+  <!-- Active Filters -->
+  {%- if active_filters_count > 0 -%}
+    <div class="active-filters">
+      {%- for filter in collection.filters -%}
+        {%- for value in filter.active_values -%}
+          <a href="{{ value.url_to_remove }}" class="active-filters__tag">
+            {{ value.label }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </a>
+        {%- endfor -%}
+      {%- endfor -%}
+      <a href="{{ collection.url }}" class="active-filters__clear">
+        {{ 'collections.filtering.clear_all' | t | default: 'Clear All' }}
+      </a>
+    </div>
+  {%- endif -%}
+
+  <!-- Product Grid -->
+  {%- paginate collection.products by 12 -%}
+    <div class="product-grid--crimson" id="productGrid">
+      {%- for product in collection.products -%}
+        {% render 'crimson-card', product: product, card_index: forloop.index %}
+      {%- else -%}
+        <!-- No Products Found -->
+        <div class="no-results--crimson" style="grid-column: 1 / -1;">
+          <svg class="no-results__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+          <h3 class="no-results__title">{{ 'collections.general.no_products' | t | default: 'No products found' }}</h3>
+          <p class="no-results__message">{{ 'collections.general.try_different' | t | default: 'Try adjusting your filters or browse our collections' }}</p>
+          
+          <!-- Trending Products Carousel -->
+          <div class="no-results__trending">
+            <h4 class="no-results__trending-title">{{ 'collections.general.trending' | t | default: 'Trending Brass & Resin' }}</h4>
+            <div class="no-results__carousel">
+              {%- for product in collections['all'].products limit: 8 -%}
+                {% render 'crimson-card', product: product, show_quick_add: false %}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- Load More Button -->
+    {%- if paginate.pages > 1 -%}
+      <div class="load-more--crimson" id="loadMoreContainer">
+        {%- if paginate.next -%}
+          <button 
+            type="button" 
+            class="load-more__btn" 
+            id="loadMoreBtn"
+            data-next-url="{{ paginate.next.url }}"
+          >
+            <span class="load-more__text">{{ 'collections.pagination.load_more' | t | default: 'Load More Products' }}</span>
+            <span class="load-more__spinner" style="display: none;"></span>
+          </button>
+        {%- else -%}
+          <p class="load-more__end">{{ 'collections.pagination.no_more' | t | default: "You've seen all products" }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+
+  <!-- Sort Panel (Slide-out) -->
+  <div class="sort-panel" id="sortPanel">
+    <div class="sort-panel__overlay" onclick="closeSortPanel()"></div>
+    <div class="sort-panel__content">
+      <div class="sort-panel__header">
+        <h3>{{ 'collections.sorting.sort_by' | t | default: 'Sort By' }}</h3>
+        <button type="button" class="sort-panel__close" onclick="closeSortPanel()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="sort-panel__options">
+        {%- assign sort_options = 'manual,best-selling,title-ascending,title-descending,price-ascending,price-descending,created-ascending,created-descending' | split: ',' -%}
+        {%- for option in sort_options -%}
+          {%- assign is_active = false -%}
+          {%- if collection.sort_by == option or option == 'manual' and collection.sort_by == blank -%}
+            {%- assign is_active = true -%}
+          {%- endif -%}
+          <a 
+            href="{{ collection.url }}?sort_by={{ option }}" 
+            class="sort-panel__option{% if is_active %} is-active{% endif %}"
+          >
+            <span class="sort-panel__option-text">
+              {%- case option -%}
+                {%- when 'manual' -%}Featured
+                {%- when 'best-selling' -%}Best Selling
+                {%- when 'title-ascending' -%}A to Z
+                {%- when 'title-descending' -%}Z to A
+                {%- when 'price-ascending' -%}Price: Low to High
+                {%- when 'price-descending' -%}Price: High to Low
+                {%- when 'created-ascending' -%}Oldest First
+                {%- when 'created-descending' -%}Newest First
+              {%- endcase -%}
+            </span>
+            {%- if is_active -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20,6 9,17 4,12"/>
+              </svg>
+            {%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Panel (Slide-out) -->
+  <div class="filter-panel" id="filterPanel">
+    <div class="filter-panel__overlay" onclick="closeFilterPanel()"></div>
+    <div class="filter-panel__content">
+      <div class="filter-panel__header">
+        <h3>{{ 'collections.filtering.filter' | t | default: 'Filters' }}</h3>
+        <button type="button" class="filter-panel__close" onclick="closeFilterPanel()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="filter-panel__body">
+        {%- for filter in collection.filters -%}
+          <div class="filter-group">
+            <button type="button" class="filter-group__header" onclick="toggleFilterGroup(this)">
+              <span>{{ filter.label }}</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6,9 12,15 18,9"/>
+              </svg>
+            </button>
+            <div class="filter-group__options">
+              {%- case filter.type -%}
+                {%- when 'list' or 'boolean' -%}
+                  {%- for value in filter.values -%}
+                    <label class="filter-option">
+                      <input 
+                        type="checkbox" 
+                        name="{{ filter.param_name }}" 
+                        value="{{ value.value }}"
+                        {% if value.active %}checked{% endif %}
+                        {% if value.count == 0 %}disabled{% endif %}
+                        onchange="applyFilter(this)"
+                      >
+                      <span class="filter-option__checkbox"></span>
+                      <span class="filter-option__label">{{ value.label }}</span>
+                      <span class="filter-option__count">({{ value.count }})</span>
+                    </label>
+                  {%- endfor -%}
+                
+                {%- when 'price_range' -%}
+                  <div class="filter-price-range">
+                    <div class="filter-price-range__inputs">
+                      <div class="filter-price-range__field">
+                        <span class="filter-price-range__currency">{{ cart.currency.symbol }}</span>
+                        <input 
+                          type="number" 
+                          name="{{ filter.param_name }}" 
+                          id="filter-price-min"
+                          value="{{ filter.min_value.value | money_without_currency | remove: ',' }}"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | remove: ',' }}"
+                          placeholder="Min"
+                        >
+                      </div>
+                      <span class="filter-price-range__separator">to</span>
+                      <div class="filter-price-range__field">
+                        <span class="filter-price-range__currency">{{ cart.currency.symbol }}</span>
+                        <input 
+                          type="number" 
+                          name="{{ filter.param_name }}" 
+                          id="filter-price-max"
+                          value="{{ filter.max_value.value | money_without_currency | remove: ',' }}"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | remove: ',' }}"
+                          placeholder="Max"
+                        >
+                      </div>
+                    </div>
+                    <button type="button" class="filter-price-range__apply" onclick="applyPriceFilter()">
+                      Apply Price
+                    </button>
+                  </div>
+              {%- endcase -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      
+      <div class="filter-panel__footer">
+        <a href="{{ collection.url }}" class="filter-panel__clear">Clear All</a>
+        <button type="button" class="filter-panel__apply" onclick="closeFilterPanel()">
+          Show {{ collection.products_count }} Products
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Collection Header */
+.collection-header {
+  background: linear-gradient(135deg, #A91D1D 0%, #880015 100%);
+  padding: 24px 16px;
+  color: #fff;
+}
+
+.collection-header__title {
+  margin: 0 0 4px;
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.collection-header__count {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.collection-header__count strong {
+  font-weight: 700;
+}
+
+.collection-header__description {
+  margin-top: 12px;
+  font-size: 13px;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+/* Active Filters */
+.active-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #fff;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.active-filters__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #A91D1D;
+  background: #FFF5F5;
+  border: 1px solid #A91D1D;
+  border-radius: 20px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.active-filters__tag svg {
+  width: 12px;
+  height: 12px;
+}
+
+.active-filters__clear {
+  font-size: 12px;
+  color: #666;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+/* Filter Bar Count Badge */
+.filter-bar__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: #A91D1D;
+  border-radius: 50%;
+  margin-left: 4px;
+}
+
+/* Sort Panel */
+.sort-panel,
+.filter-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2147483647;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.sort-panel.is-open,
+.filter-panel.is-open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.sort-panel__overlay,
+.filter-panel__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.sort-panel__content,
+.filter-panel__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 70vh;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.sort-panel.is-open .sort-panel__content,
+.filter-panel.is-open .filter-panel__content {
+  transform: translateY(0);
+}
+
+.sort-panel__header,
+.filter-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.sort-panel__header h3,
+.filter-panel__header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sort-panel__close,
+.filter-panel__close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.sort-panel__close svg,
+.filter-panel__close svg {
+  width: 20px;
+  height: 20px;
+  color: #666;
+}
+
+/* Sort Options */
+.sort-panel__options {
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.sort-panel__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.sort-panel__option:hover,
+.sort-panel__option.is-active {
+  background: #FFF5F5;
+}
+
+.sort-panel__option.is-active {
+  color: #A91D1D;
+  font-weight: 600;
+}
+
+.sort-panel__option svg {
+  width: 20px;
+  height: 20px;
+  color: #A91D1D;
+}
+
+/* Filter Panel Body */
+.filter-panel__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Filter Group */
+.filter-group {
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.filter-group__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.filter-group__header svg {
+  width: 18px;
+  height: 18px;
+  color: #666;
+  transition: transform 0.3s;
+}
+
+.filter-group.is-open .filter-group__header svg {
+  transform: rotate(180deg);
+}
+
+.filter-group__options {
+  display: none;
+  padding: 0 20px 16px;
+}
+
+.filter-group.is-open .filter-group__options {
+  display: block;
+}
+
+/* Filter Option */
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.filter-option input {
+  display: none;
+}
+
+.filter-option__checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #CCC;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.filter-option input:checked + .filter-option__checkbox {
+  background: #A91D1D;
+  border-color: #A91D1D;
+}
+
+.filter-option input:checked + .filter-option__checkbox::after {
+  content: '✓';
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.filter-option__label {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.filter-option__count {
+  font-size: 12px;
+  color: #999;
+}
+
+/* Price Range */
+.filter-price-range__inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.filter-price-range__field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  background: #F5F5F5;
+  border-radius: 8px;
+}
+
+.filter-price-range__currency {
+  font-size: 14px;
+  color: #666;
+}
+
+.filter-price-range__field input {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: none;
+  font-size: 14px;
+  outline: none;
+}
+
+.filter-price-range__separator {
+  font-size: 13px;
+  color: #999;
+}
+
+.filter-price-range__apply {
+  width: 100%;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #A91D1D;
+  background: #FFF5F5;
+  border: 1px solid #A91D1D;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Filter Panel Footer */
+.filter-panel__footer {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #E8E8E8;
+  background: #fff;
+}
+
+.filter-panel__clear {
+  flex: 1;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  background: #F5F5F5;
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.filter-panel__apply {
+  flex: 2;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: #A91D1D;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Load More End Message */
+.load-more__end {
+  font-size: 13px;
+  color: #999;
+  text-align: center;
+}
+
+/* Desktop Styles */
+@media screen and (min-width: 990px) {
+  .collection-header {
+    padding: 40px;
+    text-align: center;
+  }
+  
+  .collection-header__title {
+    font-size: 32px;
+  }
+  
+  .filter-panel__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: 0;
+    width: 360px;
+    max-height: none;
+    border-radius: 0;
+    transform: translateX(-100%);
+  }
+  
+  .filter-panel.is-open .filter-panel__content {
+    transform: translateX(0);
+  }
+}
+</style>
+
+<script>
+// Sort Panel Functions
+function openSortPanel() {
+  document.getElementById('sortPanel').classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSortPanel() {
+  document.getElementById('sortPanel').classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+// Filter Panel Functions
+function openFilterPanel() {
+  document.getElementById('filterPanel').classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFilterPanel() {
+  document.getElementById('filterPanel').classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+// Toggle Filter Group
+function toggleFilterGroup(btn) {
+  const group = btn.closest('.filter-group');
+  group.classList.toggle('is-open');
+}
+
+// Apply Filter
+function applyFilter(checkbox) {
+  const url = new URL(window.location.href);
+  const name = checkbox.name;
+  const value = checkbox.value;
+  
+  if (checkbox.checked) {
+    url.searchParams.append(name, value);
+  } else {
+    const params = url.searchParams.getAll(name).filter(v => v !== value);
+    url.searchParams.delete(name);
+    params.forEach(v => url.searchParams.append(name, v));
+  }
+  
+  window.location.href = url.toString();
+}
+
+// Apply Price Filter
+function applyPriceFilter() {
+  const url = new URL(window.location.href);
+  const min = document.getElementById('filter-price-min').value;
+  const max = document.getElementById('filter-price-max').value;
+  
+  url.searchParams.delete('filter.v.price.gte');
+  url.searchParams.delete('filter.v.price.lte');
+  
+  if (min) url.searchParams.set('filter.v.price.gte', min * 100);
+  if (max) url.searchParams.set('filter.v.price.lte', max * 100);
+  
+  window.location.href = url.toString();
+}
+
+// Infinite Scroll / Load More
+document.addEventListener('DOMContentLoaded', function() {
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  const productGrid = document.getElementById('productGrid');
+  
+  if (loadMoreBtn) {
+    // Click to Load More
+    loadMoreBtn.addEventListener('click', loadMoreProducts);
+    
+    // Infinite Scroll with IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !loadMoreBtn.disabled) {
+          loadMoreProducts();
+        }
+      });
+    }, { rootMargin: '200px' });
+    
+    observer.observe(loadMoreBtn);
+  }
+  
+  async function loadMoreProducts() {
+    const nextUrl = loadMoreBtn.dataset.nextUrl;
+    if (!nextUrl) return;
+    
+    // Show loading state
+    loadMoreBtn.disabled = true;
+    loadMoreBtn.querySelector('.load-more__text').style.display = 'none';
+    loadMoreBtn.querySelector('.load-more__spinner').style.display = 'block';
+    
+    try {
+      const response = await fetch(nextUrl);
+      const html = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      
+      // Get new products
+      const newProducts = doc.querySelectorAll('.product-grid--crimson .crimson-card');
+      
+      // Append to grid with animation
+      newProducts.forEach((product, index) => {
+        product.style.setProperty('--card-index', productGrid.children.length + index);
+        productGrid.appendChild(product.cloneNode(true));
+      });
+      
+      // Check for next page
+      const newLoadMore = doc.querySelector('#loadMoreBtn');
+      if (newLoadMore && newLoadMore.dataset.nextUrl) {
+        loadMoreBtn.dataset.nextUrl = newLoadMore.dataset.nextUrl;
+        loadMoreBtn.disabled = false;
+        loadMoreBtn.querySelector('.load-more__text').style.display = '';
+        loadMoreBtn.querySelector('.load-more__spinner').style.display = 'none';
+      } else {
+        // No more products
+        document.getElementById('loadMoreContainer').innerHTML = 
+          '<p class="load-more__end">You\'ve seen all products</p>';
+      }
+      
+      // Re-initialize wishlist buttons
+      initWishlistButtons();
+      
+    } catch (error) {
+      console.error('Error loading more products:', error);
+      loadMoreBtn.disabled = false;
+      loadMoreBtn.querySelector('.load-more__text').style.display = '';
+      loadMoreBtn.querySelector('.load-more__spinner').style.display = 'none';
+    }
+  }
+  
+  // Initialize Wishlist Buttons
+  function initWishlistButtons() {
+    document.querySelectorAll('.crimson-card__wishlist').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.classList.toggle('is-active');
+        
+        const productId = this.dataset.productId;
+        const isActive = this.classList.contains('is-active');
+        
+        // Save to localStorage
+        let wishlist = JSON.parse(localStorage.getItem('aona_wishlist') || '[]');
+        if (isActive) {
+          if (!wishlist.includes(productId)) wishlist.push(productId);
+        } else {
+          wishlist = wishlist.filter(id => id !== productId);
+        }
+        localStorage.setItem('aona_wishlist', JSON.stringify(wishlist));
+      });
+    });
+    
+    // Check saved wishlist
+    const wishlist = JSON.parse(localStorage.getItem('aona_wishlist') || '[]');
+    wishlist.forEach(productId => {
+      const btn = document.querySelector(`.crimson-card__wishlist[data-product-id="${productId}"]`);
+      if (btn) btn.classList.add('is-active');
+    });
+  }
+  
+  initWishlistButtons();
+  
+  // Open first filter group
+  const firstGroup = document.querySelector('.filter-group');
+  if (firstGroup) firstGroup.classList.add('is-open');
+  
+  // Quick Category Filter
+  document.querySelectorAll('.filter-bar__category').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const category = this.dataset.category;
+      window.location.href = `/collections/${category}`;
+    });
+  });
+  
+  // Mobile scroll shadow effect
+  if (window.innerWidth < 990) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    document.querySelectorAll('.crimson-card').forEach(card => {
+      observer.observe(card);
+    });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Collection Products",
+  "tag": "section",
+  "class": "section-collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 12,
+      "label": "Products per page"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": true,
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": true,
+      "label": "Show rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "default": true,
+      "label": "Show Quick Add button"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Enable filtering"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "Enable sorting"
+    }
+  ]
+}
+{% endschema %}

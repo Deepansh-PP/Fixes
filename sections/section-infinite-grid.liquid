@@ -1,0 +1,97 @@
+{% schema %}
+{
+  "name": "Infinite Product Grid",
+  "tag": "section",
+  "class": "section-infinite-grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Handpicked For You"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+       "type": "range",
+       "id": "products_per_page",
+       "min": 8,
+       "max": 24,
+       "step": 4,
+       "default": 12,
+       "label": "Initial Product Count"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Infinite Product Grid"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="section-padding bg-gray-50">
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-heading font-bold">{{ section.settings.heading }}</h2>
+        <a href="{{ collections[section.settings.collection].url | default: '/collections/all' }}" class="text-red font-semibold text-sm flex items-center gap-1">
+           View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    {% endif %}
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="InfiniteGrid-{{ section.id }}" data-page="1">
+      {% assign collection = collections[section.settings.collection] | default: collections['all'] %}
+      {% for product in collection.products limit: section.settings.products_per_page %}
+        {% render 'product-card', product: product, class: 'bg-white rounded shadow-sm hover:shadow-md transition-shadow' %}
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-8">
+       <button id="LoadMore-{{ section.id }}" class="btn btn-secondary" data-collection="{{ collection.handle }}" data-page="1">
+          Load More
+       </button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+   const loadMoreBtn = document.getElementById('LoadMore-{{ section.id }}');
+   const grid = document.getElementById('InfiniteGrid-{{ section.id }}');
+   
+   if(loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', function() {
+         const collection = this.dataset.collection;
+         const currentPage = parseInt(this.dataset.page);
+         const nextPage = currentPage + 1;
+         
+         this.innerHTML = 'Loading...';
+         
+         fetch(`/collections/${collection}?page=${nextPage}&view=ajax`)
+            .then(response => response.text())
+            .then(data => {
+               const parser = new DOMParser();
+               const doc = parser.parseFromString(data, 'text/html');
+               const newProducts = doc.querySelectorAll('.product-card'); // Ensure product-card class exists in snippet
+               
+               if(newProducts.length > 0) {
+                  newProducts.forEach(p => grid.appendChild(p));
+                  this.dataset.page = nextPage;
+                  this.innerHTML = 'Load More';
+               } else {
+                  this.style.display = 'none';
+               }
+            })
+            .catch(err => {
+               console.error(err);
+               this.innerHTML = 'Error loading';
+            });
+      });
+   }
+});
+</script>

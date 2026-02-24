@@ -1,0 +1,341 @@
+{%- comment -%}
+  AONA INDIA - Custom Mobile Header
+  Renamed to ensure it loads correctly.
+{%- endcomment -%}
+
+<div class="header-spacer"></div>
+
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    
+    <!-- 1. LEFT: Navigation Toggle (Hamburger or Back Arrow) -->
+    <div class="header-left">
+      {% if template.name == 'index' %}
+        <button class="mobile-nav-toggle" id="mobileMenuTrigger" onclick="document.dispatchEvent(new CustomEvent('toggleBoxDrawer'))">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      {% else %}
+        <button class="mobile-nav-toggle" onclick="history.back()" aria-label="Go Back">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </button>
+      {% endif %}
+
+      <!-- 2. LOGO (Next to toggle) -->
+      <a href="{{ routes.root_url }}" class="header-logo">
+        <span class="logo-text">AONA</span>
+        <span class="logo-dot">•</span>
+      </a>
+    </div>
+
+    <!-- 3. RIGHT: Actions (Search, Wishlist, Profile) -->
+    <div class="header-actions">
+      
+      <!-- Search -->
+      <a href="{{ routes.search_url }}" class="header-icon header-search-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </a>
+
+      <!-- Wishlist -->
+      <a href="/pages/wishlist" class="header-icon wishlist-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <!-- Optional count badge -->
+        <span class="wishlist-count" style="display:none">0</span>
+      </a>
+
+      <!-- Profile -->
+      <div class="profile-container">
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" 
+           class="header-icon profile-icon" 
+           id="profileTrigger">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+        
+        <!-- Profile Drawers/Dropdowns -->
+        {% if customer %}
+          {% render 'account-dropdown' %}
+        {% else %}
+          {% render 'account-drawer' %}
+        {% endif %}
+      </div>
+      
+      <!-- Cart -->
+      <a href="{{ routes.cart_url }}" class="header-icon cart-icon" id="cart-icon-bubble">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="wishlist-count">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+
+    </div>
+  </div>
+</header>
+<style>
+/* =====================================================
+   INLINED CRITICAL HEADER CSS
+   ===================================================== */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: #ffffff;
+    z-index: 9999;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    transition: transform 0.3s ease;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.mobile-nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 8px;
+    margin-left: -8px;
+    cursor: pointer;
+    color: #1A1A1A;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+    margin-right: auto;
+    text-decoration: none;
+}
+
+.logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #880015;
+    letter-spacing: 1px;
+}
+
+.logo-dot {
+    color: #D4AF37;
+    font-size: 24px;
+    line-height: 0;
+    margin-left: 2px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.header-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1A1A1A;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.header-icon:hover {
+    color: #880015;
+}
+
+.wishlist-count {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: #880015;
+    color: white;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* Profile Visibility - Critical Fixes */
+.profile-container { position: relative; }
+.account-drawer-overlay, .account-drawer, .account-dropdown { display: none; }
+
+.account-drawer-overlay.active {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.account-drawer.active {
+    display: flex !important;
+    transform: translateX(0) !important;
+}
+
+.account-dropdown.active {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+}
+
+/* Category Tabs Styles */
+.category-tabs-section {
+    position: sticky;
+    top: 56px;
+    z-index: 99;
+    background: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tab-nav {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0 16px;
+    gap: 20px;
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+}
+.tab-nav::-webkit-scrollbar { display: none; }
+
+.tab-item {
+    display: inline-block;
+    padding: 14px 0;
+    color: #666;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    flex-shrink: 0;
+}
+
+.tab-item.active {
+    color: #880015;
+    font-weight: 700;
+}
+
+.tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #880015;
+    border-radius: 3px 3px 0 0;
+}
+
+.header-spacer { height: 56px; }
+
+@media (min-width: 992px) {
+    .site-header, .header-spacer { height: 70px; }
+    .site-header { padding: 0 40px; }
+    .category-tabs-section { top: 70px; display: flex; justify-content: center; }
+    .mobile-nav-toggle { display: none; }
+    .logo-text { font-size: 26px; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const profileTrigger = document.getElementById('profileTrigger');
+  const dropdown = document.getElementById('accountDropdown');
+  const drawer = document.getElementById('accountDrawer');
+  const overlay = document.getElementById('accountDrawerOverlay');
+  const closeBtn = document.getElementById('drawerCloseBtn');
+
+  // Toggle Function
+  function toggleProfile(e) {
+    if(e) e.preventDefault();
+    
+    // Check if logged in (Dropdown exists)
+    if (dropdown) {
+      dropdown.classList.toggle('active');
+    }
+    // Check if logged out (Drawer exists)
+    else if (drawer && overlay) {
+      drawer.classList.add('active');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+  }
+
+  // Close Function for Drawer
+  function closeDrawer() {
+    if (drawer) drawer.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Close Function for Dropdown
+  function closeDropdown(e) {
+    if (dropdown && dropdown.classList.contains('active')) {
+      if (!dropdown.contains(e.target) && !profileTrigger.contains(e.target)) {
+        dropdown.classList.remove('active');
+      }
+    }
+  }
+
+  // Event Listeners
+  if (profileTrigger) {
+    profileTrigger.addEventListener('click', toggleProfile);
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (overlay) overlay.addEventListener('click', closeDrawer);
+  
+  // Click outside to close dropdown
+  document.addEventListener('click', closeDropdown);
+});
+</script>
+
+{% schema %}
+{
+  "name": "Custom Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    }
+  ]
+}
+{% endschema %}

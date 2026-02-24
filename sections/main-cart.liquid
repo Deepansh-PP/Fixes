@@ -1,0 +1,233 @@
+{%- comment -%}
+  AONA INDIA - Cart Page
+  Myntra-Style Shopping Bag with:
+  - Cart items with quantity selectors
+  - Price summary
+  - Apply coupon section
+  - Sticky checkout button
+{%- endcomment -%}
+
+<div class="cart-page bg-grey" style="min-height: 100vh; padding-bottom: 140px;">
+  <!-- Header -->
+  <div class="bg-white px-4 py-4 border-b border-light" style="position: sticky; top: 0; z-index: 50;">
+    <div class="flex items-center gap-4">
+      <a href="javascript:history.back()" class="header-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <div>
+        <h1 class="font-heading text-xl font-semibold text-primary">
+          {{ 'cart.general.title' | t }}
+        </h1>
+        <p class="text-sm text-muted">
+          {{ cart.item_count }} {{ cart.item_count | pluralize: 'cart.items.item', 'cart.items.items' | t }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {%- if cart.item_count > 0 -%}
+    <!-- Coupon Strip -->
+    <div class="bg-white border-b border-light px-4 py-3">
+      <div class="flex items-center gap-3">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-royal-red)" stroke-width="2">
+          <line x1="19" y1="5" x2="5" y2="19"/>
+          <circle cx="6.5" cy="6.5" r="2.5"/>
+          <circle cx="17.5" cy="17.5" r="2.5"/>
+        </svg>
+        <span class="text-sm font-semibold text-primary">{{ 'cart.coupon.title' | t }}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="2" style="margin-left: auto;">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Cart Items -->
+    <form action="{{ routes.cart_url }}" method="post" id="cart-form">
+      <div class="mt-2">
+        {%- for item in cart.items -%}
+          <div class="cart-item bg-white mb-2 p-4" data-line-item="{{ forloop.index }}">
+            <div class="flex gap-4">
+              <!-- Product Image -->
+              <a href="{{ item.url }}" class="flex-shrink-0" style="width: 96px; height: 112px; border-radius: 4px; overflow: hidden; background: var(--color-bg-grey);">
+                {%- if item.image -%}
+                  <img 
+                    src="{{ item.image | image_url: width: 200 }}"
+                    alt="{{ item.title }}"
+                    style="width: 100%; height: 100%; object-fit: cover;"
+                    loading="lazy"
+                  >
+                {%- endif -%}
+              </a>
+
+              <!-- Item Details -->
+              <div class="flex-1 min-w-0">
+                <!-- Brand -->
+                <p class="text-xs font-semibold text-muted uppercase">
+                  {{ item.vendor }}
+                </p>
+                
+                <!-- Title -->
+                <h3 class="text-sm text-primary text-truncate mt-1">
+                  <a href="{{ item.url }}">{{ item.product.title }}</a>
+                </h3>
+
+                <!-- Variant -->
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="text-xs text-muted mt-1">
+                    {{ item.variant.title }}
+                  </p>
+                {%- endunless -%}
+
+                <!-- Price -->
+                <div class="flex items-center gap-2 mt-2">
+                  <span class="font-bold text-primary">
+                    {{ item.final_line_price | money }}
+                  </span>
+                  {%- if item.original_line_price > item.final_line_price -%}
+                    <span class="text-xs text-muted line-through">
+                      {{ item.original_line_price | money }}
+                    </span>
+                    {%- assign savings = item.original_line_price | minus: item.final_line_price -%}
+                    {%- assign discount_percent = savings | times: 100 | divided_by: item.original_line_price -%}
+                    <span class="text-xs font-semibold text-red">
+                      {{ discount_percent }}% OFF
+                    </span>
+                  {%- endif -%}
+                </div>
+
+                <!-- Quantity Selector -->
+                <div class="flex items-center gap-3 mt-3" data-quantity-selector>
+                  <button 
+                    type="button"
+                    class="quantity-btn" 
+                    data-decrease
+                    style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center;"
+                    {% if item.quantity <= 1 %}disabled{% endif %}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                  </button>
+                  <input 
+                    type="number" 
+                    name="updates[]" 
+                    value="{{ item.quantity }}"
+                    min="1"
+                    max="{{ item.variant.inventory_quantity | default: 99 }}"
+                    class="text-sm font-semibold text-center"
+                    style="width: 24px; border: none; background: transparent;"
+                    readonly
+                  >
+                  <button 
+                    type="button"
+                    class="quantity-btn" 
+                    data-increase
+                    style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center;"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="12" y1="5" x2="12" y2="19"/>
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Remove Button -->
+              <a href="{{ item.url_to_remove }}" class="p-1 self-start" aria-label="Remove item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <!-- Price Summary -->
+      <div class="bg-white mt-2 p-4">
+        <h3 class="text-sm font-bold text-primary mb-3 uppercase tracking-wide">
+          {{ 'cart.summary.title' | t }} ({{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }})
+        </h3>
+        
+        <div class="space-y-2 text-sm" style="display: flex; flex-direction: column; gap: 8px;">
+          <!-- Total MRP -->
+          <div class="flex justify-between">
+            <span class="text-secondary">{{ 'cart.summary.subtotal' | t }}</span>
+            <span>{{ cart.original_total_price | money }}</span>
+          </div>
+          
+          <!-- Discount -->
+          {%- if cart.total_discount > 0 -%}
+            <div class="flex justify-between">
+              <span class="text-secondary">{{ 'cart.summary.discount' | t }}</span>
+              <span class="text-success">-{{ cart.total_discount | money }}</span>
+            </div>
+          {%- endif -%}
+          
+          <!-- Shipping -->
+          <div class="flex justify-between">
+            <span class="text-secondary">{{ 'cart.summary.shipping' | t }}</span>
+            <span class="text-success">{{ 'cart.summary.free' | t }}</span>
+          </div>
+          
+          <!-- Divider -->
+          <div style="border-top: 1px dashed var(--color-border); margin: 8px 0;"></div>
+          
+          <!-- Total -->
+          <div class="flex justify-between font-bold text-base">
+            <span>{{ 'cart.summary.total' | t }}</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sticky Footer -->
+      <div class="cart-footer" style="position: fixed; bottom: 60px; left: 0; right: 0; background: white; border-top: 1px solid var(--color-border-light); padding: 16px; z-index: 50;">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <span class="text-lg font-bold">{{ cart.total_price | money }}</span>
+            <button type="button" class="text-xs text-red font-semibold ml-2">
+              View Details
+            </button>
+          </div>
+        </div>
+        <button type="submit" name="checkout" class="btn btn-primary btn-full">
+          {{ 'cart.general.checkout' | t }}
+        </button>
+      </div>
+    </form>
+
+  {%- else -%}
+    <!-- Empty Cart -->
+    <div class="bg-white" style="min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px;">
+      <div style="width: 96px; height: 96px; border-radius: 50%; background: var(--color-bg-grey); display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+      </div>
+      <h2 class="font-heading text-xl font-semibold text-primary text-center">
+        {{ 'cart.general.empty' | t }}
+      </h2>
+      <p class="text-muted text-center mt-2">
+        Add items to your bag to checkout
+      </p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary mt-6">
+        {{ 'cart.general.continue_shopping' | t }}
+      </a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cart Page",
+  "tag": "section",
+  "class": "section-main-cart",
+  "settings": []
+}
+{% endschema %}

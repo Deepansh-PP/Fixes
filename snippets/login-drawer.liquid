@@ -1,0 +1,292 @@
+{% comment %}
+  AONA Login Drawer
+  Slide-out side drawer for mobile-first login experience.
+  Integrated with bitLogin App for Custom Profile Redirect.
+{% endcomment %}
+
+<div id="login-drawer" class="login-drawer" aria-hidden="true">
+  <div class="login-drawer__overlay" data-close-drawer></div>
+  <div class="login-drawer__content">
+    
+    <!-- Drawer Header -->
+    <div class="login-drawer__header">
+      <span class="login-drawer__title">LOGIN / SIGN UP</span>
+      <button class="login-drawer__close" data-close-drawer aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Drawer Body -->
+    <div class="login-drawer__body">
+      <h2 class="login-welcome-text">Welcome to Aona</h2>
+      <p class="login-subtext">Enter your details to continue shopping</p>
+
+      <!-- BITLOGIN APP CONTAINER -->
+      <div class="social-login-container">
+        <!-- The bitLogin app will automatically inject the Google button inside this div -->
+        <div class="bitlogin-social-login-buttons"></div>
+      </div>
+
+      <div class="login-divider">
+        <span>OR</span>
+      </div>
+
+      <!-- Standard Email Fallback -->
+      <form action="{{ routes.account_login_url }}" method="post" class="login-form">
+        <div class="form-group">
+          <input type="email" name="customer" placeholder="Phone Number or Email" class="login-input" required>
+        </div>
+
+        <button type="submit" class="login-btn-continue">
+          Continue
+        </button>
+      </form>
+
+      <div class="login-divider">
+        <span>or continue with</span>
+      </div>
+
+      <div style="text-align: center; margin-top: 16px;">
+        <a href="{{ routes.account_register_url }}" style="font-size: 14px; text-decoration: underline; color: #666;">
+          New to Aona? Create an account
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Container spacing */
+.social-login-container {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* 
+  FORCE BITLOGIN APP TO LOOK LIKE YOUR THEME
+  This overrides the app's default ugly button styles 
+*/
+.bitlogin-social-login-buttons iframe,
+.bitlogin-container {
+  width: 100% !important;
+  display: block !important;
+}
+
+.bitlogin-btn,
+.bitlogin-google-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  padding: 12px 16px !important;
+  background: white !important;
+  border: 1px solid #dadce0 !important;
+  border-radius: 4px !important; 
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s, box-shadow 0.2s !important;
+  color: #3c4043 !important;
+  font-family: 'Lato', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
+.bitlogin-btn:hover,
+.bitlogin-google-btn:hover {
+  background-color: #f7f8f8 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+  border-color: #d2e3fc !important;
+}
+
+/* Hide app branding if it exists */
+.bitlogin-powered-by {
+  display: none !important;
+}
+
+/* Divider Styling */
+.login-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.login-divider span {
+  padding: 0 10px;
+  color: #888;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Drawer Container */
+.login-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  visibility: hidden;
+  transition: visibility 0.3s;
+}
+
+.login-drawer {
+  visibility: visible;
+}
+
+/* Overlay */
+.login-drawer__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.login-drawer .login-drawer__overlay {
+  opacity: 1;
+}
+
+/* Content (Slide Out) */
+.login-drawer__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 85%;
+  max-width: 400px;
+  background: #fff;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+}
+
+.login-drawer .login-drawer__content {
+  transform: translateX(0);
+}
+
+/* Header */
+.login-drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.login-drawer__title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.login-drawer__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #333;
+}
+
+/* Body */
+.login-drawer__body {
+  padding: 30px 20px;
+  flex: 1;
+}
+
+.login-welcome-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: #6B0F1A;
+  margin-bottom: 10px;
+}
+
+.login-subtext {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.login-input:focus {
+  border-color: #6B0F1A;
+}
+
+.login-btn-continue {
+  width: 100%;
+  background: #6B0F1A;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.login-btn-continue:hover {
+  background: #500b13;
+}
+/* --- KILL DRAWER ON DESKTOP --- */
+@media (min-width: 992px) {
+  .login-drawer, 
+  #login-drawer, 
+  .account-drawer, 
+  #accountDrawer {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const drawer = document.getElementById('login-drawer');
+  if (!drawer) return;
+  
+  const closeBtns = drawer.querySelectorAll('');
+  
+  window.openLoginDrawer = () => {
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeDrawer = () => {
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  closeBtns.forEach(btn => btn.addEventListener('click', closeDrawer));
+  window.addEventListener('open-login-drawer', window.openLoginDrawer);
+});
+</script>

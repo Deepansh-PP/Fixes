@@ -1,0 +1,155 @@
+{%- comment -%}
+  AONA INDIA - Horizontal Product Scroll Section
+  "Handpicked for You" style horizontal scrolling products
+{%- endcomment -%}
+
+<style>
+  .horizontal-products-section {
+    padding: 30px 0;
+    overflow: hidden;
+    background: white;
+  }
+  
+  /* Scroll Container */
+  .horizontal-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 0 16px 20px; /* Bottom padding for shadow clipping */
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  
+  .horizontal-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+.horizontal-item {
+    flex: 0 0 160px; 
+    scroll-snap-align: start;
+    width: 160px;
+  }
+
+  /* FIX: Make cards large and beautiful on Desktop */
+  @media (min-width: 768px) {
+    .horizontal-item {
+      flex: 0 0 250px; 
+      width: 250px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .horizontal-item {
+      flex: 0 0 280px; 
+      width: 280px;
+    }
+  }
+
+  .h-section-header {
+    padding: 0 16px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  
+  .h-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-royal-red, #880015);
+    margin: 0;
+  }
+  
+  .h-section-link {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--color-gold, #D4AF37);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* Compact Card Override */
+  .horizontal-item .crimson-card__title {
+    font-size: 13px;
+  }
+  
+  .horizontal-item .crimson-card__price {
+    font-size: 13px;
+  }
+</style>
+
+<div class="horizontal-products-section">
+  <div class="h-section-header">
+    <h2 class="h-section-title">{{ section.settings.title }}</h2>
+    {%- if section.settings.show_view_all and section.settings.collection != blank -%}
+      <a href="{{ collections[section.settings.collection].url }}" class="h-section-link">View All</a>
+    {%- endif -%}
+  </div>
+
+  <div class="horizontal-scroll-container">
+    {%- assign collection = collections[section.settings.collection] -%}
+    {%- assign limit = section.settings.products_to_show -%}
+
+    {%- if collection != blank -%}
+      {%- for product in collection.products limit: limit -%}
+        <div class="horizontal-item">
+          {% render 'card-product', product: product, show_rating: false, show_quick_add: false %}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..6) -%}
+        <div class="horizontal-item">
+          <div class="crimson-card">
+            <div class="crimson-card__image">
+              {{ 'product-' | append: i | placeholder_svg_tag }}
+            </div>
+            <div class="crimson-card__content">
+              <p class="crimson-card__brand">Brand</p>
+              <h3 class="crimson-card__title">Product {{ i }}</h3>
+              <div class="crimson-card__price">₹999</div>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Horizontal Products",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Handpicked for You"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View All' link",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Horizontal Products"
+    }
+  ]
+}
+{% endschema %}

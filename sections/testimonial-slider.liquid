@@ -1,0 +1,63 @@
+{% schema %}
+{
+  "name": "Testimonial Slider",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Loved by Thousands" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Customer Name", "default": "Rahul S." },
+        { "type": "text", "id": "product", "label": "Product Bought", "default": "Brass Ganesha Idol" },
+        { "type": "textarea", "id": "text", "label": "Review Text", "default": "Absolutely beautiful craftsmanship. The weight and finish feel incredibly premium." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Testimonial Slider" }]
+}
+{% endschema %}
+
+<section class="testi-section">
+  <h2 class="testi-heading">{{ section.settings.title }}</h2>
+  <div class="testi-track" id="TestiTrack">
+    {% for block in section.blocks %}
+      <div class="testi-card" {{ block.shopify_attributes }}>
+        <div class="testi-stars">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4AF37"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4AF37"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4AF37"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4AF37"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4AF37"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+        </div>
+        <p class="testi-text">"{{ block.settings.text }}"</p>
+        <div class="testi-author">
+          <strong>{{ block.settings.name }}</strong>
+          <span class="verified"><svg width="12" height="12" viewBox="0 0 24 24" fill="#03a685"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10" stroke="white" stroke-width="2" fill="none"/></svg> Verified Buyer</span>
+        </div>
+        <span class="testi-product">Bought: {{ block.settings.product }}</span>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+.testi-section { padding: 50px 16px; background: #fffdf5; /* Subtle gold tint */ border-top: 1px solid #f0f0f0; }
+.testi-heading { text-align: center; font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 30px; color: #1a1a1a; }
+.testi-track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 20px; }
+.testi-track::-webkit-scrollbar { display: none; }
+.testi-card { flex: 0 0 280px; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); scroll-snap-align: center; border: 1px solid #f0f0f0; }
+.testi-stars { margin-bottom: 12px; }
+.testi-text { font-size: 14px; color: #444; line-height: 1.6; font-style: italic; margin-bottom: 20px; }
+.testi-author { display: flex; flex-direction: column; font-size: 14px; color: #1a1a1a; margin-bottom: 4px; }
+.verified { color: #03a685; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+.testi-product { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+
+@media (min-width: 992px) {
+  .testi-section { padding: 80px 40px; }
+  .testi-heading { font-size: 36px; }
+  .testi-card { flex: 0 0 350px; }
+  .testi-track { justify-content: center; flex-wrap: wrap; overflow: visible; }
+}
+</style>

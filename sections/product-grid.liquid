@@ -1,0 +1,275 @@
+{% comment %}
+  Universal Product Grid Section
+  Supports: Homepage, Collection, Search Results
+  Features: 2-col mobile, 4-5 col desktop, Infinite Scroll
+{% endcomment %}
+
+{%- liquid
+  assign collection_handle = section.settings.collection
+  assign products_per_page = section.settings.products_per_page | default: 12
+  assign show_filters = section.settings.show_filters | default: true
+  assign enable_infinite_scroll = section.settings.enable_infinite_scroll | default: true
+  
+  if collection_handle != blank
+    assign collection = collections[collection_handle]
+    assign products = collection.products
+  else
+    assign products = collection.products
+  endif
+-%}
+
+<div class="product-grid-section" data-section-id="{{ section.id }}">
+  {%- comment -%} Section Header {%- endcomment -%}
+  {%- if section.settings.title != blank -%}
+    <div class="section-header">
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      {%- if section.settings.view_all_url != blank -%}
+        <a href="{{ section.settings.view_all_url }}" class="view-all-link">
+          View All
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+  
+  {%- comment -%} Sort & Filter Bar {%- endcomment -%}
+  {%- if show_filters -%}
+    <div class="sort-filter-bar">
+      <button class="sort-filter-bar__btn" id="sortBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="6" x2="11" y2="6"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="18" x2="16" y2="18"></line>
+        </svg>
+        Sort
+      </button>
+      <button class="sort-filter-bar__btn" id="filterBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+        </svg>
+        Filter
+      </button>
+    </div>
+    
+    {%- comment -%} Results Count {%- endcomment -%}
+    <div class="results-count">
+      <strong>{{ products.size }}</strong> Products Found
+    </div>
+  {%- endif -%}
+  
+  {%- comment -%} Product Grid {%- endcomment -%}
+  <div class="product-grid-container" id="productGridContainer">
+    <div class="product-grid" id="productGrid" data-page="1" data-total-pages="{{ products.size | divided_by: products_per_page | ceil }}">
+      {%- for product in products limit: products_per_page -%}
+        {%- render 'card-product', 
+          product: product, 
+          show_quick_add: true, 
+          show_rating: true,
+          lazy_load: forloop.index > 4,
+          card_index: forloop.index
+        -%}
+      {%- else -%}
+        {%- comment -%} No Results {%- endcomment -%}
+        <div class="no-results">
+          <div class="no-results__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <h3 class="no-results__title">No Results Found</h3>
+          <p class="no-results__text">We couldn't find any products matching your search.</p>
+          
+          {%- comment -%} Trending Products Suggestion {%- endcomment -%}
+          <div class="no-results__trending">
+            <h4 class="no-results__trending-title">Trending New Arrivals</h4>
+            <div class="trending-scroll">
+              {%- for product in collections['new-arrivals'].products limit: 8 -%}
+                {%- render 'card-product', product: product, show_quick_add: false, show_rating: true -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    
+    {%- comment -%} Load More / Infinite Scroll {%- endcomment -%}
+    {%- if products.size > products_per_page -%}
+      <div class="load-more-container" id="loadMoreContainer">
+        {%- if enable_infinite_scroll -%}
+          <div class="infinite-scroll-trigger" id="infiniteScrollTrigger"></div>
+        {%- endif -%}
+        <button class="load-more-btn" id="loadMoreBtn" data-collection="{{ collection_handle }}" data-products-per-page="{{ products_per_page }}">
+          <span class="spinner"></span>
+          <span class="btn-text">Load More</span>
+        </button>
+      </div>
+    {%- endif -%}
+  </div>
+  
+  {%- comment -%} Loading Skeletons (Hidden by default) {%- endcomment -%}
+  <template id="productSkeletonTemplate">
+    <div class="product-skeleton">
+      <div class="product-skeleton__image"></div>
+      <div class="product-skeleton__content">
+        <div class="product-skeleton__line product-skeleton__line--short"></div>
+        <div class="product-skeleton__line product-skeleton__line--medium"></div>
+        <div class="product-skeleton__line product-skeleton__line--short"></div>
+      </div>
+    </div>
+  </template>
+</div>
+
+{%- comment -%} Filter Panel (Slide-out) {%- endcomment -%}
+<div class="filter-overlay" id="filterOverlay"></div>
+<div class="filter-panel" id="filterPanel">
+  <div class="filter-panel__header">
+    <h3 class="filter-panel__title">Filters</h3>
+    <button class="filter-panel__close" id="filterClose">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+  
+  <div class="filter-panel__body">
+    {%- comment -%} Categories {%- endcomment -%}
+    <div class="filter-section">
+      <h4 class="filter-section__title">Categories</h4>
+      <div class="filter-chips">
+        <button class="filter-chip active" data-filter="all">All</button>
+        <button class="filter-chip" data-filter="brass">Brass</button>
+        <button class="filter-chip" data-filter="resin">Resin</button>
+        <button class="filter-chip" data-filter="bronze">Bronze</button>
+        <button class="filter-chip" data-filter="wall-art">Wall Art</button>
+        <button class="filter-chip" data-filter="statues">Statues</button>
+      </div>
+    </div>
+    
+    {%- comment -%} Material Toggle {%- endcomment -%}
+    <div class="filter-section">
+      <h4 class="filter-section__title">Material</h4>
+      <div class="filter-toggle" data-filter="brass">
+        <span class="filter-toggle__label">Brass</span>
+        <span class="filter-toggle__switch"></span>
+      </div>
+      <div class="filter-toggle" data-filter="resin">
+        <span class="filter-toggle__label">Resin</span>
+        <span class="filter-toggle__switch"></span>
+      </div>
+      <div class="filter-toggle" data-filter="bronze">
+        <span class="filter-toggle__label">Bronze</span>
+        <span class="filter-toggle__switch"></span>
+      </div>
+      <div class="filter-toggle" data-filter="marble">
+        <span class="filter-toggle__label">Marble</span>
+        <span class="filter-toggle__switch"></span>
+      </div>
+    </div>
+    
+    {%- comment -%} Price Range {%- endcomment -%}
+    <div class="filter-section">
+      <h4 class="filter-section__title">Price Range</h4>
+      <div class="price-range">
+        <div class="price-range__inputs">
+          <input type="number" class="price-range__input" id="priceMin" placeholder="₹ Min" value="0">
+          <input type="number" class="price-range__input" id="priceMax" placeholder="₹ Max" value="50000">
+        </div>
+        <div class="price-range__slider">
+          <div class="price-range__slider-fill" style="left: 0%; width: 100%;"></div>
+        </div>
+      </div>
+    </div>
+    
+    {%- comment -%} Availability {%- endcomment -%}
+    <div class="filter-section">
+      <h4 class="filter-section__title">Availability</h4>
+      <div class="filter-toggle active" data-filter="in-stock">
+        <span class="filter-toggle__label">In Stock Only</span>
+        <span class="filter-toggle__switch"></span>
+      </div>
+      <div class="filter-toggle" data-filter="express">
+        <span class="filter-toggle__label">30-Min Delivery</span>
+        <span class="filter-toggle__switch"></span>
+      </div>
+    </div>
+    
+    {%- comment -%} Special {%- endcomment -%}
+    <div class="filter-section">
+      <h4 class="filter-section__title">Special</h4>
+      <div class="filter-toggle" data-filter="handcrafted">
+        <span class="filter-toggle__label">Handcrafted Only</span>
+        <span class="filter-toggle__switch"></span>
+      </div>
+      <div class="filter-toggle" data-filter="new-arrivals">
+        <span class="filter-toggle__label">New Arrivals</span>
+        <span class="filter-toggle__switch"></span>
+      </div>
+      <div class="filter-toggle" data-filter="on-sale">
+        <span class="filter-toggle__label">On Sale</span>
+        <span class="filter-toggle__switch"></span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="filter-panel__footer">
+    <button class="filter-btn filter-btn--clear" id="clearFilters">Clear All</button>
+    <button class="filter-btn filter-btn--apply" id="applyFilters">Apply Filters</button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "tag": "section",
+  "class": "product-grid-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Our Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "View All URL"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 12,
+      "label": "Products per page"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show Sort & Filter Bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_infinite_scroll",
+      "label": "Enable Infinite Scroll",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Grid",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

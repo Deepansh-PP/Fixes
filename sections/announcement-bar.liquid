@@ -1,0 +1,162 @@
+{%- comment -%}
+  Announcement Bar - Top banner for promotions and announcements
+  Mobile-first design with optional dismiss functionality
+{%- endcomment -%}
+
+{% if section.settings.show_announcement %}
+<div class="announcement-bar" data-announcement-bar>
+  <div class="announcement-bar__container">
+    <div class="announcement-bar__content">
+      <span class="announcement-bar__text">{{ section.settings.announcement_text }}</span>
+      {% if section.settings.announcement_link != blank %}
+        <a href="{{ section.settings.announcement_link }}" class="announcement-bar__link">
+          {{ section.settings.announcement_link_text }}
+        </a>
+      {% endif %}
+    </div>
+    {% if section.settings.dismissible %}
+      <button class="announcement-bar__close" data-announcement-close aria-label="Close announcement">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .announcement-bar {
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    position: relative;
+    z-index: 99;
+  }
+  .announcement-bar__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px var(--spacing-lg);
+    gap: var(--spacing-md);
+    position: relative;
+  }
+  .announcement-bar__content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .announcement-bar__text {
+    line-height: 1.4;
+  }
+  .announcement-bar__link {
+    text-decoration: underline;
+    font-weight: 600;
+    color: inherit;
+    transition: opacity 0.2s ease;
+  }
+  .announcement-bar__link:hover {
+    opacity: 0.8;
+  }
+  .announcement-bar__close {
+    position: absolute;
+    right: var(--spacing-lg);
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 4px;
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+  .announcement-bar__close:hover {
+    opacity: 1;
+  }
+  .announcement-bar.hidden {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .announcement-bar {
+      font-size: 14px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const announcementBar = document.querySelector('[data-announcement-bar]');
+    const closeBtn = document.querySelector('[data-announcement-close]');
+    
+    if (closeBtn && announcementBar) {
+      closeBtn.addEventListener('click', function() {
+        announcementBar.classList.add('hidden');
+        // Store dismissal in sessionStorage
+        sessionStorage.setItem('announcement-dismissed', 'true');
+      });
+      
+      // Check if announcement was already dismissed
+      if (sessionStorage.getItem('announcement-dismissed') === 'true') {
+        announcementBar.classList.add('hidden');
+      }
+    }
+  });
+</script>
+
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "default": true,
+      "label": "Show announcement bar"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "default": "Free shipping on orders over ₹2,000",
+      "label": "Announcement text"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Announcement link"
+    },
+    {
+      "type": "text",
+      "id": "announcement_link_text",
+      "default": "Shop Now",
+      "label": "Link text"
+    },
+    {
+      "type": "checkbox",
+      "id": "dismissible",
+      "default": true,
+      "label": "Allow users to dismiss"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#880015"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    }
+  ]
+}
+{% endschema %}
